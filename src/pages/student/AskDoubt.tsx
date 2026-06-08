@@ -1,0 +1,189 @@
+import { bgCss } from "@/helper/CssHelper";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { 
+  ChevronLeft, Bell, Camera, Image as ImageIcon, 
+  Bot, MessageCircle, Phone, Video 
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+// Official Shadcn Components
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useNavigate } from "react-router-dom";
+
+// --- Mock API Functions ---
+const fetchSubjects = async () => ["Mathematics", "Physics", "Chemistry", "Biology"];
+const fetchChapters = async (subject: string) => {
+  if (subject === "Mathematics") return ["Algebra", "Calculus", "Geometry", "Trigonometry"];
+  return ["Chapter 1", "Chapter 2"];
+};
+
+export default function AskDoubt() {
+  const [selectedSubject, setSelectedSubject] = useState<string>("Mathematics");
+  const [question, setQuestion] = useState("");
+  const [sessionType, setSessionType] = useState("AI Tutor");
+const navigate=useNavigate()
+  // TanStack Query for dynamic data
+  const { data: subjects } = useQuery({ queryKey: ["subjects"], queryFn: fetchSubjects });
+  const { data: chapters } = useQuery({ 
+    queryKey: ["chapters", selectedSubject], 
+    queryFn: () => fetchChapters(selectedSubject),
+    enabled: !!selectedSubject 
+  });
+
+  return (
+    <div className={`${bgCss} min-h-svh w-full bg-[#050505] text-white flex flex-col items-center pb-7 overflow-x-hidden`}>
+      
+      {/* ── HEADER ── */}
+      <header className="w-full max-w-xl flex items-center justify-between px-6 py-8">
+        <Button variant="outline" size="icon" onClick={()=>navigate('/student-dashboard')} className="rounded-xl border-white/10 bg-white/5 text-white">
+          <ChevronLeft  className="h-5 w-5" />
+        </Button>
+        <h1 className="text-xl font-bold tracking-tight">Ask Your Doubt</h1>
+        <Button variant="ghost" size="icon" className="relative text-white">
+          <Bell className="h-6 w-6" />
+          <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-black" />
+        </Button>
+      </header>
+
+      <main className="w-full max-w-xl px-6 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        
+        {/* ── INPUT SECTION CARD ── */}
+        <Card className="border-white/5 bg-[#1a1a1a]/40 backdrop-blur-xl rounded-[2rem] overflow-hidden shadow-2xl">
+          <CardContent className="p-6 space-y-6">
+            
+            {/* Subject Select */}
+            <div className="space-y-2">
+              <Label className="text-white/80 text-sm font-semibold">Select Subject</Label>
+              <Select  onValueChange={()=>setSelectedSubject} defaultValue="Mathematics">
+                <SelectTrigger className=" rounded-2xl w-full  border-white/10 bg-black/40 text-white focus:ring-teal-500/50">
+                  <SelectValue placeholder="Select Subject" />
+                </SelectTrigger>
+                <SelectContent  className="bg-[#1a1a1a]  border-white/10 text-white">
+                  {subjects?.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Chapter Select */}
+            <div className="space-y-2">
+              <Label className="text-white/80 text-sm font-semibold">Select Chapter</Label>
+              <Select defaultValue="Algebra">
+                <SelectTrigger className="w-full rounded-2xl border-white/10 bg-black/40 text-white focus:ring-teal-500/50">
+                  <SelectValue placeholder="Select Chapter" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
+                  {chapters?.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Detailed Question Area */}
+            <div className="space-y-2 relative">
+              <Textarea 
+                placeholder="Type your detailed question here..." 
+                className="min-h-[180px] rounded-2xl border-white/10 bg-black/40 text-white placeholder:text-white/20 p-4 focus-visible:ring-teal-500/50"
+                maxLength={1000}
+                onChange={(e) => setQuestion(e.target.value)}
+              />
+              <span className="absolute bottom-4 right-4 text-[10px] text-white/30 font-bold tracking-widest">
+                {question.length} / 1000
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ── ATTACH IMAGE SECTION ── */}
+        <div className="space-y-4">
+          <div className="flex justify-between items-center px-1">
+            <Label className="text-white font-bold tracking-tight">Attach Image (Optional)</Label>
+            <span className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Added: 0/3 images</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Button variant="outline" className="h-14 rounded-full border-teal-500/50 bg-transparent text-teal-400 hover:bg-teal-500/10 gap-2 font-bold transition-all">
+              <Camera className="h-5 w-5" /> Take Photo
+            </Button>
+            <Button variant="outline" className="h-14 rounded-full border-teal-500/50 bg-transparent text-teal-400 hover:bg-teal-500/10 gap-2 font-bold transition-all">
+              <ImageIcon className="h-5 w-5" /> Upload Image
+            </Button>
+          </div>
+        </div>
+
+        {/* ── SESSION TYPE SELECTION ── */}
+        <div >
+          <Label className="text-white font-bold tracking-tight px-1">Choose Session Type</Label>
+          <div className="flex overflow-x-auto   gap-3 py-4 px-1 snap-x no-scrollbar">
+    
+            <SessionCard 
+              icon={<Bot />} 
+              title="AI Tutor" 
+              desc="Instant Help from AI" 
+              active={sessionType === "AI Tutor"}
+              onClick={() => setSessionType("AI Tutor")}
+            />
+            
+            <SessionCard 
+              icon={<MessageCircle />} 
+              title="Human Chat" 
+              desc="Expert Educator" 
+              active={sessionType === "Human Chat"}
+              onClick={() => setSessionType("Human Chat")}
+            />
+            
+            <SessionCard 
+              icon={<Phone />} 
+              title="Audio Call" 
+              desc="Live Discussion" 
+              active={sessionType === "Audio Call"}
+              onClick={() => setSessionType("Audio Call")}
+            />
+            <SessionCard 
+              icon={<Video />} 
+              title="Video Call" 
+              desc="Personalized Session" 
+              active={sessionType === "Video Call"}
+              onClick={() => setSessionType("Video Call")}
+            />
+
+          </div>
+        </div>
+
+        {/* ── SUBMIT BUTTON ── */}
+        <div className="pt-6 relative">
+            <div className="absolute inset-x-0 bottom-0 top-6 bg-teal-600/20 blur-3xl rounded-full" />
+            <Button className="relative w-full h-16 rounded-full bg-gradient-to-r from-teal-600 to-blue-700 text-white font-black tracking-widest text-lg shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">
+              CONNECT NOW
+            </Button>
+        </div>
+
+      </main>
+    </div>
+  );
+}
+
+// ── Reusable Session Card (Using Shadcn Card) ──
+function SessionCard({ icon, title, desc, active, onClick }: any) {
+  return (
+    <Card 
+      onClick={onClick}
+      className={cn(
+        "cursor-pointer flex-none w-[calc(33.33%-8px)] border-white/5 bg-[#1a1a1a]/60 backdrop-blur-md rounded-2xl transition-all duration-300",
+        active ? "ring-1 ring-teal-500 shadow-[0_0_20px_rgba(34,211,238,0.2)] bg-teal-500/5" : "hover:bg-white/5"
+      )}
+    >
+      <CardContent className="p-4 flex flex-col items-center text-center gap-3">
+        <div className={cn("p-2.5 rounded-xl transition-colors", active ? "bg-teal-500 text-black shadow-lg" : "bg-white/5 text-white/40")}>
+          {icon}
+        </div>
+        <div className="space-y-1">
+          <p className={cn("text-[10px] font-black uppercase tracking-tighter", active ? "text-white" : "text-white/60")}>{title}</p>
+          <p className="text-[8px] text-white/30 leading-tight leading-none">{desc}</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
