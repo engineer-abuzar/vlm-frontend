@@ -1,3 +1,4 @@
+import {  useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { CheckCircle2, Clock,  } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,7 +12,7 @@ import { BackgroundElement } from "@/components/basic/BackgroundElements";
 export default function OtpVerificationPage() {
   const [otpValue, setOtpValue] = useState("");
   const [timer, setTimer] = useState(58);
-
+const navigate=useNavigate()
   useEffect(() => {
     if (timer > 0) {
       const id = setTimeout(() => setTimer(timer - 1), 1000);
@@ -106,6 +107,7 @@ export default function OtpVerificationPage() {
             "bg-gradient-to-b from-[#1e3a8e] to-[#0f172a]", 
             "border border-blue-500/40 text-white shadow-xl"
           )}
+          onClick={()=>navigate('/student-dashboard')}
         >
           Verify & Continue
         </Button>
