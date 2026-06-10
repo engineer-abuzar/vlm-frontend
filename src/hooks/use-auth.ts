@@ -3,14 +3,14 @@ import { authApi } from "@/lib/auth-api";
 import type { Role } from "@/types";
 
 // ── Login with email + password ────────────────────────────
-export function useLoginWithEmail() {
-  return useMutation({
-    mutationFn: authApi.loginWithEmail,
-    onSuccess: (data) => {
-      localStorage.setItem("vlm_token", data.token);
-    },
-  });
-}
+// export function useLogin() {
+//   return useMutation({
+//     mutationFn: ()=>authApi.sendOtp(payload),
+//     onSuccess: (data) => {
+//       localStorage.setItem("vlm_token", data.token);
+//     },
+//   });
+// }
 
 // ── Request OTP ────────────────────────────────────────────
 export function useRequestOtp() {

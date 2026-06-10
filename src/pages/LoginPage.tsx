@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { authApi } from "@/lib/auth-api";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -10,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
 
-import { useLoginWithEmail,  useGoogleAuth } from "@/hooks/use-auth";
+import { useGoogleAuth } from "@/hooks/use-auth";
 
 // --- CUSTOM WRAPPERS (To replace raw HTML) ---
 const Container = ({ children, className }: any) => <div className={cn("relative flex min-h-svh w-full flex-col items-center justify-center overflow-hidden p-4", className)}>{children}</div>;
@@ -39,24 +41,41 @@ const DECORATIONS = [
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const emailRef = useRef(null)
+  const phoneRef = useRef(null)
   const role = (sessionStorage.getItem("vlm_role") ?? "teacher") as string;
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  // const [password, setPassword] = useState("");
+  // const [showPassword, setShowPassword] = useState(false);
 
-  const loginMutation = useLoginWithEmail();
+  const loginMutation = useMutation({
+    mutationFn: (payload: any) => authApi.sendOtp(payload),
+    onSuccess: (data: any) => {
+      localStorage.setItem("vlm_token", data.token);
+    },
+  });
   const googleMutation = useGoogleAuth();
 
   const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
+  const onSubmit = async () => {
+    const email = emailRef.current?.value
+    const phone = `+91${phoneRef.current?.value} `
+    email ?
+      loginMutation.mutate({ email, role }) :
 
+
+
+      loginMutation.mutate({ phone, role });
+    navigate('/otp')
+  }
   return (
     <Container className="vlm-bg-navy">
       {/* Background Decor Components */}
       {DECORATIONS.map((d, i) => (
-        <Badge 
-          key={i} 
-          variant="ghost" 
+        <Badge
+          key={i}
+          variant="ghost"
           className={cn("absolute border-none pointer-events-none opacity-30 animate-in fade-in zoom-in duration-1000", d.pos, d.size, d.delay)}
         >
           {d.icon}
@@ -64,7 +83,7 @@ export default function LoginPage() {
       ))}
 
       <Grid className="relative z-10 max-w-6xl lg:grid-cols-2 lg:px-10 gap-10">
-        
+
         {/* LEFT PANEL */}
         <Stack className="hidden lg:flex gap-20 animate-in slide-in-from-left duration-700">
           <VlmWordmark role={roleLabel} />
@@ -88,58 +107,62 @@ export default function LoginPage() {
           </Stack>
 
           <Card className="w-full max-w-md border-[#333] bg-taupe-100/5 backdrop-blur-xl shadow-2xl rounded-[2.5rem] overflow-hidden border-t-white/10">
-  <CardHeader className="pt-10 pb-6 text-center">
-    <CardTitle className="text-xl font-bold text-white tracking-wide drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
-      Login with Mobile OTP
-    </CardTitle>
-  </CardHeader>
+            <CardHeader className="pt-10 pb-6 text-center">
+              <CardTitle className="text-xl font-bold text-white tracking-wide drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+                Login with Mobile OTP
+              </CardTitle>
+            </CardHeader>
 
-  <CardContent className="space-y-6 px-8 pb-10">
-    {/* Phone Input Box */}
-    <Stack className="gap-2">
-      <div className="relative flex p-2 overflow-hidden rounded-2xl border border-[#555] bg-[#444]/40 focus-within:ring-1 focus-within:ring-blue-500/50 transition-all">
-        <div className="flex items-center gap-2 border-r border-[#555] px-4 text-white">
-          <span className="text-lg">🇮🇳</span>
-          <span className="font-medium text-white/90">+91</span>
-        </div>
-        <Input
-          type="tel"
-          placeholder="Phone Number"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
-          className="h-full border-none  text-lg text-white placeholder:text-white/20 focus-visible:ring-0 focus-visible:ring-offset-0"
-        />
-      </div>
-    </Stack>
+            <CardContent className="space-y-6 px-8 pb-10">
+              {/* Phone Input Box */}
+              <Stack className="gap-2">
+                <div className="relative flex p-2 overflow-hidden rounded-2xl border border-[#555] bg-[#444]/40 focus-within:ring-1 focus-within:ring-blue-500/50 transition-all">
+                  <div className="flex items-center gap-2 border-r border-[#555] px-4 text-white">
+                    <span className="text-lg">🇮🇳</span>
+                    <span className="font-medium text-white/90">+91</span>
+                  </div>
+                  <Input
+                    type="tel"
+                    ref={phoneRef}
+                    placeholder="Phone Number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+                    className="h-full border-none  text-lg text-white placeholder:text-white/20 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  />
+                </div>
+              </Stack>
 
-    {/* Divider Section */}
-    <div className="relative flex items-center justify-center py-2">
-      <div className="h-[1px] flex-1 bg-white/20" />
-      <span className="px-4 text-[10px] font-black tracking-[0.2em] text-white/80 uppercase">
-        OR LOGIN WITH
-      </span>
-      <div className="h-[1px] flex-1 bg-white/20" />
-    </div>
+              {/* Divider Section */}
+              <div className="relative flex items-center justify-center py-2">
+                <div className="h-[1px] flex-1 bg-white/20" />
+                <span className="px-4 text-[10px] font-black tracking-[0.2em] text-white/80 uppercase">
+                  OR LOGIN WITH
+                </span>
+                <div className="h-[1px] flex-1 bg-white/20" />
+              </div>
 
-    {/* Email Form */}
-    <form
+              {/* Email Form */}
+              {/* <form
       onSubmit={(e) => {
         e.preventDefault();
         navigate('/otp')
-        loginMutation.mutate({ email, password });
+        loginMutation.mutate({ email });
       }}
       className="space-y-4"
-    >
-      <Input
-        type="email"
-        placeholder="Email Address"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className=" rounded-2xl border-[#555] bg-[#444]/40 p-6 text-white placeholder:text-white/20 focus-visible:ring-1 focus-visible:ring-blue-500/50"
-      />
+    > */}
+              <div className="space-y-4">
 
-      <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Email Address"
+                  required
+                  ref={emailRef}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className=" rounded-2xl border-[#555] bg-[#444]/40 p-6 text-white placeholder:text-white/20 focus-visible:ring-1 focus-visible:ring-blue-500/50"
+                />
+
+                {/* <div className="relative">
         <Input
           type={showPassword ? "text" : "password"}
           placeholder="Password"
@@ -157,35 +180,38 @@ export default function LoginPage() {
         >
           {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
         </Button>
-      </div>
+      </div> */}
 
-      {/* Forgot Password Link */}
-      <div className="flex justify-end">
+                {/* Forgot Password Link */}
+                {/* <div className="flex justify-end">
         <Button
           variant="link"
           className="h-auto p-0 text-xs text-white/40 underline underline-offset-4 hover:text-white/60 font-normal"
         >
           Forgot Password?
         </Button>
-      </div>
+      </div> */}
 
-      {/* Login Button with Glow Effect */}
-      <div className="relative pt-2">
-        {/* External Glow Layer */}
-        <div className="absolute inset-x-0 bottom-0 top-2 bg-blue-600/30 blur-2xl rounded-2xl" />
-        
-        <Button
-          type="submit"
-          disabled={loginMutation.isPending}
-          className="relative text-white w-full h-16 rounded-2xl text-lg tracking-wide border border-blue-500/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all active:scale-[0.98] hover:brightness-110"
-          style={{ background: "linear-gradient(180deg, #1e3a8e 0%, #0f172a 100%)" }}
-        >
-          {loginMutation.isPending ? "Authenticating..." : "Login to Dashboard"}
-        </Button>
-      </div>
-    </form>
-  </CardContent>
-</Card>
+                {/* Login Button with Glow Effect */}
+                <div className="relative pt-2">
+                  {/* External Glow Layer */}
+                  <div className="absolute inset-x-0 bottom-0 top-2 bg-blue-600/30 blur-2xl rounded-2xl" />
+
+                  <Button
+                    type="submit"
+                    onClick={onSubmit}
+                    disabled={loginMutation.isPending}
+                    className="relative text-white w-full h-16 rounded-2xl text-lg tracking-wide border border-blue-500/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all active:scale-[0.98] hover:brightness-110"
+                    style={{ background: "linear-gradient(180deg, #1e3a8e 0%, #0f172a 100%)" }}
+                  >
+                    {loginMutation.isPending ? "Authenticating..." : "Login to Dashboard"}
+                  </Button>
+                </div>
+              </div>
+
+              {/* </form> */}
+            </CardContent>
+          </Card>
 
           {/* SOCIAL LOGIN */}
           <Stack className="mt-6 w-full max-w-md px-4 gap-4">
@@ -196,7 +222,7 @@ export default function LoginPage() {
             >
               <GoogleIcon /> Continue with Google
             </Button>
-            
+
             <Typography variant="p" className="text-center text-sm">
               New here?{" "}
               <Button variant="link" className="h-auto p-0 text-white/60 font-bold underline underline-offset-4">

@@ -5,16 +5,16 @@ export const authApi = {
   /**
    * Login via email + password
    */
-  loginWithEmail: async (payload: Required<Pick<LoginPayload, "email" | "password">>): Promise<AuthUser> => {
-    const { data } = await apiClient.post<AuthUser>("/auth/login", payload);
-    return data;
-  },
+  // loginWithEmail: async (payload: any): Promise<AuthUser> => {
+  //   const { data } = await apiClient.post<AuthUser>("/auth/login", payload);
+  //   return data;
+  // },
 
   /**
    * Request OTP to phone number
    */
-  requestOtp: async (phone: string): Promise<{ message: string }> => {
-    const { data } = await apiClient.post<{ message: string }>("/auth/otp/request", { phone });
+  sendOtp: async (payload:any) => {
+    const { data } = await apiClient.post("/auth/sent-otp", payload);
     return data;
   },
 
