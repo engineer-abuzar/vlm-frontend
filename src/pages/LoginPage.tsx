@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { authApi } from "@/lib/auth-api";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Star } from "lucide-react";
+import {  Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { VlmWordmark } from "@/components/basic/VlmWordMark";
 // --- SHADCN UI COMPONENTS ---
@@ -42,8 +42,8 @@ const DECORATIONS = [
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const emailRef = useRef(null)
-  const phoneRef = useRef(null)
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
   const role = (sessionStorage.getItem("vlm_role") ?? "teacher") as string;
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");

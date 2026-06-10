@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client";
-import type { AuthUser, LoginPayload, Role } from "@/types";
+import type { AuthUser,  Role } from "@/types";
 
 export const authApi = {
   /**

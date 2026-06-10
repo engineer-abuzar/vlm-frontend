@@ -14,9 +14,9 @@ import type { Role } from "@/types";
 
 // ── Request OTP ────────────────────────────────────────────
 export function useRequestOtp() {
-  return useMutation({
-    mutationFn: (phone: string) => authApi.requestOtp(phone),
-  });
+  // return useMutation({
+  //   mutationFn: (phone: string) => authApi.requestOtp(phone),
+  // });
 }
 
 // ── Verify OTP ─────────────────────────────────────────────
