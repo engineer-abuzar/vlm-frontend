@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { 
-   Search, Settings, Calendar, 
-  Video, Star, User, BookOpen, 
-  Layers, Microscope 
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
+import {
+  ChevronLeft, Calendar,
+  Video, Star, User, BookOpen,
+  Layers, Microscope
 } from "lucide-react";
 // import { cn } from "@/lib/utils";
 
@@ -50,7 +52,7 @@ const fetchSessionHistory = async () => {
 };
 
 export default function SessionHistory() {
-  // TanStack Query for dynamic data
+  const navigate = useNavigate();
   const { data: sessions, isLoading } = useQuery({
     queryKey: ["sessionHistory"],
     queryFn: fetchSessionHistory,
@@ -68,17 +70,13 @@ export default function SessionHistory() {
 
       {/* ── HEADER ── */}
       <header className="relative z-10 flex w-full items-center justify-between pt-10 pb-8">
-        <h1 className="text-3xl font-serif font-bold tracking-tight uppercase">
+        <Button variant="outline" size="icon" className="h-10 w-10 rounded-xl border-white/10 bg-white/5 text-white" onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}>
+          <ChevronLeft size={20} />
+        </Button>
+        <h1 className="text-2xl font-serif font-bold tracking-tight uppercase">
           Session History
         </h1>
-        <div className="flex gap-4">
-          <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/5">
-            <Search size={24} />
-          </Button>
-          <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/5">
-            <Settings size={24} />
-          </Button>
-        </div>
+        <div className="w-10" />
       </header>
 
       {/* ── HISTORY LIST ── */}
@@ -128,8 +126,9 @@ export default function SessionHistory() {
 
                 <div className="relative group/btn">
                   <div className="absolute inset-0 bg-blue-600/20 blur-xl rounded-full opacity-0 group-hover/btn:opacity-100 transition-opacity" />
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate(PATHS.LIVE_SESSION)}
                     className="relative h-11 px-6 rounded-full border-blue-500/50 bg-blue-500/5 text-white font-bold text-sm hover:bg-blue-600 hover:border-blue-400 transition-all active:scale-95"
                   >
                     View Details &gt;

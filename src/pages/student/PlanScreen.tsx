@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { 
  Calendar, CheckCircle2, 
   BookOpen, Layout, Activity, UserCheck, Star, 
@@ -25,6 +27,7 @@ const fetchTrialDetails = async () => {
 };
 
 export default function PlanScreen() {
+  const navigate = useNavigate();
   const { data } = useQuery({
     queryKey: ["trialPlan"],
     queryFn: fetchTrialDetails,
@@ -118,9 +121,10 @@ export default function PlanScreen() {
       {/* ── GO TO DASHBOARD BUTTON ── */}
       <div className="mt-auto w-full max-w-md pt-2 relative">
         <div className="absolute inset-0 bg-blue-600/30 blur-3xl rounded-full" />
-        <Button 
+        <Button
+          onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}
           className={cn(
-            "relative w-full h-16 rounded-full text-lg   tracking-wide transition-all active:scale-[0.98]",
+            "relative w-full h-16 rounded-full text-lg tracking-wide transition-all active:scale-[0.98]",
             "bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white shadow-2xl hover:brightness-110"
           )}
         >

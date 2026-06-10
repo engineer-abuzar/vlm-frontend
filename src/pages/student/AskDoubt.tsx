@@ -13,7 +13,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 
 // --- Mock API Functions ---
 const fetchSubjects = async () => ["Mathematics", "Physics", "Chemistry", "Biology"];
@@ -25,8 +26,21 @@ const fetchChapters = async (subject: string) => {
 export default function AskDoubt() {
   const [selectedSubject, setSelectedSubject] = useState<string>("Mathematics");
   const [question, setQuestion] = useState("");
-  const [sessionType, setSessionType] = useState("AI Tutor");
-const navigate=useNavigate()
+  const [searchParams] = useSearchParams();
+  const [sessionType, setSessionType] = useState(
+    searchParams.get("mode") === "ai" ? "AI Tutor" : "AI Tutor"
+  );
+  const navigate = useNavigate();
+
+  const handleConnect = () => {
+    if (sessionType === "Audio Call") {
+      navigate(PATHS.AUDIO_CALL);
+    } else if (sessionType === "Video Call") {
+      navigate(PATHS.LIVE_SESSION);
+    } else {
+      navigate(PATHS.DOUBT_SUBMITTED);
+    }
+  };
   // TanStack Query for dynamic data
   const { data: subjects } = useQuery({ queryKey: ["subjects"], queryFn: fetchSubjects });
   const { data: chapters } = useQuery({ 
@@ -40,7 +54,7 @@ const navigate=useNavigate()
       
       {/* ── HEADER ── */}
       <header className="w-full max-w-xl flex items-center justify-between px-6 py-8">
-        <Button variant="outline" size="icon" onClick={()=>navigate('/student-dashboard')} className="rounded-xl border-white/10 bg-white/5 text-white">
+        <Button variant="outline" size="icon" onClick={() => navigate(PATHS.STUDENT_DASHBOARD)} className="rounded-xl border-white/10 bg-white/5 text-white">
           <ChevronLeft  className="h-5 w-5" />
         </Button>
         <h1 className="text-xl font-bold tracking-tight">Ask Your Doubt</h1>
@@ -104,10 +118,10 @@ const navigate=useNavigate()
             <span className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Added: 0/3 images</span>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="h-14 rounded-full border-teal-500/50 bg-transparent text-teal-400 hover:bg-teal-500/10 gap-2 font-bold transition-all">
+            <Button variant="outline" onClick={() => navigate(PATHS.VIDEO_UPLOAD)} className="h-14 rounded-full border-teal-500/50 bg-transparent text-teal-400 hover:bg-teal-500/10 gap-2 font-bold transition-all">
               <Camera className="h-5 w-5" /> Take Photo
             </Button>
-            <Button variant="outline" className="h-14 rounded-full border-teal-500/50 bg-transparent text-teal-400 hover:bg-teal-500/10 gap-2 font-bold transition-all">
+            <Button variant="outline" onClick={() => navigate(PATHS.VIDEO_UPLOAD)} className="h-14 rounded-full border-teal-500/50 bg-transparent text-teal-400 hover:bg-teal-500/10 gap-2 font-bold transition-all">
               <ImageIcon className="h-5 w-5" /> Upload Image
             </Button>
           </div>
@@ -155,7 +169,7 @@ const navigate=useNavigate()
         {/* ── SUBMIT BUTTON ── */}
         <div className="pt-6 relative">
             <div className="absolute inset-x-0 bottom-0 top-6 bg-teal-600/20 blur-3xl rounded-full" />
-            <Button className="relative w-full h-16 rounded-full bg-gradient-to-r from-teal-600 to-blue-700 text-white font-black tracking-widest text-lg shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">
+            <Button onClick={handleConnect} className="relative w-full h-16 rounded-full bg-gradient-to-r from-teal-600 to-blue-700 text-white font-black tracking-widest text-lg shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">
               CONNECT NOW
             </Button>
         </div>

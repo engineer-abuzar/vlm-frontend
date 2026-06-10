@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { useQuery } from "@tanstack/react-query";
 import { 
   ChevronLeft, PlusSquare, Atom, FlaskConical, 
@@ -28,6 +30,7 @@ const fetchSubjects = async () => {
 };
 
 export default function SubjectSelection() {
+  const navigate = useNavigate();
   const [selectedIds, setSelectedIds] = useState<string[]>(["maths", "chemistry"]);
 
   // TanStack Query to fetch subjects
@@ -55,7 +58,7 @@ export default function SubjectSelection() {
 
       {/* ── HEADER ── */}
       <header className="relative z-10 flex w-full items-center justify-between mb-5">
-        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md">
+        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md" onClick={() => navigate(PATHS.CREATE_PROFILE)}>
           <ChevronLeft size={24} />
         </Button>
         <h1 className="text-xl font-bold tracking-tight">Subject Selection</h1>
@@ -116,9 +119,10 @@ export default function SubjectSelection() {
             {/* Blue Outer Glow */}
             <div className="absolute  inset-0 bg-blue-600/30 blur-3xl rounded-full opacity-80 group-hover:opacity-100 transition-opacity" />
             
-            <Button 
+            <Button
+              onClick={() => navigate(PATHS.LEARNING_PLAN)}
               className={cn(
-                "relative w-xs h-12 rounded-full  font-black tracking-widest transition-all active:scale-[0.98]",
+                "relative w-xs h-12 rounded-full font-black tracking-widest transition-all active:scale-[0.98]",
                 "bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white shadow-2xl"
               )}
             >

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { 
   ChevronLeft, Star, Check, X, Pencil
 } from "lucide-react";
@@ -19,6 +21,7 @@ const submitFeedback = async (feedbackData: any) => {
 };
 
 export default function SessionFeedback() {
+  const navigate = useNavigate();
   const [rating, setRating] = useState(3);
   const [solved, setSolved] = useState<boolean | null>(true);
   const [comment, setComment] = useState("");
@@ -27,7 +30,7 @@ export default function SessionFeedback() {
   const mutation = useMutation({
     mutationFn: submitFeedback,
     onSuccess: () => {
-      alert("Feedback submitted successfully!");
+      navigate(PATHS.STUDENT_DASHBOARD);
     },
   });
 
@@ -42,7 +45,7 @@ export default function SessionFeedback() {
       {/* ── HEADER ── */}
              <header className="relative z-10 flex w-full items-center justify-between mb-2">
 
-        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md">
+        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md" onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}>
           <ChevronLeft size={24} />
         </Button>
         <h1 className="text-xl font-bold tracking-tight">Session Feedback</h1>

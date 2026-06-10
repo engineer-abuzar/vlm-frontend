@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { 
  GraduationCap, CheckCircle2, 
   Atom, Book, MessageSquare, Key, Star, 
@@ -23,6 +25,7 @@ const fetchSubmittedDoubt = async () => {
 };
 
 export default function DoubtSubmitted() {
+  const navigate = useNavigate();
   const { data } = useQuery({
     queryKey: ["submittedDoubt"],
     queryFn: fetchSubmittedDoubt,
@@ -115,9 +118,10 @@ export default function DoubtSubmitted() {
       {/* ── ACTION BUTTON ── */}
       <div className="mt-auto w-full max-w-md pt-2 relative">
         <div className="absolute inset-0 bg-blue-600/30 blur-3xl rounded-full" />
-        <Button 
+        <Button
+          onClick={() => navigate(PATHS.SESSION_HISTORY)}
           className={cn(
-            "relative w-full h-12 rounded-full text-lg    tracking-tight transition-all active:scale-[0.98]",
+            "relative w-full h-12 rounded-full text-lg tracking-tight transition-all active:scale-[0.98]",
             "bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white shadow-2xl"
           )}
         >

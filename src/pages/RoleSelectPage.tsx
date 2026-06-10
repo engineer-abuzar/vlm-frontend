@@ -16,6 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 // Types
 import type { Role } from "@/types";
+import { PATHS } from "@/routes/paths";
 
 // --- CUSTOM UI PRIMITIVES (To avoid raw HTML) ---
 const Container = ({ children, className }: { children: React.ReactNode; className?: string }) => (
@@ -63,7 +64,7 @@ export default function RoleSelectPage() {
   const handleContinue = () => {
     if (!selected) return;
     sessionStorage.setItem("vlm_role", selected);
-    navigate("/login");
+    navigate(PATHS.LOGIN);
   };
 
   return (

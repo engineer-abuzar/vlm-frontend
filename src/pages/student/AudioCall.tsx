@@ -1,6 +1,8 @@
 import { bgCss } from "@/helper/CssHelper";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { ChevronLeft, Mic, Volume2, PhoneOff, MicOff, VolumeX } from "lucide-react";
 import ControlAction from "@/components/basic/student/ControlActions";
 
@@ -11,6 +13,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
 export default function AudioCall() {
+    const navigate = useNavigate();
     const [isMuted, setIsMuted] = useState(false);
     const [isSpeaker, setIsSpeaker] = useState(true);
 
@@ -23,7 +26,7 @@ export default function AudioCall() {
 
             {/* ── Header ── */}
             <header className="relative z-10 flex w-full items-center justify-between">
-                <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md">
+                <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md" onClick={() => navigate(PATHS.ASK_DOUBT)}>
                     <ChevronLeft size={24} />
                 </Button>
                 <h1 className="text-xl font-bold tracking-tight">Audio Class</h1>
@@ -114,6 +117,7 @@ export default function AudioCall() {
                         label="End Call"
                         active
                         variant="red"
+                        onClick={() => navigate(PATHS.SESSION_FEEDBACK)}
                     />
 
                 </CardContent>

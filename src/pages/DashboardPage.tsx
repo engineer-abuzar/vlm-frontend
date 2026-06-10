@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { LogOut } from "lucide-react";
 
 export default function DashboardPage() {
@@ -7,7 +8,7 @@ export default function DashboardPage() {
   const handleLogout = () => {
     localStorage.removeItem("vlm_token");
     sessionStorage.removeItem("vlm_role");
-    navigate("/", { replace: true });
+    navigate(PATHS.SPLASH, { replace: true });
   };
 
   return (

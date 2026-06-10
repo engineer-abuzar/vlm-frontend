@@ -18,4 +18,5 @@ export interface AuthUser {
   name: string;
   role: Role;
   token: string;
+  isNewUser?: boolean;
 }

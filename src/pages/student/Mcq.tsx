@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { 
   ChevronLeft, Clock,  ArrowRight, 
   ChevronRight, BookOpen, Calendar, BookText, XCircle 
@@ -52,6 +54,7 @@ const fetchQuizData = async () => {
 };
 
 export default function Mcq() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
   const [isFinished, setIsFinished] = useState(false);
@@ -157,12 +160,14 @@ export default function Mcq() {
 
         {/* Action Buttons */}
         <div className="w-full max-w-xl space-y-3">
-          <ActionCard 
-            icon={<BookOpen />} title="View Explanation" desc="Revise key concepts" 
+          <ActionCard
+            onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}
+            icon={<BookOpen />} title="View Explanation" desc="Revise key concepts"
             color="bg-purple-600/20 border-purple-500/30" glow="shadow-[0_0_20px_rgba(168,85,247,0.15)]" iconBg="bg-purple-500/30"
           />
-          <ActionCard 
-            icon={<Calendar />} title="Start Revision Tomorrow" desc="Revise concepts and lock in your points!" 
+          <ActionCard
+            onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}
+            icon={<Calendar />} title="Start Revision Tomorrow" desc="Revise concepts and lock in your points!"
             color="bg-orange-600/20 border-orange-500/30" glow="shadow-[0_0_20px_rgba(245,158,11,0.15)]" iconBg="bg-orange-500/30"
           />
         </div>
@@ -242,9 +247,9 @@ function StatCard({ label, value, sub, color }: any) {
   );
 }
 
-function ActionCard({ icon, title, desc, color, glow, iconBg }: any) {
+function ActionCard({ icon, title, desc, color, glow, iconBg, onClick }: any) {
   return (
-    <Card className={cn("cursor-pointer rounded-3xl border transition-all active:scale-95", color, glow)}>
+    <Card onClick={onClick} className={cn("cursor-pointer rounded-3xl border transition-all active:scale-95", color, glow)}>
       <CardContent className="flex items-center gap-4 px-3 " >
         <div className={cn("h-10 w-10 shrink-0 rounded-lg flex items-center justify-center border border-white/10", iconBg)}>{icon}</div>
         <div className="flex-1">

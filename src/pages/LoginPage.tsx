@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 import { useGoogleAuth } from "@/hooks/use-auth";
+import { PATHS } from "@/routes/paths";
 
 // --- CUSTOM WRAPPERS (To replace raw HTML) ---
 const Container = ({ children, className }: any) => <div className={cn("relative flex min-h-svh w-full flex-col items-center justify-center overflow-hidden p-4", className)}>{children}</div>;
@@ -59,16 +60,16 @@ export default function LoginPage() {
 
   const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
   const onSubmit = async () => {
-    const email = emailRef.current?.value
-    const phone = `+91${phoneRef.current?.value} `
-    email ?
-      loginMutation.mutate({ email, role }) :
-
-
-
+    const email = emailRef.current?.value;
+    const phone = `+91${phoneRef.current?.value}`;
+    if (email) {
+      loginMutation.mutate({ email, role });
+    } else {
+      sessionStorage.setItem("vlm_phone", phone);
       loginMutation.mutate({ phone, role });
-    navigate('/otp')
-  }
+    }
+    navigate(PATHS.OTP);
+  };
   return (
     <Container className="vlm-bg-navy">
       {/* Background Decor Components */}

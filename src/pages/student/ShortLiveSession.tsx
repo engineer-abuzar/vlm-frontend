@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { 
-  Search, SlidersHorizontal, Star, PlayCircle, 
-  User, Circle 
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
+import {
+  ChevronLeft, Search, SlidersHorizontal, Star, PlayCircle,
+  User, Circle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -53,6 +55,7 @@ const fetchShortSessions = async () => {
 };
 
 export default function ShortLiveSessions() {
+  const navigate = useNavigate();
   const { data: sessions, isLoading } = useQuery({
     queryKey: ["shortSessions"],
     queryFn: fetchShortSessions,
@@ -66,7 +69,10 @@ export default function ShortLiveSessions() {
       
       {/* ── HEADER ── */}
       <header className="relative z-10 flex w-full items-center justify-between pt-10 pb-2">
-         <div className="flex flex-col">
+         <Button variant="outline" size="icon" className="h-10 w-10 rounded-xl border-white/10 bg-white/5 text-white shrink-0" onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}>
+           <ChevronLeft size={20} />
+         </Button>
+         <div className="flex flex-col flex-1 px-3">
             <h1 className="text-2xl font-serif    tracking-tight uppercase leading-none">
               Short Live Sessions Feed
             </h1>
@@ -147,7 +153,7 @@ export default function ShortLiveSessions() {
 
                  <div className="relative group/btn">
                     <div className="absolute inset-0 bg-blue-600/30 blur-2xl rounded-full opacity-0 group-hover/btn:opacity-100 transition-opacity" />
-                    <Button className="relative h-10 px-6 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white shadow-xl hover:brightness-110 active:scale-95 transition-all">
+                    <Button onClick={() => navigate(PATHS.LIVE_SESSION)} className="relative h-10 px-6 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white shadow-xl hover:brightness-110 active:scale-95 transition-all">
                        <div className="flex items-center gap-4">
                           <div className="flex flex-col items-center">
                              <span className="text-xs font-black tracking-widest leading-none">WATCH</span>

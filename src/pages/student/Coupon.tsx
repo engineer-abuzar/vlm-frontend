@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { 
   CheckCircle2, Ticket, Star, Coins, 
  GraduationCap, ArrowRight 
@@ -24,6 +26,7 @@ const fetchOrderSummary = async () => {
 };
 
 export default function Coupon() {
+  const navigate = useNavigate();
   const { data } = useQuery({
     queryKey: ["orderSummary"],
     queryFn: fetchOrderSummary,
@@ -131,7 +134,10 @@ export default function Coupon() {
         {/* ── PROCEED BUTTON ── */}
         <div className="relative pt-2">
             <div className="absolute inset-x-0 bottom-0 top-6 bg-blue-600/30 blur-3xl rounded-full" />
-            <Button className="relative w-full h-12 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white font-black tracking-widest shadow-2xl hover:brightness-110 active:scale-[0.98] transition-all">
+            <Button
+              onClick={() => navigate(Math.random() > 0.3 ? PATHS.PLAN_SCREEN : PATHS.PAYMENT_FAILED)}
+              className="relative w-full h-12 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white font-black tracking-widest shadow-2xl hover:brightness-110 active:scale-[0.98] transition-all"
+            >
               PROCEED TO PAY <ArrowRight size={20} className="ml-2" />
             </Button>
         </div>

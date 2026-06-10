@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { VlmLogo } from "@/components/basic/VlmLogo";
+import { PATHS } from "@/routes/paths";
+
 export default function SplashPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulate app bootstrap (replace with real auth check if needed)
     const timer = setTimeout(() => {
-      navigate("/role-select", { replace: true });
+      navigate(PATHS.ROLE_SELECT, { replace: true });
     }, 2800);
     return () => clearTimeout(timer);
   }, [navigate]);

@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 
 // --- Mock API Fetch ---
 const fetchCategories = async () => {
@@ -39,7 +40,7 @@ const navigate=useNavigate()
       
         {/* ── HEADER ── */}
       <header className="w-full max-w-xl flex items-center justify-between pb-2">
-        <Button variant="outline" size="icon" onClick={()=>navigate('/student-dashboard')} className="rounded-xl border-white/10 bg-white/5 text-white">
+        <Button variant="outline" size="icon" onClick={() => navigate(PATHS.STUDENT_DASHBOARD)} className="rounded-xl border-white/10 bg-white/5 text-white">
           <ChevronLeft  className="h-5 w-5" />
         </Button>
         <h1 className="text-xl        tracking-tight">Ask Your Doubt</h1>
@@ -133,7 +134,7 @@ const navigate=useNavigate()
         {/* SUBMIT BUTTON */}
         <div className="pt-6 relative">
             <div className="absolute inset-x-0 bottom-0 top-6 bg-blue-600/20 blur-3xl rounded-full" />
-            <Button className="relative w-full h-16 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white font-black tracking-widest text-lg shadow-2xl hover:brightness-110 active:scale-[0.98]">
+            <Button onClick={() => navigate(PATHS.DOUBT_SUBMITTED)} className="relative w-full h-16 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white font-black tracking-widest text-lg shadow-2xl hover:brightness-110 active:scale-[0.98]">
               SUBMIT VIDEO <ArrowRight size={20} className="ml-2" />
             </Button>
         </div>

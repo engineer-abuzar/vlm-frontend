@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { 
   ChevronLeft, Bot, MessageCircle, Tv, Clock, 
   Video, BookOpen, Percent, Star,  
@@ -25,6 +27,7 @@ const fetchPlanDetails = async () => {
 };
 
 export default function PlanUpgrade() {
+  const navigate = useNavigate();
   const { data: features, isLoading } = useQuery({
     queryKey: ["planComparison"],
     queryFn: fetchPlanDetails,
@@ -43,7 +46,7 @@ export default function PlanUpgrade() {
 
       {/* ── HEADER ── */}
       <header className="relative z-10 flex w-full items-center justify-between mb-3">
-        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md">
+        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md" onClick={() => navigate(PATHS.PROFILE)}>
           <ChevronLeft size={24} />
         </Button>
         <h1 className="text-xl font-serif font-bold  uppercase">VLM Academy</h1>
@@ -119,7 +122,8 @@ export default function PlanUpgrade() {
       {/* ── UPGRADE BUTTON ── */}
       <footer className="mt-auto w-full max-w-md pt-10 relative">
         <div className="absolute inset-0 bg-blue-600/30 blur-3xl rounded-full" />
-        <Button 
+        <Button
+          onClick={() => navigate(PATHS.LEARNING_PLAN)}
           className={cn(
             "relative w-full h-16 rounded-full text-xl font-bold tracking-wide transition-all active:scale-[0.98]",
             "bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white shadow-2xl hover:brightness-110"

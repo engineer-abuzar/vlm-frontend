@@ -5,6 +5,7 @@ import SplashPage from "@/pages/SplashPage";
 import RoleSelectPage from "@/pages/RoleSelectPage";
 import LoginPage from "@/pages/LoginPage";
 import OtpPage from "@/pages/OtpPage";
+import ComingSoonPage from "@/pages/ComingSoonPage";
 import DashboardPage from "@/pages/DashboardPage";
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
 import CreateProfile from "./pages/CreateProfile";
@@ -22,7 +23,6 @@ import ReferralHistory from "./pages/student/ReferralHistory";
 import LiveSession from "./pages/student/LiveSession";
 import SessionFeedback from "./pages/student/SessionFeedBack";
 import SessionHistory from "./pages/student/SessionHistory";
-// import ShortSessions from "./pages/student/ShortLiveSession";
 import ShortLiveSessions from "./pages/student/ShortLiveSession";
 import SubjectSelection from "./pages/student/SubjectSelection";
 import PlanScreen from "./pages/student/PlanScreen";
@@ -32,11 +32,12 @@ import Coupon from "./pages/student/Coupon";
 import PlanUpgrade from "./pages/student/PlanUpgrade";
 import ReferralReward from "./pages/student/ReferralReward";
 import EditProfile from "./pages/student/EditProfile";
-// ── TanStack Query client ──────────────────────────────────
+import { PATHS } from "@/routes/paths";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5,   // 5 min
+      staleTime: 1000 * 60 * 5,
       retry: 1,
       refetchOnWindowFocus: false,
     },
@@ -48,61 +49,51 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<SplashPage />} />
-          <Route path="/role-select" element={<RoleSelectPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/otp" element={<OtpPage />} />
-          <Route path="/create-profile" element={<CreateProfile />} />
-          <Route path="/refer-earn" element={<ReferEarn />} />
-          <Route path="/referral-history" element={<ReferralHistory />} />
-          
+          {/* Public auth */}
+          <Route path={PATHS.SPLASH} element={<SplashPage />} />
+          <Route path={PATHS.ROLE_SELECT} element={<RoleSelectPage />} />
+          <Route path={PATHS.LOGIN} element={<LoginPage />} />
+          <Route path={PATHS.OTP} element={<OtpPage />} />
+          <Route path={PATHS.COMING_SOON} element={<ComingSoonPage />} />
 
+          {/* Onboarding */}
+          <Route path={PATHS.CREATE_PROFILE} element={<CreateProfile />} />
+          <Route path={PATHS.SUBJECT_SELECTION} element={<SubjectSelection />} />
+          <Route path={PATHS.LEARNING_PLAN} element={<LearningPlan />} />
+          <Route path={PATHS.COUPON} element={<Coupon />} />
+          <Route path={PATHS.PLAN_SCREEN} element={<PlanScreen />} />
+          <Route path={PATHS.PAYMENT_FAILED} element={<PaymentFailed />} />
 
-          {/* Student routes */}
-          <Route path="/learning-plan" element={<LearningPlan />} />
-
-
-          <Route path="/live-session" element={<LiveSession />} />
-          <Route path="/short-live-session" element={<ShortLiveSessions />} />
-          <Route path="/session-feedback" element={<SessionFeedback />} />
-          <Route path="/session-history" element={<SessionHistory />} />
-
-          <Route path="/subject-selection" element={<SubjectSelection />} />
-
-          <Route path="/plan-screen" element={<PlanScreen />} />
-          <Route path="/plan-upgrade" element={<PlanUpgrade />} />
-
-          <Route path="/payment-failed" element={<PaymentFailed />} />
-
-          <Route path="/doubt-submitted" element={<DoubtSubmitted />} />
-
-          <Route path="/coupon" element={<Coupon />} />
-
-
+          {/* Student tabs */}
           <Route element={<StudentLayout />}>
-
-            <Route path="/student-dashboard" element={<StudentDashboard />} />
-            <Route path="/ask-doubt" element={<AskDoubt />} />
-            <Route path="/audio-call" element={<AudioCall />} />
-            <Route path="/Mcq" element={<Mcq />} />
-            <Route path="/live-classes" element={<LiveClasses />} />
-            <Route path="/video-upload" element={<VideoUpload />} />
-            <Route path="/referral-reward" element={<ReferralReward />} />
-            <Route path="/profile" element={<EditProfile />} />
-
+            <Route path={PATHS.STUDENT_DASHBOARD} element={<StudentDashboard />} />
+            <Route path={PATHS.ASK_DOUBT} element={<AskDoubt />} />
+            <Route path={PATHS.MCQ} element={<Mcq />} />
+            <Route path={PATHS.LIVE_CLASSES} element={<LiveClasses />} />
+            <Route path={PATHS.PROFILE} element={<EditProfile />} />
+            <Route path={PATHS.VIDEO_UPLOAD} element={<VideoUpload />} />
+            <Route path={PATHS.REFERRAL_REWARD} element={<ReferralReward />} />
           </Route>
-            <Route path="/spinner" element={<Spinner />} />
 
+          {/* Student flows (immersive) */}
+          <Route path={PATHS.AUDIO_CALL} element={<AudioCall />} />
+          <Route path={PATHS.LIVE_SESSION} element={<LiveSession />} />
+          <Route path={PATHS.SHORT_LIVE_SESSION} element={<ShortLiveSessions />} />
+          <Route path={PATHS.SESSION_FEEDBACK} element={<SessionFeedback />} />
+          <Route path={PATHS.SESSION_HISTORY} element={<SessionHistory />} />
+          <Route path={PATHS.DOUBT_SUBMITTED} element={<DoubtSubmitted />} />
+          <Route path={PATHS.SPINNER} element={<Spinner />} />
+          <Route path={PATHS.REFER_EARN} element={<ReferEarn />} />
+          <Route path={PATHS.REFERRAL_HISTORY} element={<ReferralHistory />} />
+          <Route path={PATHS.PLAN_UPGRADE} element={<PlanUpgrade />} />
 
-
-          {/* Protected routes */}
+          {/* Protected legacy */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path={PATHS.DASHBOARD} element={<DashboardPage />} />
           </Route>
 
           {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to={PATHS.SPLASH} replace />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

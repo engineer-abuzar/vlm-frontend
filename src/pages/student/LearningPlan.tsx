@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { ChevronLeft, Lightbulb, MessageCircle, Headphones, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -56,6 +58,7 @@ const PLANS = [{
 ];
 
 export default function LearningPlan() {
+  const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState("Premium Plan");
 
   return (
@@ -67,7 +70,7 @@ export default function LearningPlan() {
 
       {/* ── Header ── */}
       <header className="w-full max-w-5xl pt-8 flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => navigate(PATHS.SUBJECT_SELECTION)}>
           <ChevronLeft className="h-6 w-6" />
         </Button>
         <h1 className="flex-1 text-center text-xl font-bold tracking-tight pr-10">
@@ -144,10 +147,11 @@ export default function LearningPlan() {
           {/* Intense Blue Glow */}
           <div className="absolute inset-x-0 bottom-0 h-16 bg-blue-500/30 blur-[40px] rounded-full" />
           
-          <Button 
+          <Button
+            onClick={() => navigate(PATHS.COUPON)}
             className={cn(
               "relative w-full h-16 rounded-full text-lg font-bold tracking-widest transition-all active:scale-[0.98]",
-              "bg-gradient-to-b from-[#1e3a8e] to-[#0f172a]", 
+              "bg-gradient-to-b from-[#1e3a8e] to-[#0f172a]",
               "border border-blue-400/40 text-white shadow-2xl"
             )}
           >

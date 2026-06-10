@@ -1,5 +1,6 @@
 import { bgCss } from "@/helper/CssHelper";
-
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import HorizontalSection from "@/components/basic/student/HorizontalSection";
 import { useQuery } from "@tanstack/react-query";
 import DashboardLoading from "@/components/basic/DashboardLoading";
@@ -25,6 +26,7 @@ const fetchDashboardData = async () => {
 };
 
 export default function StudentDashboard() {
+  const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: ["dashboardData"],
     queryFn: fetchDashboardData,
@@ -61,12 +63,14 @@ export default function StudentDashboard() {
             title="ASK DOUBT" 
             bg="bg-cyan-500/10"
             glow="shadow-[0_0_15px_rgba(34,211,238,0.2)] border-cyan-500/20"
+            to={PATHS.ASK_DOUBT}
           />
           <FeatureCard 
             icon={<Bot className="text-purple-500" />} 
             title="AI TUTOR" 
             bg="bg-purple-500/10"
             glow="shadow-[0_0_15px_rgba(168,85,247,0.2)] border-purple-500/20"
+            to={`${PATHS.ASK_DOUBT}?mode=ai`}
           />
           <FeatureCard 
             icon={<Users className="text-yellow-500" />} 
@@ -74,6 +78,7 @@ export default function StudentDashboard() {
             isNew
             bg="bg-yellow-500/10"
             glow="shadow-[0_0_15px_rgba(234,179,8,0.2)] border-yellow-500/20"
+            to={PATHS.SHORT_LIVE_SESSION}
           />
           <FeatureCard 
             icon={<ClipboardCheck className="text-emerald-400" />} 
@@ -81,6 +86,7 @@ export default function StudentDashboard() {
             bg="bg-emerald-500/10"
             desc={`Completed: ${data?.mcq.completed}/${data?.mcq.total}`}
             glow="shadow-[0_0_15px_rgba(52,211,153,0.2)] border-emerald-500/20"
+            to={PATHS.MCQ}
           />
           <FeatureCard 
             icon={<Trophy className="text-red-500" />} 
@@ -96,6 +102,7 @@ export default function StudentDashboard() {
             bg="bg-yellow-500/10"
             desc={`Total: ${data?.user.points} pts`}
             glow="shadow-[0_0_15px_rgba(234,179,8,0.2)] border-yellow-500/20"
+            to={PATHS.REFER_EARN}
           />
         </div>
 
@@ -108,7 +115,10 @@ export default function StudentDashboard() {
             <div className="py-6 flex justify-center">
               <Clock className="h-16 w-16 text-yellow-500 animate-pulse" strokeWidth={1.5} />
             </div>
-            <Button className="w-full h-12 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black shadow-lg">
+            <Button
+              onClick={() => navigate(PATHS.SPINNER)}
+              className="w-full h-12 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black shadow-lg"
+            >
               SPIN NOW
             </Button>
           </Card>
@@ -128,7 +138,10 @@ export default function StudentDashboard() {
                 </Avatar>
                 <span className="text-xs font-bold">Dr. Sharma</span>
               </div>
-              <Button className="w-full h-12 rounded-2xl bg-[#1e3a8e] border border-blue-400/30 text-white font-bold shadow-[0_0_20px_rgba(37,99,235,0.3)]">
+              <Button
+                onClick={() => navigate(PATHS.LIVE_SESSION)}
+                className="w-full h-12 rounded-2xl bg-[#1e3a8e] border border-blue-400/30 text-white font-bold shadow-[0_0_20px_rgba(37,99,235,0.3)]"
+              >
                 JOIN LIVE <span className="ml-2 font-mono text-[10px] opacity-70">{data?.liveClass.timer}</span>
               </Button>
             </div>
@@ -136,8 +149,8 @@ export default function StudentDashboard() {
         </div>
 
         {/* ── HORIZONTAL SCROLL SECTIONS ── */}
-        <HorizontalSection title="SHORT LIVE SESSIONS" />
-        <HorizontalSection title="SHORT VIDEO FEED" isVideo />
+        <HorizontalSection title="SHORT LIVE SESSIONS" viewAllTo={PATHS.SHORT_LIVE_SESSION} />
+        <HorizontalSection title="SHORT VIDEO FEED" isVideo viewAllTo={PATHS.VIDEO_UPLOAD} />
       </main>
 
       {/* ── BOTTOM NAVIGATION ── */}

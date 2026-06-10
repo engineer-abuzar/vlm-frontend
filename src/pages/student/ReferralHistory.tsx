@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { ChevronLeft, Users,   } from "lucide-react";
 // import { cn } from "@/lib/utils";
 import HistoryCard from "@/components/basic/student/HistoryCard";
@@ -36,6 +38,7 @@ const fetchReferralHistory = async () => {
 };
 
 export default function ReferralHistory() {
+  const navigate = useNavigate();
   const { data } = useQuery({
     queryKey: ["referralHistory"],
     queryFn: fetchReferralHistory,
@@ -47,7 +50,7 @@ export default function ReferralHistory() {
       
       {/* ── HEADER ── */}
       <header className="relative z-10 flex w-full items-center justify-between mb-5">
-        <Button variant="outline" size="icon" className="h-10 w-10 rounded-xl border-white/10 bg-white/5 text-white backdrop-blur-md">
+        <Button variant="outline" size="icon" className="h-10 w-10 rounded-xl border-white/10 bg-white/5 text-white backdrop-blur-md" onClick={() => navigate(PATHS.REFER_EARN)}>
           <ChevronLeft size={20} />
         </Button>
         <h1 className="text-xl   tracking-tight">Referral History</h1>

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { Link, useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { 
   User, BookOpen, Globe, ChevronLeft, 
 Camera
@@ -30,6 +32,7 @@ const updateProfileApi = async (formData: any) => {
 };
 
 export default function EditProfile() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "Aryan",
     nickname: "Nickname",
@@ -52,7 +55,7 @@ export default function EditProfile() {
       {/* ── HEADER ── */}
       <header className="relative z-10 w-full flex flex-col items-center gap-6 mb-10">
         <div className="w-full flex items-center justify-start gap-14">
-            <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white">
+            <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white" onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}>
                 <ChevronLeft size={24} />
             </Button>
         <h1 className="   ">Edit Profile</h1>
@@ -142,6 +145,13 @@ export default function EditProfile() {
 
       </main>
 
+      <div className="w-full max-w-md space-y-3 mt-6">
+        <ProfileLink to={PATHS.PLAN_UPGRADE} label="Manage Plan" />
+        <ProfileLink to={PATHS.SUBJECT_SELECTION} label="Edit Subjects" />
+        <ProfileLink to={PATHS.SESSION_HISTORY} label="Session History" />
+        <ProfileLink to={PATHS.REFER_EARN} label="Refer & Earn" />
+      </div>
+
       {/* ── SAVE BUTTON ── */}
       <div className="mt-auto w-full max-w-md pt-10 relative">
         <div className="absolute inset-0 bg-blue-600/30 blur-3xl rounded-full" />
@@ -163,7 +173,17 @@ export default function EditProfile() {
   );
 }
 
-// ── Reusable Wrapper for each Field Row ──
+function ProfileLink({ to, label }: { to: string; label: string }) {
+  return (
+    <Link
+      to={to}
+      className="block w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-bold text-white/80 hover:bg-white/10 transition-colors"
+    >
+      {label}
+    </Link>
+  );
+}
+
 function EditFieldWrapper({ icon, label, children }: { icon: React.ReactNode, label: string, children: React.ReactNode }) {
   return (
     <Card className="bg-[#1a1a1a]/80 border-white/5 backdrop-blur-xl rounded-lg overflow-hidden transition-all hover:bg-[#222]/80">

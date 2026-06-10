@@ -1,5 +1,7 @@
 import LoadingSkeleton from "@/components/basic/student/LoadingSkeleton";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { Search, Bell,  User } from "lucide-react";
 
 // Official Shadcn Components
@@ -28,7 +30,7 @@ const fetchClasses = async () => {
 };
 
 export default function LiveClasses() {
-  // TanStack Query v5
+  const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: ["liveClasses"],
     queryFn: fetchClasses,
@@ -101,7 +103,7 @@ export default function LiveClasses() {
               {/* Join Live Button with Intense Glow */}
               <div className="mt-8 relative">
                 <div className="absolute inset-0 bg-blue-600/20 blur-2xl rounded-full" />
-                <Button className="relative text-white w-full h-14 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40  font-black tracking-widest shadow-2xl hover:brightness-110">
+                <Button onClick={() => navigate(PATHS.LIVE_SESSION)} className="relative text-white w-full h-14 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 font-black tracking-widest shadow-2xl hover:brightness-110">
                   JOIN LIVE
                 </Button>
               </div>
@@ -136,7 +138,7 @@ export default function LiveClasses() {
                   
                   <div className="flex flex-col items-end gap-3">
                     <Bell size={16} className="text-white/20" />
-                    <Button size="sm" className="h-9 px-6 rounded-xl bg-transparent border border-cyan-500/50 text-cyan-400 text-xs font-black tracking-widest hover:bg-cyan-500/10">
+                    <Button size="sm" onClick={() => navigate(PATHS.LIVE_SESSION)} className="h-9 px-6 rounded-xl bg-transparent border border-cyan-500/50 text-cyan-400 text-xs font-black tracking-widest hover:bg-cyan-500/10">
                       JOIN
                     </Button>
                   </div>

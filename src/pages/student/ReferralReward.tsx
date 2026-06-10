@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { Star, Coins, } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +20,7 @@ const fetchRewardDetails = async () => {
 };
 
 export default function ReferralReward() {
+  const navigate = useNavigate();
   const { data } = useQuery({
     queryKey: ["referralReward"],
     queryFn: fetchRewardDetails,
@@ -89,7 +92,8 @@ export default function ReferralReward() {
       {/* ── FOOTER ACTION ── */}
       <div className="mt-auto w-full max-w-md pt-3 relative">
         <div className="absolute inset-0 bg-blue-600/30 blur-3xl rounded-full" />
-        <Button 
+        <Button
+          onClick={() => navigate(PATHS.REFER_EARN)}
           className={cn(
             "relative w-full h-16 rounded-full text-lg font-black tracking-widest transition-all active:scale-[0.98]",
             "bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white shadow-2xl hover:brightness-110"

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { ChevronLeft, User, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { BackgroundElement } from "@/components/basic/BackgroundElements";
 
 export default function CreateProfileShadcn() {
+  const navigate = useNavigate();
   const [medium, setMedium] = useState("English");
 
   // ── State for Selections ────────────────────────────────
@@ -37,7 +40,7 @@ export default function CreateProfileShadcn() {
     <div className="vlm-bg-navy min-h-svh w-full bg-black text-white flex flex-col items-center pb-2">
       {/* HEADER */}
       <header className="w-full max-w-xl px-6 pt-8 space-y-4">
-        <Button variant="ghost" size="icon" className="text-white -ml-2">
+        <Button variant="ghost" size="icon" className="text-white -ml-2" onClick={() => navigate(PATHS.OTP)}>
           <ChevronLeft className="h-6 w-6" />
         </Button>
         <div className="space-y-1">
@@ -219,13 +222,14 @@ export default function CreateProfileShadcn() {
       <footer className=" bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent flex justify-center z-50">
         <div className="w-full max-w-xl">
           <Button
+            onClick={() => navigate(PATHS.SUBJECT_SELECTION)}
             className={cn(
               "w-full h-14 rounded-full text-white text-lg font-bold tracking-wide transition-all duration-300",
-              "bg-gradient-to-b from-[#1e3a8a] to-[#091050]", // Deep Navy to Darker Navy gradient
-              "border-[1.5px] border-[#3b82f6]", // Sharp Light Blue Neon Border
-              "shadow-[0_0_20px_rgba(37,99,235,0.5)]", // Intense Outer Blue Glow
-              "hover:brightness-125 hover:shadow-[0_0_30px_rgba(37,99,235,0.7)]", // Hover glow enhancement
-              "active:scale-[0.98] active:brightness-90" // Press effect
+              "bg-gradient-to-b from-[#1e3a8a] to-[#091050]",
+              "border-[1.5px] border-[#3b82f6]",
+              "shadow-[0_0_20px_rgba(37,99,235,0.5)]",
+              "hover:brightness-125 hover:shadow-[0_0_30px_rgba(37,99,235,0.7)]",
+              "active:scale-[0.98] active:brightness-90"
             )}
           >
             Continue

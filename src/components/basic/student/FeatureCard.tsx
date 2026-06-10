@@ -1,9 +1,22 @@
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-export default function FeatureCard({ icon,bg, title, desc, subDesc, isNew, glow }: any) {
-  return (
-    <Card className={cn("bg-[#1a1a1a]/40 border rounded-3xl p-5 transition-all active:scale-95 cursor-pointer overflow-hidden relative", glow,bg)}>
+
+interface FeatureCardProps {
+  icon: React.ReactNode;
+  bg: string;
+  title: string;
+  desc?: string;
+  subDesc?: string;
+  isNew?: boolean;
+  glow: string;
+  to?: string;
+}
+
+export default function FeatureCard({ icon, bg, title, desc, subDesc, isNew, glow, to }: FeatureCardProps) {
+  const content = (
+    <Card className={cn("bg-[#1a1a1a]/40 border rounded-3xl p-5 transition-all active:scale-95 cursor-pointer overflow-hidden relative", glow, bg)}>
       {isNew && (
         <Badge className="absolute top-2 right-2 bg-white text-black font-black text-[8px] rounded-sm h-4 px-1">NEW</Badge>
       )}
@@ -17,4 +30,10 @@ export default function FeatureCard({ icon,bg, title, desc, subDesc, isNew, glow
       </div>
     </Card>
   );
+
+  if (to) {
+    return <Link to={to} className="block">{content}</Link>;
+  }
+
+  return content;
 }

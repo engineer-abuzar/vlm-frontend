@@ -1,4 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { 
    RefreshCcw, CreditCard, Wallet, 
   Headphones, AlertCircle,  Star 
@@ -21,10 +23,10 @@ const retryPaymentApi = async () => {
 };
 
 export default function PaymentFailed() {
-  // TanStack Query Mutation for Retry logic
+  const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: retryPaymentApi,
-    onSuccess: () => alert("Payment Successful!"),
+    onSuccess: () => navigate(PATHS.PLAN_SCREEN),
     onError: () => alert("Payment failed again. Please check your bank."),
   });
 
@@ -106,8 +108,9 @@ export default function PaymentFailed() {
       <footer className="mt-auto w-full max-w-md space-y-4 pt-3">
         
         {/* Continue to Dashboard (Neon Outline) */}
-        <Button 
+        <Button
           variant="outline"
+          onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}
           className="w-full h-16 rounded-full border-2 border-cyan-500/50 bg-transparent text-white font-bold text-lg tracking-tight hover:bg-cyan-500/5 transition-all shadow-[0_0_15px_rgba(34,211,238,0.1)] active:scale-95"
         >
           Continue to Dashboard

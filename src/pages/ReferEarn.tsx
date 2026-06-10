@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate, Link } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { ChevronLeft, Copy, Share2, Users, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +22,7 @@ const fetchReferralData = async () => {
 };
 
 export default function ReferEarn() {
+  const navigate = useNavigate();
   const { data } = useQuery({
     queryKey: ["referralData"],
     queryFn: fetchReferralData,
@@ -35,11 +38,13 @@ export default function ReferEarn() {
 
       {/* ── HEADER ── */}
       <header className="relative z-10 flex w-full items-center justify-between mb-4">
-        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md">
+        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl border-white/10 bg-white/5 text-white backdrop-blur-md" onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}>
           <ChevronLeft size={24} />
         </Button>
         <h1 className="text-xl font-bold tracking-tight">Refer & Earn</h1>
-        <div className="w-12" /> {/* Spacer */}
+        <Link to={PATHS.REFERRAL_HISTORY} className="text-xs font-bold text-cyan-400 tracking-widest">
+          HISTORY
+        </Link>
       </header>
 
       <main className="w-full max-w-xl space-y-6 animate-in fade-in px-3 slide-in-from-bottom-4 duration-700">

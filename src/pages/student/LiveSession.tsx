@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import { useQuery } from "@tanstack/react-query";
 import { 
   ChevronLeft, Mic, MicOff, Video, VideoOff, 
@@ -23,6 +25,7 @@ const fetchSessionDetails = async () => {
 };
 
 export default function LiveSession() {
+  const navigate = useNavigate();
   const [micActive, setMicActive] = useState(true);
   const [camActive, setCamActive] = useState(false);
 
@@ -42,7 +45,7 @@ export default function LiveSession() {
       <header className="relative z-20 w-full max-w-2xl px-6 pt-6">
         <div className="flex h-10 items-center justify-between rounded-full border border-white/10 bg-black/40 px-4 backdrop-blur-md">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-white hover:bg-white/10">
+            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-white hover:bg-white/10" onClick={() => navigate(PATHS.LIVE_CLASSES)}>
               <ChevronLeft size={20} />
             </Button>
             <h2 className="text-xs font-black tracking-widest uppercase opacity-90">
@@ -113,11 +116,12 @@ export default function LiveSession() {
               label="FILES" 
             />
 
-            <ControlItem 
-              icon={<PhoneOff className="rotate-[135deg]" />} 
-              label="END SESSION" 
+            <ControlItem
+              icon={<PhoneOff className="rotate-[135deg]" />}
+              label="END SESSION"
               variant="red"
               active
+              onClick={() => navigate(PATHS.SESSION_FEEDBACK)}
             />
 
           </CardContent>
