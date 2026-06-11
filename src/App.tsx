@@ -38,7 +38,21 @@ import TeacherQualificationDetails from "./pages/teacher/TeacherQualificationDet
 import BasicProfileDetails from "./pages/teacher/BasicProfileDetails";
 import TeacherExperienceDetails from "./pages/teacher/TeacherExperienceDetails";
 import TeacherClassSelection from "./pages/teacher/TeacherClassSelection";
-//import TeacherSubjectSelection from "./pages/TeacherSubjectSelection";
+import IndividualClassSelection from "./pages/teacher/IndividualClassSelection";
+import BoardSelection from "./pages/teacher/BoardSelection";
+import LanguageSelection from "./pages/teacher/LanguageSelection";
+import DocumentUpload from "./pages/teacher/DocumentUpload";
+import InterviewScheduling from "./pages/teacher/InterviewScheduling";
+import TeacherDemoVideo from "./pages/teacher/TeacherDemoVideo";
+import ProfileReview from "./pages/teacher/ProfileReview";
+import InterviewConfirmation from "./pages/teacher/InterviewConfirmation";
+import VerificationStatus from "./pages/teacher/VerificationStatus";
+import ApplicationRejected from "./pages/teacher/ApplicationRejected";
+import Dashboard from "./pages/teacher/Dashboard";
+import AvailabilityStatus from "./pages/teacher/AvailabilityStatus";
+import TimeSlotAvailability from "./pages/teacher/TimeSlotAvailability";
+import DirectRequestNotification from "./pages/teacher/DirectRequestNotification";
+import TeacherSession from "./pages/teacher/TeacherSession";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -98,6 +112,21 @@ export default function App() {
           <Route path={PATHS.BASICPROFILE_DETAILS} element={<BasicProfileDetails />} />
           <Route path={PATHS.EXPERIENCE_DETAILS} element={<TeacherExperienceDetails />} />
           <Route path={PATHS.TEACHERCLASS_SELECTION} element={<TeacherClassSelection />} />
+          <Route path={PATHS.CLASS_SELECTION} element={<IndividualClassSelection />} />
+          <Route path={PATHS.BOARDSELECTION_CARD} element={<BoardSelection />} />
+          <Route path={PATHS.LANGUAGAE_SELECTION} element={<LanguageSelection />} />
+          <Route path={PATHS.DOCUMENT_UPLOAD} element={<DocumentUpload />} />
+          <Route path={PATHS.INTERVIEW_SCHEDULING} element={<InterviewScheduling />} />
+          <Route path={PATHS.VIDEO_DEMO} element={<TeacherDemoVideo />} />
+          <Route path={PATHS.PROFILE_REVIEW} element={<ProfileReview />} />
+          <Route path={PATHS.INTERVIEW_CONFIRM} element={<InterviewConfirmation />} />
+          <Route path={PATHS.VERIFICATION_STATUS} element={<VerificationStatus />} />
+          <Route path={PATHS.APPLICATION_REJECTED} element={<ApplicationRejected />} />
+          <Route path={PATHS.TEACHER_DASHBOARD} element={<Dashboard />} />
+          <Route path={PATHS.AVAILABILITY_STATUS} element={<AvailabilityStatus />} />
+          <Route path={PATHS.SLOT_AVAILABLILITY} element={<TimeSlotAvailability />} />
+          <Route path={PATHS.REQUEST_NOTIFICATION} element={<DirectRequestNotification />} />
+          <Route path={PATHS.TEACHER_SESSION} element={<TeacherSession />} />
 
           
           {/* Protected legacy */}

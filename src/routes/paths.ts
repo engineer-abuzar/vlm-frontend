@@ -28,7 +28,25 @@ export const PATHS = {
   BASICPROFILE_DETAILS:"/basicprofile-details",
   EXPERIENCE_DETAILS:"/experience-details",
   //TEACHERSUBJECT_SELECTION:"/subject-selection",
-  TEACHERCLASS_SELECTION:"/class-selection",
+  TEACHERCLASS_SELECTION:"/teacherclass-selection",
+  CLASS_SELECTION:"/class-selection",
+  BOARDSELECTION_CARD:"/board-selectioncard",
+  LANGUAGAE_SELECTION:"/language-selection",
+  DOCUMENT_UPLOAD:"/document-upload",
+  INTERVIEW_SCHEDULING:"/interview-scheduling",
+  VIDEO_DEMO:"/video-demo",
+  PROFILE_REVIEW:"/profile-review",
+  INTERVIEW_CONFIRM:"/interview-confirm",
+  VERIFICATION_STATUS:"/verify-status",
+  APPLICATION_REJECTED:"/application-rejected",
+  TEACHER_DASHBOARD:"/teacher-dashboard",
+  AVAILABILITY_STATUS:"/availability-status",
+  SLOT_AVAILABLILITY:"/slot-availability",
+  REQUEST_NOTIFICATION:"/request-notification",
+  TEACHER_SESSION:"/teacher-session",
+
+
+
   // Student flows
   VIDEO_UPLOAD: "/video-upload",
   DOUBT_SUBMITTED: "/doubt-submitted",
