@@ -79,7 +79,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
         isSelected ? theme.icon : "text-zinc-400"
       )}>
         {React.isValidElement(icon) 
-          ? React.cloneElement(icon as React.ReactElement, { size: 32, strokeWidth: 1.5 })
+          ? React.cloneElement(icon as React.ReactElement<any>, { size: 32, strokeWidth: 1.5 })
           : icon
         }
       </div>

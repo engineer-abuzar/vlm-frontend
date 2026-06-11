@@ -28,7 +28,7 @@ const RegistrationStepCard: React.FC<RegistrationStepCardProps> = ({
       )}
     >
       <div className={cn("flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-white/90 shadow-inner", iconColor)}>
-        {React.cloneElement(icon as React.ReactElement, { size: 18 })}
+        {React.cloneElement(icon as React.ReactElement<any>, { size: 18 })}
       </div>
       
       <div className="flex flex-1 items-center justify-between gap-2 overflow-hidden">

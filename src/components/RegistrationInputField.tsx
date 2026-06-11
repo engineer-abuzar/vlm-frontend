@@ -27,7 +27,7 @@ const RegistrationInputField: React.FC<RegistrationInputFieldProps> = ({
       className
     )}>
       <div className={cn("flex-shrink-0", iconColor)}>
-        {React.cloneElement(icon as React.ReactElement, { size: 20, strokeWidth: 1.5 })}
+        {React.cloneElement(icon as React.ReactElement<any>, { size: 20, strokeWidth: 1.5 })}
       </div>
       <div className="flex flex-1 flex-col overflow-hidden">
         <span className="text-[12px] font-bold text-zinc-100">{label}</span>
