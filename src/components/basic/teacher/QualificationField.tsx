@@ -27,7 +27,7 @@ const QualificationField: React.FC<QualificationFieldProps> = ({
         "focus-within:border-white/20 focus-within:bg-zinc-900"
       )}>
         <div className="text-blue-400/80 mr-3">
-          {React.cloneElement(icon as React.ReactElement, { size: 20 })}
+          {React.cloneElement(icon as React.ReactElement<any>, { size: 20 })}
         </div>
         
         <div className="flex-1 text-zinc-100 text-[15px]">

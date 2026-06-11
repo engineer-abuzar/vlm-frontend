@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { 
   User, 
-  VenusMars, 
+  VenusAndMars, 
   Calendar, 
   MapPin, 
   Mail, 
@@ -55,7 +55,7 @@ const TeacherBasicDetails: React.FC = () => {
                 placeholder="Enter Full Name" 
               />
               <RegistrationInputField 
-                icon={<VenusMars />} 
+                icon={<VenusAndMars />} 
                 label="Gender" 
                 placeholder="Select Gender" 
                 isSelect 
