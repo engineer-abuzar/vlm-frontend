@@ -12,7 +12,7 @@ import { InputSection } from "@/components/basic/parent/InputSection";
 import { QRSection } from "@/components/basic/parent/QRSection";
 import { SendRequestButton } from "@/components/basic/parent/SendRequestButton";
 
-const goldColor = "#D4AF37";
+// const goldColor = "#D4AF37";
 
 export default function AddChild() {
   const navigate = useNavigate();

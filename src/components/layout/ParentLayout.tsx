@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { LayoutDashboard, BookOpen, Calendar, MessageCircle, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { bgCss } from "@/helper/CssHelper";
