@@ -34,6 +34,8 @@ import ReferralReward from "./pages/student/ReferralReward";
 import EditProfile from "./pages/student/EditProfile";
 import { PATHS } from "@/routes/paths";
 import AddChild from "./pages/Parent/Addchild";
+import LiveActivity from "./pages/Parent/LiveActivity";
+import DoubtHistory from "./pages/Parent/DoubtHistory";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -92,6 +94,13 @@ export default function App() {
 
           {/* Parent Module */} 
             <Route path={PATHS.PARENT_MODULE} element={<AddChild />} />
+            <Route path={PATHS.PARENT_DASHBOARD} element={<DashboardPage/>} />
+            <Route path={PATHS.PARENT_LIVEACTIVITY} element={<LiveActivity/>} />
+            <Route path={PATHS.PARENT_DOUBTHISTORY} element={<DoubtHistory/>} />
+            
+
+
+            
           {/* Protected legacy */}
           <Route element={<ProtectedRoute />}>
             <Route path={PATHS.DASHBOARD} element={<DashboardPage />} />
