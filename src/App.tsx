@@ -33,6 +33,7 @@ import PlanUpgrade from "./pages/student/PlanUpgrade";
 import ReferralReward from "./pages/student/ReferralReward";
 import EditProfile from "./pages/student/EditProfile";
 import { PATHS } from "@/routes/paths";
+import AddChild from "./pages/Parent/Addchild";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -87,6 +88,10 @@ export default function App() {
           <Route path={PATHS.REFERRAL_HISTORY} element={<ReferralHistory />} />
           <Route path={PATHS.PLAN_UPGRADE} element={<PlanUpgrade />} />
 
+
+
+          {/* Parent Module */} 
+            <Route path={PATHS.PARENT_MODULE} element={<AddChild />} />
           {/* Protected legacy */}
           <Route element={<ProtectedRoute />}>
             <Route path={PATHS.DASHBOARD} element={<DashboardPage />} />
