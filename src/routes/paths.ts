@@ -43,6 +43,12 @@ export const PATHS = {
   REFERRAL_REWARD: "/referral-reward",
   PLAN_UPGRADE: "/plan-upgrade",
 
+
+  //Parent Flow
+  ADD_CHILD:"/add-child",
+  PARENT_DASHBOARD:"/parent-dashboard",
+  PARENT_LIVEACTIVITY:"/live-activity",
+  PARENT_DOUBTHISTORY:"/doubt-history",
   // Legacy
   DASHBOARD: "/dashboard",
 } as const;

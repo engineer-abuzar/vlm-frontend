@@ -39,6 +39,9 @@ import BasicProfileDetails from "./pages/teacher/BasicProfileDetails";
 import TeacherExperienceDetails from "./pages/teacher/TeacherExperienceDetails";
 import TeacherClassSelection from "./pages/teacher/TeacherClassSelection";
 //import TeacherSubjectSelection from "./pages/TeacherSubjectSelection";
+import AddChild from "./pages/Parent/Addchild";
+import LiveActivity from "./pages/Parent/LiveActivity";
+import DoubtHistory from "./pages/Parent/DoubtHistory";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -100,6 +103,18 @@ export default function App() {
           <Route path={PATHS.TEACHERCLASS_SELECTION} element={<TeacherClassSelection />} />
 
           
+
+
+
+          {/* Parent Module */} 
+            <Route path={PATHS.ADD_CHILD} element={<AddChild />} />
+            <Route path={PATHS.PARENT_DASHBOARD} element={<DashboardPage/>} />
+            <Route path={PATHS.PARENT_LIVEACTIVITY} element={<LiveActivity/>} />
+            <Route path={PATHS.PARENT_DOUBTHISTORY} element={<DoubtHistory/>} />
+            
+
+
+            
           {/* Protected legacy */}
           <Route element={<ProtectedRoute />}>
             <Route path={PATHS.DASHBOARD} element={<DashboardPage />} />
