@@ -52,7 +52,7 @@ const IndividualClassCard: React.FC<IndividualClassCardProps> = ({
         isSelected ? "text-yellow-500" : "text-zinc-400"
       )}>
         {React.isValidElement(icon) 
-          ? React.cloneElement(icon as React.ReactElement, { size: 28, strokeWidth: 1.5 })
+          ? React.cloneElement(icon as React.ReactElement<any>, { size: 28, strokeWidth: 1.5 })
           : icon
         }
       </div>

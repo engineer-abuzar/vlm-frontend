@@ -51,7 +51,7 @@ const BoardSelectionCard: React.FC<BoardSelectionCardProps> = ({
         isSelected ? "text-yellow-500 scale-110" : "text-zinc-500 opacity-60"
       )}>
         {React.isValidElement(icon) 
-          ? React.cloneElement(icon as React.ReactElement, { size: 64, strokeWidth: 1 })
+          ? React.cloneElement(icon as React.ReactElement<any>, { size: 64, strokeWidth: 1 })
           : icon
         }
       </div>

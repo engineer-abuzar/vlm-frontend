@@ -38,7 +38,7 @@ const DocumentUploadCard: React.FC<DocumentUploadCardProps> = ({
           {/* Main Icon Container */}
           <div className="w-14 h-14 rounded-2xl bg-zinc-800/80 flex items-center justify-center border border-white/5 text-blue-400">
             {React.isValidElement(icon)
-              ? React.cloneElement(icon as React.ReactElement, { size: 28 })
+              ? React.cloneElement(icon as React.ReactElement<any>, { size: 28 })
               : icon}
           </div>
 
@@ -59,7 +59,7 @@ const DocumentUploadCard: React.FC<DocumentUploadCardProps> = ({
         {topRightIcon && (
           <div className="w-10 h-6 bg-zinc-800/60 rounded-md flex items-center justify-center opacity-40">
             {React.isValidElement(topRightIcon)
-              ? React.cloneElement(topRightIcon as React.ReactElement, { size: 14 })
+              ? React.cloneElement(topRightIcon as React.ReactElement<any>, { size: 14 })
               : topRightIcon}
           </div>
         )}
