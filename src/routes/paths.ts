@@ -44,6 +44,8 @@ export const PATHS = {
   SLOT_AVAILABLILITY:"/slot-availability",
   REQUEST_NOTIFICATION:"/request-notification",
   TEACHER_SESSION:"/teacher-session",
+  SESSION_WARNING:"/session-warning",
+  RESOLVE_DOUBT:"/resolve-doubt",
 
 
 

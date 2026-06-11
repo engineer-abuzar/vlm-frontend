@@ -53,6 +53,8 @@ import AvailabilityStatus from "./pages/teacher/AvailabilityStatus";
 import TimeSlotAvailability from "./pages/teacher/TimeSlotAvailability";
 import DirectRequestNotification from "./pages/teacher/DirectRequestNotification";
 import TeacherSession from "./pages/teacher/TeacherSession";
+import SessionWarningPage from "./pages/teacher/SessionWarningPage";
+import ResolveDoubtPage from "./pages/teacher/ResolveDoubtPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -127,6 +129,8 @@ export default function App() {
           <Route path={PATHS.SLOT_AVAILABLILITY} element={<TimeSlotAvailability />} />
           <Route path={PATHS.REQUEST_NOTIFICATION} element={<DirectRequestNotification />} />
           <Route path={PATHS.TEACHER_SESSION} element={<TeacherSession />} />
+          <Route path={PATHS.SESSION_WARNING} element={<SessionWarningPage />} />
+          <Route path={PATHS.RESOLVE_DOUBT} element={<ResolveDoubtPage />} />
 
           
           {/* Protected legacy */}
