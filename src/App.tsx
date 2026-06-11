@@ -33,6 +33,8 @@ import PlanUpgrade from "./pages/student/PlanUpgrade";
 import ReferralReward from "./pages/student/ReferralReward";
 import EditProfile from "./pages/student/EditProfile";
 import { PATHS } from "@/routes/paths";
+import TeacherRegistration from "./pages/teacher/TeacherRegistration";
+import TeacherQualificationDetails from "./pages/teacher/TeacherQualificationDetails";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,14 +58,13 @@ export default function App() {
           <Route path={PATHS.OTP} element={<OtpPage />} />
           <Route path={PATHS.COMING_SOON} element={<ComingSoonPage />} />
 
-          {/* Onboarding */}
+          {/* Onboarding STUDENT */}
           <Route path={PATHS.CREATE_PROFILE} element={<CreateProfile />} />
           <Route path={PATHS.SUBJECT_SELECTION} element={<SubjectSelection />} />
           <Route path={PATHS.LEARNING_PLAN} element={<LearningPlan />} />
           <Route path={PATHS.COUPON} element={<Coupon />} />
           <Route path={PATHS.PLAN_SCREEN} element={<PlanScreen />} />
           <Route path={PATHS.PAYMENT_FAILED} element={<PaymentFailed />} />
-
           {/* Student tabs */}
           <Route element={<StudentLayout />}>
             <Route path={PATHS.STUDENT_DASHBOARD} element={<StudentDashboard />} />
@@ -87,6 +88,11 @@ export default function App() {
           <Route path={PATHS.REFERRAL_HISTORY} element={<ReferralHistory />} />
           <Route path={PATHS.PLAN_UPGRADE} element={<PlanUpgrade />} />
 
+          {/* Onboarding TEACHER */}
+          <Route path={PATHS.TEACHER_REGISTRATION} element={<TeacherRegistration />} />
+          <Route path={PATHS.QUALIFICATION_DETAILS} element={<TeacherQualificationDetails />} />
+
+          
           {/* Protected legacy */}
           <Route element={<ProtectedRoute />}>
             <Route path={PATHS.DASHBOARD} element={<DashboardPage />} />
