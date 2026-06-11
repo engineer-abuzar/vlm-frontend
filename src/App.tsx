@@ -35,6 +35,10 @@ import EditProfile from "./pages/student/EditProfile";
 import { PATHS } from "@/routes/paths";
 import TeacherRegistration from "./pages/teacher/TeacherRegistration";
 import TeacherQualificationDetails from "./pages/teacher/TeacherQualificationDetails";
+import BasicProfileDetails from "./pages/teacher/BasicProfileDetails";
+import TeacherExperienceDetails from "./pages/teacher/TeacherExperienceDetails";
+import TeacherClassSelection from "./pages/teacher/TeacherClassSelection";
+//import TeacherSubjectSelection from "./pages/TeacherSubjectSelection";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -91,6 +95,9 @@ export default function App() {
           {/* Onboarding TEACHER */}
           <Route path={PATHS.TEACHER_REGISTRATION} element={<TeacherRegistration />} />
           <Route path={PATHS.QUALIFICATION_DETAILS} element={<TeacherQualificationDetails />} />
+          <Route path={PATHS.BASICPROFILE_DETAILS} element={<BasicProfileDetails />} />
+          <Route path={PATHS.EXPERIENCE_DETAILS} element={<TeacherExperienceDetails />} />
+          <Route path={PATHS.TEACHERCLASS_SELECTION} element={<TeacherClassSelection />} />
 
           
           {/* Protected legacy */}

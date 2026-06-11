@@ -12,7 +12,7 @@ const TeacherQualificationDetails: React.FC = () => {
   const [hasBEd, setHasBEd] = useState(true);
 
   return (
-    <div className={cn("min-h-screen flex flex-col items-center justify-center p-4", bgCss.main)}>
+    <div className={cn("min-h-screen flex flex-col items-center justify-center p-4", bgCss)}>
       <motion.header 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

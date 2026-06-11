@@ -1,3 +1,4 @@
+
 export const PATHS = {
   // Public auth
   SPLASH: "/",
@@ -24,8 +25,10 @@ export const PATHS = {
   //Teacher Flow
   TEACHER_REGISTRATION:"/teacher-registration",
   QUALIFICATION_DETAILS:"/qualification-details",
-
-
+  BASICPROFILE_DETAILS:"/basicprofile-details",
+  EXPERIENCE_DETAILS:"/experience-details",
+  //TEACHERSUBJECT_SELECTION:"/subject-selection",
+  TEACHERCLASS_SELECTION:"/class-selection",
   // Student flows
   VIDEO_UPLOAD: "/video-upload",
   DOUBT_SUBMITTED: "/doubt-submitted",
