@@ -41,6 +41,10 @@ export const PATHS = {
   PARENT_DASHBOARD:"/parent-dashboard",
   PARENT_LIVEACTIVITY:"/live-activity",
   PARENT_DOUBTHISTORY:"/doubt-history",
+  PARENT_CONTROL:"/parent-control",
+  PARENT_NOTIFICATION:"/parent-notification",
+  PARENT_SUBSCRIPTION:"/subscription",
+  PARENT_REWARDHUB:"/reward-hub",
   // Legacy
   DASHBOARD: "/dashboard",
 } as const;

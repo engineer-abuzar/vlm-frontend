@@ -36,7 +36,10 @@ import { PATHS } from "@/routes/paths";
 import AddChild from "./pages/Parent/Addchild";
 import LiveActivity from "./pages/Parent/LiveActivity";
 import DoubtHistory from "./pages/Parent/DoubtHistory";
-
+import  ParentControl from "./pages/Parent/ParentControl";
+import Notification from "./pages/Parent/Notification";
+import Subscription from "./pages/Parent/Subscription";
+import RewardHub from "./pages/Parent/RewardHub";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -97,10 +100,10 @@ export default function App() {
             <Route path={PATHS.PARENT_DASHBOARD} element={<DashboardPage/>} />
             <Route path={PATHS.PARENT_LIVEACTIVITY} element={<LiveActivity/>} />
             <Route path={PATHS.PARENT_DOUBTHISTORY} element={<DoubtHistory/>} />
-            
-
-
-            
+            <Route path={PATHS.PARENT_CONTROL} element={<ParentControl/>} />
+            <Route path={PATHS.PARENT_NOTIFICATION} element={<Notification/>} />
+            <Route path={PATHS.PARENT_SUBSCRIPTION} element={<Subscription/>} />
+            <Route path={PATHS.PARENT_REWARDHUB} element={<RewardHub/>} />   
           {/* Protected legacy */}
           <Route element={<ProtectedRoute />}>
             <Route path={PATHS.DASHBOARD} element={<DashboardPage />} />
