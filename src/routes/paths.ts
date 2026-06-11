@@ -37,7 +37,7 @@ export const PATHS = {
 
 
   //Parent Flow
-  PARENT_MODULE:"/parent-module",
+  ADD_CHILD:"/add-child",
   PARENT_DASHBOARD:"/parent-dashboard",
   PARENT_LIVEACTIVITY:"/live-activity",
   PARENT_DOUBTHISTORY:"/doubt-history",

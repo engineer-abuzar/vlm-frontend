@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import DoubtCard from "@/components/doubts/DoubtCard";
+import DoubtCard from "@/components/basic/parent/DoubtCard";
 import BottomNav from "@/components/layout/BottomNav";
 
 const DOUBTS_DATA = [

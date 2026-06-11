@@ -93,7 +93,7 @@ export default function App() {
 
 
           {/* Parent Module */} 
-            <Route path={PATHS.PARENT_MODULE} element={<AddChild />} />
+            <Route path={PATHS.ADD_CHILD} element={<AddChild />} />
             <Route path={PATHS.PARENT_DASHBOARD} element={<DashboardPage/>} />
             <Route path={PATHS.PARENT_LIVEACTIVITY} element={<LiveActivity/>} />
             <Route path={PATHS.PARENT_DOUBTHISTORY} element={<DoubtHistory/>} />

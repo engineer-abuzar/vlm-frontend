@@ -8,9 +8,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-import { InputSection } from "@/components/parent/InputSection";
-import { QRSection } from "@/components/parent/QRSection";
-import { SendRequestButton } from "@/components/parent/SendRequestButton";
+import { InputSection } from "@/components/basic/parent/InputSection";
+import { QRSection } from "@/components/basic/parent/QRSection";
+import { SendRequestButton } from "@/components/basic/parent/SendRequestButton";
 
 const goldColor = "#D4AF37";
 
