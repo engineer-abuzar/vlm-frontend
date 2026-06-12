@@ -45,6 +45,13 @@ export const PATHS = {
   PARENT_NOTIFICATION:"/parent-notification",
   PARENT_SUBSCRIPTION:"/subscription",
   PARENT_REWARDHUB:"/reward-hub",
+  PARENT_LIVECLASS_TRACKING:"/live-class-tracking",
+  PARENT_SESSION_RECORDINGS:"/session-recordings",
+  PARENT_PROFILE:"/switch-profile",
+  PARENT_SETTINGS_CARD:"/settings",
+  PARENT_DOUBT_HISTORY:"/doubt-history",
+  PARENT_STUDENT_PROFILE:"/student-profile",
+  PARENT_REWARD_CENTER:"/reward-center",
   // Legacy
   DASHBOARD: "/dashboard",
 } as const;

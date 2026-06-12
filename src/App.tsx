@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Navigate, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import SplashPage from "@/pages/SplashPage";
@@ -37,9 +37,15 @@ import AddChild from "./pages/Parent/Addchild";
 import LiveActivity from "./pages/Parent/LiveActivity";
 import DoubtHistory from "./pages/Parent/DoubtHistory";
 import  ParentControl from "./pages/Parent/ParentControl";
-import Notification from "./pages/Parent/Notification";
-import Subscription from "./pages/Parent/Subscription";
 import RewardHub from "./pages/Parent/RewardHub";
+import Subscription from "./pages/Parent/Subscription";
+import Notification from "./pages/Parent/Notification";
+import LiveClassTracking from "./components/basic/parent/LiveClassTracking";
+import SessionRecordings from "./pages/Parent/ScreenRecordings";
+import SwitchProfile from "./pages/Parent/SwitchProfile";
+import SettingsCard from "./pages/Parent/SettingsCard";
+import StudentProfile from "./pages/Parent/StudentProfile";
+import RewardCenter from "./pages/Parent/RewardCentre";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -103,7 +109,15 @@ export default function App() {
             <Route path={PATHS.PARENT_CONTROL} element={<ParentControl/>} />
             <Route path={PATHS.PARENT_NOTIFICATION} element={<Notification/>} />
             <Route path={PATHS.PARENT_SUBSCRIPTION} element={<Subscription/>} />
-            <Route path={PATHS.PARENT_REWARDHUB} element={<RewardHub/>} />   
+            <Route path={PATHS.PARENT_REWARDHUB} element={<RewardHub/>} />  
+            <Route path={PATHS.PARENT_LIVECLASS_TRACKING} element={<LiveClassTracking/>} /> 
+            <Route path={PATHS.PARENT_SESSION_RECORDINGS} element={<SessionRecordings/>} />
+            <Route path={PATHS.PARENT_PROFILE} element={<SwitchProfile/>} />
+            <Route path={PATHS.PARENT_SETTINGS_CARD} element={<SettingsCard/>} />
+            <Route path={PATHS.PARENT_DOUBT_HISTORY} element={<DoubtHistory/>} /> 
+            <Route path={PATHS.PARENT_STUDENT_PROFILE} element={<StudentProfile/>} />
+            <Route path={PATHS.PARENT_REWARD_CENTER} element={<RewardCenter/>} /> 
+
           {/* Protected legacy */}
           <Route element={<ProtectedRoute />}>
             <Route path={PATHS.DASHBOARD} element={<DashboardPage />} />
