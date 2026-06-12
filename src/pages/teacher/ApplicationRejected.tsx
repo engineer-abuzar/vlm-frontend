@@ -5,6 +5,9 @@ import { ChevronLeft, Pencil, MessageSquare, Star } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
+import { PATHS } from "@/routes/paths";
 
 import RejectionStatusHeader from "@/components/basic/teacher/RejectionStatusHeader";
 import RejectionDetailsCard from "@/components/basic/teacher/RejectionDetailsCard";
@@ -12,6 +15,11 @@ import ReapplicationCountdown from "@/components/basic/teacher/ReapplicationCoun
 
 const ApplicationRejected: React.FC = () => {
   const navigate = useNavigate();
+
+  const { data: status } = useQuery({
+    queryKey: ["teacherVerificationStatus"],
+    queryFn: teacherApi.getVerificationStatus,
+  });
 
   return (
     <div className={cn("min-h-screen flex flex-col p-4 pb-8 relative overflow-hidden", bgCss)}>
@@ -51,21 +59,26 @@ const ApplicationRejected: React.FC = () => {
         {/* Actions */}
         <div className="space-y-4 px-2">
           <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
-            <Button className={cn(
-              "w-full h-16 rounded-[2rem] text-[15px] font-black uppercase tracking-tight gap-3",
-              "bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 transition-all",
-              "border border-white/10 shadow-[0_10px_30px_rgba(220,38,38,0.3)]"
-            )}>
+            <Button
+              onClick={() => navigate(PATHS.BASICPROFILE_DETAILS)}
+              className={cn(
+                "w-full h-16 rounded-[2rem] text-[15px] font-black uppercase tracking-tight gap-3",
+                "bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 transition-all",
+                "border border-white/10 shadow-[0_10px_30px_rgba(220,38,38,0.3)]"
+              )}>
               <Pencil size={20} className="fill-current" />
               Edit Profile & Address Feedback
             </Button>
           </motion.div>
 
           <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
-            <Button variant="outline" className={cn(
-              "w-full h-16 rounded-[2rem] text-[15px] font-black uppercase tracking-tight gap-3",
-              "bg-zinc-900/40 border-white/10 text-zinc-400 hover:bg-zinc-800 transition-all"
-            )}>
+            <Button
+              onClick={() => navigate(PATHS.COMING_SOON)}
+              variant="outline"
+              className={cn(
+                "w-full h-16 rounded-[2rem] text-[15px] font-black uppercase tracking-tight gap-3",
+                "bg-zinc-900/40 border-white/10 text-zinc-400 hover:bg-zinc-800 transition-all"
+              )}>
               <MessageSquare size={20} />
               Contact Teacher Support
             </Button>

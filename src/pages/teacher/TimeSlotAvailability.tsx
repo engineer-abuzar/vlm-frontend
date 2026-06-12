@@ -6,9 +6,14 @@ import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
+import { toast } from "sonner";
 
 import { DaySelector, SubjectChip } from "@/components/basic/teacher//AvailabilitySelectors";
 import TimeSlotCard from "@/components/basic/teacher/TimeSlotCard";
+
+const DAY_MAP: Record<string, string> = { M: "MON", T: "TUE", WED: "WED", F: "FRI", S: "SAT", SU: "SUN" };
 
 const TimeSlotAvailability: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +23,26 @@ const TimeSlotAvailability: React.FC = () => {
 
   const days = ["M", "T", "WED", "T", "F", "S", "S"];
   const subjects = ["Maths", "Physics", "Chemistry", "Biology"];
+
+  // Fetch existing slots
+  const { data: existingSlots = [], refetch } = useQuery({
+    queryKey: ["teacherTimeSlots"],
+    queryFn: () => teacherApi.getTimeSlots(),
+  });
+
+  const saveMutation = useMutation({
+    mutationFn: () => teacherApi.saveTimeSlots(
+      existingSlots.map((s: any) => ({
+        dayOfWeek: s.dayOfWeek,
+        subject: s.subject,
+        startTime: s.startTime,
+        endTime: s.endTime,
+      })),
+      repeatWeekly
+    ),
+    onSuccess: () => { toast.success("Schedule saved!"); refetch(); },
+    onError: () => toast.error("Failed to save schedule"),
+  });
 
   return (
     <div className={cn("min-h-screen flex flex-col p-6 pb-12", bgCss)}>
@@ -56,29 +81,26 @@ const TimeSlotAvailability: React.FC = () => {
           Add New Time Slot
         </motion.button>
 
-        {/* Slots List */}
+        {/* Slots List — show DB slots or fallback sample */}
         <div className="space-y-4">
-          <TimeSlotCard
-            slotNumber={1}
-            startTime="09:00 AM"
-            endTime="10:00 AM"
-            subject="Maths"
-            variant="cyan"
-          />
-          <TimeSlotCard
-            slotNumber={2}
-            startTime="11:30 AM"
-            endTime="12:30 PM"
-            subject="Physics"
-            variant="purple"
-          />
-          <TimeSlotCard
-            slotNumber={3}
-            startTime="15:00 PM"
-            endTime="16:00 PM"
-            subject="Maths"
-            variant="blue"
-          />
+          {existingSlots.length > 0 ? (
+            existingSlots.map((slot: any, i: number) => (
+              <TimeSlotCard
+                key={slot.id}
+                slotNumber={i + 1}
+                startTime={slot.startTime}
+                endTime={slot.endTime}
+                subject={slot.subject}
+                variant={["cyan", "purple", "blue"][i % 3] as any}
+              />
+            ))
+          ) : (
+            <>
+              <TimeSlotCard slotNumber={1} startTime="09:00 AM" endTime="10:00 AM" subject="Maths" variant="cyan" />
+              <TimeSlotCard slotNumber={2} startTime="11:30 AM" endTime="12:30 PM" subject="Physics" variant="purple" />
+              <TimeSlotCard slotNumber={3} startTime="15:00 PM" endTime="16:00 PM" subject="Maths" variant="blue" />
+            </>
+          )}
         </div>
 
         {/* Options */}
@@ -100,13 +122,15 @@ const TimeSlotAvailability: React.FC = () => {
         {/* Action Button */}
         <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
           <Button
+            onClick={() => saveMutation.mutate()}
+            disabled={saveMutation.isPending}
             className={cn(
               "w-full h-16 rounded-full text-lg font-bold transition-all",
               "bg-gradient-to-r from-[#2b4b9b] to-[#1a2e5d] hover:brightness-110",
               "border border-white/10 shadow-2xl text-white flex items-center justify-center gap-2"
             )}
           >
-            Save & Apply Schedule <span className="text-xl opacity-80 font-light">&gt;</span>
+            {saveMutation.isPending ? "Saving..." : "Save & Apply Schedule >"}
           </Button>
         </motion.div>
       </div>

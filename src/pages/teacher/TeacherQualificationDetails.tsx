@@ -1,15 +1,34 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { Book, Landmark, Calendar, Contact2 } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
+import { toast } from "sonner";
+import { PATHS } from "@/routes/paths";
 
 import QualificationField from "@/components/basic/teacher/QualificationField";
 import BEdToggle from "@/components/basic/teacher/BEdToggle";
 import CertificateGrid from "@/components/basic/teacher/CertificateGrid";
 
 const TeacherQualificationDetails: React.FC = () => {
+  const navigate = useNavigate();
   const [hasBEd, setHasBEd] = useState(true);
+  const [form, setForm] = useState({
+    highestQualification: "Masters in Education",
+    instituteName: "University of London",
+    passingYear: "2020",
+    teachingCertification: "NET",
+  });
+
+  const mutation = useMutation({
+    mutationFn: () => teacherApi.updateProfile({ ...form, hasBEd, passingYear: parseInt(form.passingYear) }),
+    onSuccess: () => { toast.success("Qualifications saved"); navigate(PATHS.EXPERIENCE_DETAILS); },
+    onError: () => toast.error("Failed to save qualifications"),
+  });
 
   return (
     <div className={cn("min-h-screen flex flex-col items-center justify-center p-4", bgCss)}>
@@ -33,37 +52,21 @@ const TeacherQualificationDetails: React.FC = () => {
         )}
       >
         <div className="space-y-5">
-          <QualificationField 
-            label="Highest Qualification"
-            icon={<Book />}
-            value="Masters in Education"
-            isSelect
-          />
-
-          <QualificationField 
-            label="Institute Name"
-            icon={<Landmark />}
-            value="University of London"
-          />
-
-          <QualificationField 
-            label="Passing Year"
-            icon={<Calendar />}
-            value="2020"
-          />
-
-          <QualificationField 
-            label="Teaching Certification"
-            icon={<Contact2 />}
-            value="NET"
-            isSelect
-          />
-
+          <QualificationField label="Highest Qualification" icon={<Book />} value={form.highestQualification} isSelect onChange={(v: string) => setForm(f => ({ ...f, highestQualification: v }))} />
+          <QualificationField label="Institute Name" icon={<Landmark />} value={form.instituteName} onChange={(v: string) => setForm(f => ({ ...f, instituteName: v }))} />
+          <QualificationField label="Passing Year" icon={<Calendar />} value={form.passingYear} onChange={(v: string) => setForm(f => ({ ...f, passingYear: v }))} />
+          <QualificationField label="Teaching Certification" icon={<Contact2 />} value={form.teachingCertification} isSelect onChange={(v: string) => setForm(f => ({ ...f, teachingCertification: v }))} />
           <div className="pt-2">
             <BEdToggle value={hasBEd} onChange={setHasBEd} />
           </div>
-
           <CertificateGrid />
+          <Button
+            onClick={() => mutation.mutate()}
+            disabled={mutation.isPending}
+            className="w-full h-14 rounded-full font-bold bg-gradient-to-r from-[#2b4b9b] to-[#1a2e5d] border border-blue-400/20 text-white mt-4"
+          >
+            {mutation.isPending ? "Saving..." : "Save & Continue →"}
+          </Button>
         </div>
       </motion.div>
 

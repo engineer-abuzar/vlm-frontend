@@ -1,56 +1,35 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { 
-  FileEdit, 
-  Send, 
-  CalendarCheck, 
-  UserSearch, 
-  ShieldCheck, 
-  Info,
-  Star
+import {
+  FileEdit, Send, CalendarCheck, UserSearch, ShieldCheck, Info, Star
 } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
 import TimelineItem from "@/components/basic/teacher/TimelineItem";
 
+const iconMap: Record<string, React.ReactNode> = {
+  draft: <FileEdit />,
+  submitted: <Send />,
+  interview_scheduled: <CalendarCheck />,
+  under_review: <UserSearch />,
+  approved: <ShieldCheck />,
+};
+
 const VerificationStatus: React.FC = () => {
-  const steps = [
-    {
-      id: "draft",
-      icon: <FileEdit />,
-      title: "Draft",
-      description: "Profile in Draft",
-      status: "completed" as const,
-    },
-    {
-      id: "submitted",
-      icon: <Send />,
-      title: "Submitted",
-      description: "Verification Submitted",
-      status: "completed" as const,
-    },
-    {
-      id: "scheduled",
-      icon: <CalendarCheck />,
-      title: "Interview Scheduled",
-      description: "Interview Scheduled",
-      status: "completed" as const,
-    },
-    {
-      id: "review",
-      icon: <UserSearch />,
-      title: "Under Review",
-      description: "Application Under Review (Estimated 2-3 days)",
-      status: "active" as const,
-    },
-    {
-      id: "approved",
-      icon: <ShieldCheck />,
-      title: "Approved",
-      description: "Verification Approved (Start Teaching Soon)",
-      status: "pending" as const,
-    },
+  const { data, isLoading } = useQuery({
+    queryKey: ["teacherVerificationStatus"],
+    queryFn: teacherApi.getVerificationStatus,
+  });
+
+  const steps = data?.steps ?? [
+    { id: "draft", title: "Draft", description: "Profile in Draft", status: "active" },
+    { id: "submitted", title: "Submitted", description: "Verification Submitted", status: "pending" },
+    { id: "interview_scheduled", title: "Interview Scheduled", description: "Interview Scheduled", status: "pending" },
+    { id: "under_review", title: "Under Review", description: "Application Under Review (Estimated 2-3 days)", status: "pending" },
+    { id: "approved", title: "Approved", description: "Verification Approved (Start Teaching Soon)", status: "pending" },
   ];
 
   return (
@@ -89,10 +68,10 @@ const VerificationStatus: React.FC = () => {
 
         {/* Timeline Content */}
         <div className="px-2 mb-12">
-          {steps.map((step, index) => (
+          {steps.map((step: any, index: number) => (
             <TimelineItem
               key={step.id}
-              icon={step.icon}
+              icon={iconMap[step.id] ?? <ShieldCheck />}
               title={step.title}
               description={step.description}
               status={step.status}
@@ -104,7 +83,9 @@ const VerificationStatus: React.FC = () => {
         {/* Footer Info */}
         <div className="pt-8 border-t border-white/5 text-center">
           <p className="text-[10px] text-zinc-600 font-bold tracking-widest uppercase">
-            Verification ID: VLM-100234 | Applicant: Dr. Eleanor Reed
+            {isLoading
+              ? "Loading..."
+              : `Verification Status: ${data?.verificationStatus ?? "DRAFT"} | Applicant: ${data?.teacherName ?? "Teacher"}`}
           </p>
         </div>
       </motion.div>

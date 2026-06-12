@@ -1,26 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { 
-  IdCard, 
-  GraduationCap, 
-  Briefcase, 
-  HelpCircle, 
-  ChevronRight,
-  Star
-} from "lucide-react";
+import { IdCard, GraduationCap, Briefcase, HelpCircle, ChevronRight, Star } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
+import { toast } from "sonner";
+import { PATHS } from "@/routes/paths";
 import DocumentUploadCard from "@/components/basic/teacher/DocumentUploadCard";
 
 const DocumentUpload: React.FC = () => {
   const navigate = useNavigate();
+  const [uploadedDocs, setUploadedDocs] = useState<Record<string, string>>({});
+
+  const uploadMutation = useMutation({
+    mutationFn: async ({ id, file }: { id: string; file: File }) => {
+      const docType = id as "aadhaar" | "qualification" | "experience";
+      const result = await teacherApi.uploadDocument(file, docType);
+      return { id, url: result.url };
+    },
+    onSuccess: ({ id, url }) => {
+      setUploadedDocs(prev => ({ ...prev, [id]: url }));
+      toast.success(`Document uploaded successfully`);
+    },
+    onError: () => toast.error("Upload failed. Check Cloudinary config."),
+  });
 
   const handleUpload = (id: string) => {
-    console.log(`Uploading document: ${id}`);
-    // Handle file picker logic here
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*,application/pdf";
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) uploadMutation.mutate({ id, file });
+    };
+    input.click();
   };
+
+  const docStatus = (id: string) => uploadedDocs[id] ? "UPLOADED" : "PENDING";
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -64,7 +83,7 @@ const DocumentUpload: React.FC = () => {
           title="Aadhaar Card"
           description="Upload Image or PDF (Front & Back)"
           icon={<IdCard />}
-          status="PENDING"
+          status={docStatus("aadhaar") as any}
           onUpload={handleUpload}
           topRightIcon={<IdCard />}
         />
@@ -74,7 +93,7 @@ const DocumentUpload: React.FC = () => {
           title="Qualification Certificate"
           description="Upload Highest Degree or Marklist"
           icon={<GraduationCap className="text-yellow-500/80" />}
-          status="PENDING"
+          status={docStatus("qualification") as any}
           onUpload={handleUpload}
         />
 
@@ -83,7 +102,7 @@ const DocumentUpload: React.FC = () => {
           title="Experience Document"
           description="Upload Work Experience Letter"
           icon={<Briefcase className="text-purple-400" />}
-          status="PENDING"
+          status={docStatus("experience") as any}
           onUpload={handleUpload}
         />
       </motion.div>
@@ -106,7 +125,7 @@ const DocumentUpload: React.FC = () => {
 
           {/* Submit Button */}
           <Button
-            onClick={() => navigate("/teacher/register/success")}
+            onClick={() => navigate(PATHS.VIDEO_DEMO)}
             className={cn(
               "flex-1 h-16 rounded-full text-lg font-bold transition-all uppercase tracking-tight",
               "bg-gradient-to-r from-[#2b4b9b] to-[#1a2e5d] hover:brightness-110",

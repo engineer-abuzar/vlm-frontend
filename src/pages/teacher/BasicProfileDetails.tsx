@@ -1,26 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { 
-  User, 
- VenusAndMars, 
-  Calendar, 
-  MapPin, 
-  Mail, 
-  Smartphone, 
-  Camera,
-  ChevronRight
+import {
+  User, VenusAndMars, Calendar, MapPin, Mail, Smartphone, Camera, ChevronRight
 } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
+import { toast } from "sonner";
+import { PATHS } from "@/routes/paths";
 
 import RegistrationStepper from "@/components/basic/teacher/RegistrationStepper";
 import RegistrationField from "@/components/basic/teacher/RegistrationField";
 
 const BasicProfileDetails: React.FC = () => {
   const navigate = useNavigate();
+
+  // Load existing profile data
+  const { data: profile } = useQuery({
+    queryKey: ["teacherProfile"],
+    queryFn: teacherApi.getProfile,
+    retry: false,
+  });
+
+  const [form, setForm] = useState({
+    fullName: profile?.fullName ?? "",
+    gender: profile?.gender ?? "",
+    dob: profile?.dob ? new Date(profile.dob).toISOString().split("T")[0] : "",
+    address: profile?.address ?? "",
+    city: profile?.city ?? "",
+    state: profile?.state ?? "",
+    pincode: profile?.pincode ?? "",
+  });
+
+  const updateField = (key: string, val: string) => setForm(f => ({ ...f, [key]: val }));
+
+  const mutation = useMutation({
+    mutationFn: () => teacherApi.updateProfile(form),
+    onSuccess: () => {
+      toast.success("Basic details saved");
+      navigate(PATHS.DOCUMENT_UPLOAD);
+    },
+    onError: () => toast.error("Failed to save details"),
+  });
+
+  const email = profile?.user?.email ?? "—";
+  const mobile = profile?.user?.mobile ?? "—";
 
   return (
     <div className={cn("min-h-screen flex flex-col items-center pb-12", bgCss)}>
@@ -44,11 +72,10 @@ const BasicProfileDetails: React.FC = () => {
         <div className="space-y-4">
           {/* Profile Photo & Initial Fields Row */}
           <div className="flex gap-4">
-            {/* Upload Card */}
             <div className="w-[140px] flex flex-col items-center justify-center p-4 rounded-3xl border border-white/10 bg-white/[0.02]">
               <div className="mb-4">
                 <Avatar className="w-24 h-24 border-2 border-white/5 bg-zinc-800">
-                  <AvatarImage src="" />
+                  <AvatarImage src={profile?.profilePhoto ?? ""} />
                   <AvatarFallback className="bg-zinc-800">
                     <div className="flex flex-col items-center">
                       <div className="w-7 h-7 rounded-full bg-[#8b5e52]" />
@@ -66,90 +93,91 @@ const BasicProfileDetails: React.FC = () => {
               </span>
             </div>
 
-            {/* Right Column Fields */}
             <div className="flex-1 space-y-3">
-              <RegistrationField 
-                icon={<User />} 
-                label="Full Name" 
-                placeholder="Enter Full Name" 
+              <RegistrationField
+                icon={<User />}
+                label="Full Name"
+                placeholder="Enter Full Name"
+                value={form.fullName}
+                onChange={(e: any) => updateField("fullName", e.target.value)}
               />
-              <RegistrationField 
-                icon={<VenusAndMars />} 
-                label="Gender" 
-                placeholder="Select Gender" 
-                isSelect 
+              <RegistrationField
+                icon={<VenusAndMars />}
+                label="Gender"
+                placeholder="Select Gender"
+                isSelect
                 iconColor="text-rose-400/80"
+                value={form.gender}
+                onChange={(e: any) => updateField("gender", e.target.value)}
               />
-              <RegistrationField 
-                icon={<Calendar />} 
-                label="DOB" 
-                placeholder="DD / MM / YYYY" 
+              <RegistrationField
+                icon={<Calendar />}
+                label="DOB"
+                placeholder="DD / MM / YYYY"
+                value={form.dob}
+                onChange={(e: any) => updateField("dob", e.target.value)}
               />
             </div>
           </div>
 
-          {/* Full Width Address */}
-          <RegistrationField 
-            icon={<MapPin />} 
-            label="Address" 
-            placeholder="Enter Street Address" 
+          <RegistrationField
+            icon={<MapPin />}
+            label="Address"
+            placeholder="Enter Street Address"
+            value={form.address}
+            onChange={(e: any) => updateField("address", e.target.value)}
           />
 
-          {/* Grid: City/State Container & Pincode */}
           <div className="grid grid-cols-12 gap-3">
             <div className="col-span-7 flex flex-col p-3.5 rounded-2xl border border-white/10 bg-white/[0.03]">
-               <div className="flex items-start gap-3">
-                  <MapPin size={18} className="text-blue-400/80 mt-1" />
-                  <div className="flex-1 space-y-2">
-                     <div className="flex flex-col border-b border-white/5 pb-2">
-                        <span className="text-[11px] font-bold text-zinc-100 uppercase tracking-tight">City / State</span>
-                        <div className="flex items-center justify-between mt-1">
-                           <span className="text-sm text-zinc-500">City</span>
-                           <ChevronRight size={14} className="text-zinc-500 rotate-90" />
-                        </div>
-                     </div>
-                     <div className="flex items-center justify-between pt-1">
-                        <span className="text-sm text-zinc-500">State</span>
-                        <ChevronRight size={14} className="text-zinc-500 rotate-90" />
-                     </div>
+              <div className="flex items-start gap-3">
+                <MapPin size={18} className="text-blue-400/80 mt-1" />
+                <div className="flex-1 space-y-2">
+                  <div className="flex flex-col border-b border-white/5 pb-2">
+                    <span className="text-[11px] font-bold text-zinc-100 uppercase tracking-tight">City / State</span>
+                    <input
+                      placeholder="City"
+                      value={form.city}
+                      onChange={e => updateField("city", e.target.value)}
+                      className="bg-transparent text-sm text-zinc-300 outline-none mt-1 placeholder:text-zinc-600"
+                    />
                   </div>
-               </div>
+                  <input
+                    placeholder="State"
+                    value={form.state}
+                    onChange={e => updateField("state", e.target.value)}
+                    className="bg-transparent text-sm text-zinc-300 outline-none pt-1 placeholder:text-zinc-600 w-full"
+                  />
+                </div>
+              </div>
             </div>
 
-            <RegistrationField 
+            <RegistrationField
               className="col-span-5 items-center"
-              icon={<MapPin />} 
-              label="Pincode" 
-              placeholder="XXXXXX" 
+              icon={<MapPin />}
+              label="Pincode"
+              placeholder="XXXXXX"
+              value={form.pincode}
+              onChange={(e: any) => updateField("pincode", e.target.value)}
             />
           </div>
 
-          {/* Contact Information */}
-          <RegistrationField 
-            icon={<Mail />} 
-            label="Email" 
-            value="Pearl@gmail.com" 
-          />
-
-          <RegistrationField 
-            icon={<Smartphone />} 
-            label="Mobile" 
-            value="9797979797" 
-            iconColor="text-blue-300"
-          />
+          {/* Read-only contact fields from auth */}
+          <RegistrationField icon={<Mail />} label="Email" value={email} readOnly />
+          <RegistrationField icon={<Smartphone />} label="Mobile" value={mobile} iconColor="text-blue-300" readOnly />
         </div>
 
-        {/* Footer Navigation */}
         <div className="mt-10">
-          <Button 
-            onClick={() => navigate("/teacher/register/step-2")}
+          <Button
+            onClick={() => mutation.mutate()}
+            disabled={mutation.isPending}
             className={cn(
               "w-full h-14 rounded-full text-lg font-bold transition-all",
               "bg-gradient-to-r from-[#2b4b9b] to-[#1a2e5d] hover:brightness-110",
               "border border-blue-400/20 shadow-[0_0_20px_rgba(37,99,235,0.15)] text-white flex items-center justify-center gap-2"
             )}
           >
-            Continue to document <span className="font-light text-xl opacity-80">{">"}</span>
+            {mutation.isPending ? "Saving..." : <>Continue to document <ChevronRight className="font-light text-xl opacity-80" /></>}
           </Button>
         </div>
       </motion.div>

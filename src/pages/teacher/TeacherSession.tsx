@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Star } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
+import { useLocation } from "react-router-dom";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
 
 import SessionHeader from "@/components/basic/teacher/SessionHeader";
 import ChatBubble, { MathAttachment, AudioAttachment } from "@/components/basic/teacher/ChatBubble";
 import ChatInput from "@/components/basic/teacher/ChatInput";
 
 const TeacherSession: React.FC = () => {
+  const location = useLocation();
+  const chatId = location.state?.chatId as string | undefined;
+  const sessionId = location.state?.sessionId as string | undefined;
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  // Fetch real chat messages if chatId provided
+  const { data: chatData } = useQuery({
+    queryKey: ["teacherSessionChat", chatId],
+    queryFn: () => teacherApi.getSessionChat(chatId!),
+    enabled: !!chatId,
+    refetchInterval: 5000, // Poll every 5s for new messages
+  });
+
+  const messages = chatData?.messages ?? [];
+
+  // Scroll to bottom when new messages arrive
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages.length]);
+
   return (
     <div className={cn("min-h-screen flex flex-col items-center relative overflow-x-hidden", bgCss)}>
       {/* Background Decorators */}
@@ -26,25 +49,37 @@ const TeacherSession: React.FC = () => {
 
         {/* Scrollable Chat Area */}
         <div className="flex-1 flex flex-col gap-4 py-8 overflow-y-auto no-scrollbar">
-          <ChatBubble variant="student" senderName="Aisha">
-            I'm stuck on this second derivative step. Can you help?
-          </ChatBubble>
-
-          <MathAttachment />
-
-          <AudioAttachment />
-
-          <ChatBubble variant="teacher" senderName="Teacher">
-            Certainly, Aisha! Let's break it down.
-          </ChatBubble>
-
-          <ChatBubble variant="teacher" senderName="">
-            <div className="space-y-1">
-              Start with <code className="bg-white/10 px-1 rounded text-sm">dy/dx = f'(x)</code>, 
-              then <code className="bg-white/10 px-1 rounded text-sm">d²y/dx² = [...]</code>.
-              <br />Look at this term.
-            </div>
-          </ChatBubble>
+          {messages.length > 0 ? (
+            messages.map((msg: any) => (
+              <ChatBubble
+                key={msg.id}
+                variant={msg.senderType === "TEACHER" ? "teacher" : "student"}
+                senderName={msg.senderType === "TEACHER" ? "Teacher" : chatData?.chat?.student?.fullName ?? "Student"}
+              >
+                {msg.content}
+              </ChatBubble>
+            ))
+          ) : (
+            // Fallback sample conversation when no chatId or no messages yet
+            <>
+              <ChatBubble variant="student" senderName="Student">
+                I'm stuck on this second derivative step. Can you help?
+              </ChatBubble>
+              <MathAttachment />
+              <AudioAttachment />
+              <ChatBubble variant="teacher" senderName="Teacher">
+                Certainly! Let's break it down step by step.
+              </ChatBubble>
+              <ChatBubble variant="teacher" senderName="">
+                <div className="space-y-1">
+                  Start with <code className="bg-white/10 px-1 rounded text-sm">dy/dx = f'(x)</code>,
+                  then <code className="bg-white/10 px-1 rounded text-sm">d²y/dx² = [...]</code>.
+                  <br />Look at this term.
+                </div>
+              </ChatBubble>
+            </>
+          )}
+          <div ref={bottomRef} />
         </div>
 
         {/* Footer Input */}

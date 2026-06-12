@@ -1,24 +1,41 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Calculator, 
-  Atom, 
-  Orbit, 
-  Users, 
-  Play,
-  Star
+import {
+  ChevronLeft, ChevronRight, Calculator, Atom, Orbit, Users, Play, Star
 } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
+import { toast } from "sonner";
+import { PATHS } from "@/routes/paths";
 import ReviewSectionCard from "@/components/basic/teacher/ReviewSectionCard";
 
 const ProfileReview: React.FC = () => {
   const navigate = useNavigate();
+
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["teacherProfile"],
+    queryFn: teacherApi.getProfile,
+  });
+
+  const submitMutation = useMutation({
+    mutationFn: teacherApi.submitForVerification,
+    onSuccess: () => {
+      toast.success("Application submitted for verification!");
+      navigate(PATHS.VERIFICATION_STATUS);
+    },
+    onError: (err: any) => {
+      const msg = err?.response?.data?.error ?? "Submission failed";
+      toast.error(msg);
+    },
+  });
+
+  const p = profile;
+  const user = p?.user;
 
   return (
     <div className={cn("min-h-screen flex flex-col p-4 pb-32 relative overflow-x-hidden", bgCss)}>
@@ -43,31 +60,31 @@ const ProfileReview: React.FC = () => {
       <div className="max-w-xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-4">
         
         {/* Profile Details */}
-        <ReviewSectionCard title="Profile Details" onEdit={() => {}} className="row-span-1">
+        <ReviewSectionCard title="Profile Details" onEdit={() => navigate(PATHS.BASICPROFILE_DETAILS)} className="row-span-1">
           <div className="flex flex-col items-center text-center space-y-3 mb-2">
             <Avatar className="w-16 h-16 border-2 border-blue-400/20">
-               <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jila" />
-               <AvatarFallback>JL</AvatarFallback>
+              <AvatarImage src={p?.profilePhoto ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${p?.fullName ?? 'teacher'}`} />
+              <AvatarFallback>{p?.fullName?.[0] ?? 'T'}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
-              <p className="text-base font-bold text-white">Full Name Jila</p>
-              <p className="text-[11px] font-medium opacity-80">vlmacademy@gmail.com</p>
-              <p className="text-[11px] font-medium opacity-80">+91 23746353</p>
+              <p className="text-base font-bold text-white">{isLoading ? "Loading..." : p?.fullName ?? "—"}</p>
+              <p className="text-[11px] font-medium opacity-80">{user?.email ?? "—"}</p>
+              <p className="text-[11px] font-medium opacity-80">{user?.mobile ?? "—"}</p>
               <p className="text-[11px] font-medium opacity-60 leading-tight pt-1">
-                Address: Bonnur Road,<br />neomaik, 20308
+                {p?.address ? `${p.address}, ${p?.city ?? ""} ${p?.state ?? ""}` : "Address not set"}
               </p>
             </div>
           </div>
         </ReviewSectionCard>
 
         {/* Qualifications */}
-        <ReviewSectionCard title="Qualifications" onEdit={() => {}}>
+        <ReviewSectionCard title="Qualifications" onEdit={() => navigate(PATHS.QUALIFICATION_DETAILS)}>
           <div className="space-y-2">
             <div>
-              <p className="text-zinc-100 font-bold text-[13px]">Degree (PIN)</p>
-              <p className="text-[11px] opacity-80">Institution: Prismax School</p>
-              <p className="text-[11px] opacity-80">Passing year: 2021</p>
-              <p className="text-[11px] opacity-80">B.Ed</p>
+              <p className="text-zinc-100 font-bold text-[13px]">{p?.highestQualification ?? p?.qualification ?? "—"}</p>
+              <p className="text-[11px] opacity-80">Institution: {p?.instituteName ?? "—"}</p>
+              <p className="text-[11px] opacity-80">Passing year: {p?.passingYear ?? "—"}</p>
+              {p?.hasBEd && <p className="text-[11px] opacity-80">B.Ed</p>}
             </div>
           </div>
         </ReviewSectionCard>
@@ -75,75 +92,74 @@ const ProfileReview: React.FC = () => {
         {/* Subjects */}
         <ReviewSectionCard title="Subjects" onEdit={() => {}}>
           <div className="space-y-2.5 pt-1">
-            <div className="flex items-center gap-2 text-zinc-300">
-              <Calculator size={14} className="text-zinc-500" />
-              <span className="text-[12px] font-medium">Maths</span>
-            </div>
-            <div className="flex items-center gap-2 text-zinc-300">
-              <Atom size={14} className="text-zinc-500" />
-              <span className="text-[12px] font-medium">Science</span>
-            </div>
-            <div className="flex items-center gap-2 text-zinc-300">
-              <Orbit size={14} className="text-zinc-500" />
-              <span className="text-[12px] font-medium">Physics</span>
-            </div>
+            {(p?.subjects ?? []).length > 0 ? (
+              (p.subjects as string[]).map((sub: string, i: number) => (
+                <div key={i} className="flex items-center gap-2 text-zinc-300">
+                  <Atom size={14} className="text-zinc-500" />
+                  <span className="text-[12px] font-medium capitalize">{sub}</span>
+                </div>
+              ))
+            ) : (
+              <p className="text-[11px] text-zinc-500">No subjects selected</p>
+            )}
           </div>
         </ReviewSectionCard>
 
         {/* Classes */}
-        <ReviewSectionCard title="Classes" onEdit={() => {}}>
+        <ReviewSectionCard title="Classes" onEdit={() => navigate(PATHS.TEACHERCLASS_SELECTION)}>
           <div className="space-y-2.5 pt-1">
-            <div className="flex items-center gap-2 text-zinc-300">
-              <Users size={14} className="text-zinc-500" />
-              <span className="text-[12px] font-medium">Class 6-8</span>
-            </div>
-            <div className="flex items-center gap-2 text-zinc-300">
-              <Users size={14} className="text-zinc-500" />
-              <span className="text-[12px] font-medium">Class 9-10</span>
-            </div>
-            <div className="flex items-center gap-2 text-zinc-300">
-              <Users size={14} className="text-zinc-500" />
-              <span className="text-[12px] font-medium">Class 11-12</span>
-            </div>
+            {(p?.classes ?? []).length > 0 ? (
+              (p.classes as string[]).map((cls: string, i: number) => (
+                <div key={i} className="flex items-center gap-2 text-zinc-300">
+                  <Users size={14} className="text-zinc-500" />
+                  <span className="text-[12px] font-medium">Class {cls}</span>
+                </div>
+              ))
+            ) : (
+              <p className="text-[11px] text-zinc-500">No classes selected</p>
+            )}
           </div>
         </ReviewSectionCard>
 
         {/* Languages */}
-        <ReviewSectionCard title="Languages" onEdit={() => {}}>
+        <ReviewSectionCard title="Languages" onEdit={() => navigate(PATHS.LANGUAGAE_SELECTION)}>
           <ul className="list-none space-y-1.5 text-[12px] font-medium text-zinc-300">
-            <li>Hindi</li>
-            <li>English</li>
-            <li>Hinglish</li>
+            {(p?.languages ?? []).length > 0
+              ? (p.languages as string[]).map((l: string, i: number) => <li key={i} className="capitalize">{l}</li>)
+              : <li className="text-zinc-500">No languages selected</li>
+            }
           </ul>
         </ReviewSectionCard>
 
         {/* Uploaded Documents */}
-        <ReviewSectionCard title="Uploaded Documents" onEdit={() => {}}>
+        <ReviewSectionCard title="Uploaded Documents" onEdit={() => navigate(PATHS.DOCUMENT_UPLOAD)}>
           <div className="space-y-3">
             {[
-              { label: "Aadhaar Card", status: "Uploaded", color: "text-blue-400", dot: "bg-zinc-600" },
-              { label: "Degree", status: "Verified", color: "text-emerald-500", dot: "bg-yellow-500" },
-              { label: "Resume", status: "Verified", color: "text-emerald-500", dot: "bg-blue-500" },
-              { label: "B.Ed Cert", status: "Verified", color: "text-emerald-500", dot: "bg-yellow-500" },
+              { label: "Aadhaar Card", url: p?.aadhaarUrl },
+              { label: "Qualification Cert", url: p?.qualificationDocUrl },
+              { label: "Experience Doc", url: p?.experienceDocUrl },
             ].map((doc, i) => (
               <div key={i} className="flex items-center justify-between">
                 <p className="text-[11px] font-medium text-zinc-400">
-                  {doc.label} - <span className={doc.color}>{doc.status}</span>
+                  {doc.label} —{" "}
+                  <span className={doc.url ? "text-emerald-500" : "text-zinc-600"}>
+                    {doc.url ? "Uploaded" : "Pending"}
+                  </span>
                 </p>
-                <div className={cn("w-3.5 h-3.5 rounded-[4px]", doc.dot)} />
+                <div className={cn("w-3.5 h-3.5 rounded-[4px]", doc.url ? "bg-yellow-500" : "bg-zinc-600")} />
               </div>
             ))}
           </div>
         </ReviewSectionCard>
 
-        {/* Demo Video Status - Full Width */}
-        <ReviewSectionCard title="Demo Video Status" onEdit={() => {}} className="md:col-span-2">
+        {/* Demo Video — Full Width */}
+        <ReviewSectionCard title="Demo Video Status" onEdit={() => navigate(PATHS.VIDEO_DEMO)} className="md:col-span-2">
           <div className="flex items-center gap-4">
             <div className="w-12 h-10 rounded-xl bg-zinc-800/80 flex items-center justify-center border border-white/5">
               <Play size={18} fill="currentColor" className="text-zinc-400" />
             </div>
             <p className="text-[12px] font-medium text-zinc-300 leading-tight">
-              Demo Video - Uploaded & <br /> Preview Available
+              {p?.demoVideoUrl ? "Demo Video — Uploaded & Preview Available" : "Demo Video — Not uploaded yet"}
             </p>
           </div>
         </ReviewSectionCard>
@@ -156,8 +172,12 @@ const ProfileReview: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-xl pointer-events-auto"
         >
-          <Button className="w-full h-16 rounded-full text-lg font-black tracking-tighter uppercase transition-all flex items-center justify-center gap-3 bg-[#1A2E5D] hover:bg-[#254185] border border-blue-400/20 shadow-2xl text-white group">
-            Submit for Verification
+          <Button
+            onClick={() => submitMutation.mutate()}
+            disabled={submitMutation.isPending}
+            className="w-full h-16 rounded-full text-lg font-black tracking-tighter uppercase transition-all flex items-center justify-center gap-3 bg-[#1A2E5D] hover:bg-[#254185] border border-blue-400/20 shadow-2xl text-white group"
+          >
+            {submitMutation.isPending ? "Submitting..." : "Submit for Verification"}
             <ChevronRight className="group-hover:translate-x-1 transition-transform" />
           </Button>
           

@@ -5,6 +5,7 @@ import { User, Upload, Video, Calendar, ShieldCheck } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 
+import { PATHS } from "@/routes/paths";
 import IllustrationCard from "@/components/basic/teacher/IllustrationCard";
 import RegistrationStepCard from "@/components/basic/teacher/RegistrationStepCard";
 import RegistrationButton from "@/components/basic/teacher/RegistrationButton";
@@ -12,7 +13,7 @@ import RegistrationButton from "@/components/basic/teacher/RegistrationButton";
 const TeacherRegistration: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleStart = () => navigate("/teacher/register/step-1");
+  const handleStart = () => navigate(PATHS.BASICPROFILE_DETAILS);
 
   return (
     <div className={cn("min-h-screen flex items-center justify-center p-6", bgCss)}>

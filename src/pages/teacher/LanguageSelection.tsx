@@ -5,6 +5,10 @@ import { Globe, MoreHorizontal, Star, ChevronRight } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
+import { toast } from "sonner";
+import { PATHS } from "@/routes/paths";
 import LanguageCard from "@/components/basic/teacher/LanguageCard";
 
 interface Language {
@@ -31,10 +35,14 @@ const LanguageSelection: React.FC = () => {
   const [selected, setSelected] = useState<string[]>(["en", "eh", "ta"]);
 
   const toggleLanguage = (id: string) => {
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-    );
+    setSelected(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
   };
+
+  const mutation = useMutation({
+    mutationFn: () => teacherApi.updateProfile({ languages: selected }),
+    onSuccess: () => { toast.success("Languages saved"); navigate(PATHS.DOCUMENT_UPLOAD); },
+    onError: () => toast.error("Failed to save languages"),
+  });
 
   return (
     <div className={cn("min-h-screen flex flex-col items-center p-6 pb-32 relative overflow-hidden", bgCss)}>
@@ -95,14 +103,15 @@ const LanguageSelection: React.FC = () => {
           className="w-full max-w-xl pointer-events-auto"
         >
           <Button
-            onClick={() => navigate("/teacher/register/success")}
+            onClick={() => mutation.mutate()}
+            disabled={mutation.isPending}
             className={cn(
               "w-full h-16 rounded-full text-lg font-bold transition-all flex items-center justify-center gap-3",
               "bg-gradient-to-r from-[#2b4b9b] to-[#1a2e5d] hover:brightness-110",
               "border border-white/10 shadow-[0_0_30px_rgba(59,130,246,0.15)] text-white group"
             )}
           >
-            CONTINUE
+            {mutation.isPending ? "Saving..." : "CONTINUE"}
             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
               <ChevronRight size={22} className="opacity-90" />
             </div>

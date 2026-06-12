@@ -5,6 +5,9 @@ import { ChevronLeft, Power } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { teacherApi } from "@/lib/teacher-api";
+import { toast } from "sonner";
 
 import StatusOptionCard from "@/components/basic/teacher/StatusOptionCard";
 import { OnlineWaveIcon, BusyIcon } from "@/components/basic/teacher/AvailabilityIcons";
@@ -13,7 +16,22 @@ type Status = "online" | "offline" | "busy";
 
 const AvailabilityStatus: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedStatus, setSelectedStatus] = useState<Status>("online");
+
+  // Load current status from profile
+  const { data: profile } = useQuery({
+    queryKey: ["teacherProfile"],
+    queryFn: teacherApi.getProfile,
+  });
+
+  const [selectedStatus, setSelectedStatus] = useState<Status>(
+    (profile?.availabilityStatus as Status) ?? "online"
+  );
+
+  const mutation = useMutation({
+    mutationFn: (status: Status) => teacherApi.updateAvailability(status),
+    onSuccess: () => toast.success("Availability updated successfully"),
+    onError: () => toast.error("Failed to update availability"),
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -96,13 +114,15 @@ const AvailabilityStatus: React.FC = () => {
           whileTap={{ scale: 0.99 }}
         >
           <Button
+            onClick={() => mutation.mutate(selectedStatus)}
+            disabled={mutation.isPending}
             className={cn(
               "w-full h-16 rounded-full text-lg font-bold transition-all",
               "bg-gradient-to-r from-[#2b4b9b] to-[#1a2e5d] hover:brightness-110",
               "border border-white/10 shadow-2xl text-white flex items-center justify-center gap-2"
             )}
           >
-            Apply Status <span className="text-xl opacity-80 font-light">&gt;</span>
+            {mutation.isPending ? "Updating..." : "Apply Status >"}
           </Button>
         </motion.div>
       </footer>
