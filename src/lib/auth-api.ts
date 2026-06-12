@@ -1,42 +1,36 @@
 import { apiClient } from "@/lib/api-client";
-import type { AuthUser,  Role } from "@/types";
+import type { LoginPayload, Role, VerifyOtpResponse } from "@/types";
 
 export const authApi = {
-  /**
-   * Login via email + password
-   */
-  // loginWithEmail: async (payload: any): Promise<AuthUser> => {
-  //   const { data } = await apiClient.post<AuthUser>("/auth/login", payload);
-  //   return data;
-  // },
-
-  /**
-   * Request OTP to phone number
-   */
-  sendOtp: async (payload:any) => {
+  sendOtp: async (payload: LoginPayload) => {
     const { data } = await apiClient.post("/auth/sent-otp", payload);
     return data;
   },
 
-  /**
-   * Verify OTP
-   */
-  verifyOtp: async (phone: string, otp: string): Promise<AuthUser> => {
-    const { data } = await apiClient.post<AuthUser>("/auth/otp/verify", { phone, otp });
+  verifyOtp: async (phone: string, otp: string): Promise<VerifyOtpResponse> => {
+    const { data } = await apiClient.post<VerifyOtpResponse>("/auth/otp/verify", { phone, otp });
     return data;
   },
 
-  /**
-   * Select role after authentication
-   */
-  selectRole: async (role: Role): Promise<AuthUser> => {
-    const { data } = await apiClient.post<AuthUser>("/auth/role", { role });
+  selectRole: async (role: Role) => {
+    const { data } = await apiClient.post("/auth/role", { role });
+    if (data.token) {
+      localStorage.setItem("vlm_token", data.token);
+    }
     return data;
   },
 
-  /**
-   * Google OAuth redirect
-   */
+  getMe: async () => {
+    const { data } = await apiClient.get("/auth/me");
+    return data.user;
+  },
+
+  logout: async () => {
+    const { data } = await apiClient.post("/auth/logout");
+    localStorage.removeItem("vlm_token");
+    return data;
+  },
+
   getGoogleAuthUrl: async (): Promise<{ url: string }> => {
     const { data } = await apiClient.get<{ url: string }>("/auth/google");
     return data;

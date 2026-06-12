@@ -15,43 +15,27 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { bgCss } from "@/helper/CssHelper";
 
-// --- Mock API Fetch Function ---
+import { studentApi } from "@/lib/student-api";
+
+const themes = [
+  "border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.1)]",
+  "border-cyan-500/40 shadow-[0_0_30px_rgba(6,182,212,0.1)]",
+  "border-blue-500/40 shadow-[0_0_30px_rgba(37,99,235,0.1)]",
+];
+
 const fetchShortSessions = async () => {
-  return [
-    {
-      id: 1,
-      tutor: "Prof. Priya Sharma",
-      rating: "4.9",
-      viewers: "1.2k",
-      topic: "Factoring Polynomials in 5 Mins",
-      rate: "12",
-      desc: "Fast Math, JEE prep.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya",
-      theme: "border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.1)]"
-    },
-    {
-      id: 2,
-      tutor: "Dr. Alan Grant",
-      rating: "4.8",
-      viewers: "900",
-      topic: "Conic Sections: Ellipse Quick Trick",
-      rate: "15",
-      desc: "High-trust physics, IIT JEE focus.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alan",
-      theme: "border-cyan-500/40 shadow-[0_0_30px_rgba(6,182,212,0.1)]"
-    },
-    {
-      id: 3,
-      tutor: "Mrs. Iyer",
-      rating: "4.9",
-      viewers: "1.5k",
-      topic: "Fast Essay: Ideas & Structure",
-      rate: "10",
-      desc: "Instant English, perfect composition.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Iyer",
-      theme: "border-blue-500/40 shadow-[0_0_30px_rgba(37,99,235,0.1)]"
-    }
-  ];
+  const teachers = await studentApi.getAvailableTeachers({ limit: 5 });
+  return (teachers ?? []).map((t: any, i: number) => ({
+    id: t.id,
+    tutor: t.fullName,
+    rating: String(t.rating ?? '5.0'),
+    viewers: '0',
+    topic: t.qualification ?? 'Expert Tutoring Session',
+    rate: '10',
+    desc: t.qualification ?? 'Expert Teacher',
+    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${t.fullName}`,
+    theme: themes[i % themes.length],
+  }));
 };
 
 export default function ShortLiveSessions() {
@@ -92,6 +76,9 @@ export default function ShortLiveSessions() {
 
       {/* ── SESSIONS LIST ── */}
       <main className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        {!sessions?.length && (
+          <p className="text-center text-white/40 text-sm py-8">No teachers available right now</p>
+        )}
         {sessions?.map((session) => (
           <Card 
             key={session.id} 
