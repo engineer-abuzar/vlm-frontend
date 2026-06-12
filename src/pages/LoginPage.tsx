@@ -1,5 +1,3 @@
-import { useMutation } from "@tanstack/react-query";
-import { authApi } from "@/lib/auth-api";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {  Star } from "lucide-react";
@@ -12,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
 
-import { useGoogleAuth } from "@/hooks/use-auth";
+import { useGoogleAuth, useSendOtp } from "@/hooks/use-auth";
 import { PATHS } from "@/routes/paths";
 
 // --- CUSTOM WRAPPERS (To replace raw HTML) ---
@@ -50,25 +48,24 @@ export default function LoginPage() {
   // const [password, setPassword] = useState("");
   // const [showPassword, setShowPassword] = useState(false);
 
-  const loginMutation = useMutation({
-    mutationFn: (payload: any) => authApi.sendOtp(payload),
-    onSuccess: (data: any) => {
-      localStorage.setItem("vlm_token", data.token);
-    },
-  });
+  const loginMutation = useSendOtp();
   const googleMutation = useGoogleAuth();
 
   const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
   const onSubmit = async () => {
-    const email = emailRef.current?.value;
-    const phone = `+91${phoneRef.current?.value}`;
-    if (email) {
-      loginMutation.mutate({ email, role });
-    } else {
-      sessionStorage.setItem("vlm_phone", phone);
-      loginMutation.mutate({ phone, role });
+    const emailVal = emailRef.current?.value;
+    const phoneVal = `+91${phoneRef.current?.value}`;
+    const payload = emailVal
+      ? { email: emailVal, role }
+      : { phone: phoneVal, role };
+
+    if (!emailVal) {
+      sessionStorage.setItem("vlm_phone", phoneVal);
     }
-    navigate(PATHS.OTP);
+
+    loginMutation.mutate(payload, {
+      onSuccess: () => navigate(PATHS.OTP),
+    });
   };
   return (
     <Container className="vlm-bg-navy">

@@ -11,14 +11,19 @@ import { Input } from "@/components/ui/input";
 // import { Badge } from "@/components/ui/badge";
 import { bgCss } from "@/helper/CssHelper";
 
-// --- Mock API ---
+import { studentApi } from "@/lib/student-api";
+
 const fetchReferralData = async () => {
-  return {
-    studentRef: "vlm.academy/ref/STU-ADY...",
-    teacherRef: "vlm.academy/ref/TCH-ADY...",
-    studentPoints: 100,
-    teacherPoints: 500,
-  };
+  try {
+    return await studentApi.getReferralData();
+  } catch {
+    return {
+      studentRef: "vlm.academy/ref/STU-••••",
+      teacherRef: "vlm.academy/ref/TCH-••••",
+      studentPoints: 100,
+      teacherPoints: 500,
+    };
+  }
 };
 
 export default function ReferEarn() {

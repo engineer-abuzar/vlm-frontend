@@ -13,23 +13,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { bgCss } from "@/helper/CssHelper";
 
-// --- Mock API Fetch ---
-const fetchOrderSummary = async () => {
-  return {
-    subtotal: 745,
-    discountAmount: 110,
-    discountApplied: 11.17, // Specific value from image
-    shipping: 0,
-    total: 635,
-    couponCode: "VLM110"
-  };
-};
+import { studentApi } from "@/lib/student-api";
 
 export default function Coupon() {
   const navigate = useNavigate();
+  const planId = sessionStorage.getItem("vlm_selected_plan_id");
   const { data } = useQuery({
-    queryKey: ["orderSummary"],
-    queryFn: fetchOrderSummary,
+    queryKey: ["orderSummary", planId],
+    queryFn: () => studentApi.getOrderSummary(planId!),
+    enabled: !!planId,
   });
 
   return (
@@ -135,7 +127,7 @@ export default function Coupon() {
         <div className="relative pt-2">
             <div className="absolute inset-x-0 bottom-0 top-6 bg-blue-600/30 blur-3xl rounded-full" />
             <Button
-              onClick={() => navigate(Math.random() > 0.3 ? PATHS.PLAN_SCREEN : PATHS.PAYMENT_FAILED)}
+              onClick={() => navigate(PATHS.PLAN_SCREEN)}
               className="relative w-full h-12 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white font-black tracking-widest shadow-2xl hover:brightness-110 active:scale-[0.98] transition-all"
             >
               PROCEED TO PAY <ArrowRight size={20} className="ml-2" />

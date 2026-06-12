@@ -2,7 +2,6 @@ import { bgCss } from "@/helper/CssHelper";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "@/routes/paths";
 import HorizontalSection from "@/components/basic/student/HorizontalSection";
-import { useQuery } from "@tanstack/react-query";
 import DashboardLoading from "@/components/basic/DashboardLoading";
 import FeatureCard from "@/components/basic/student/FeatureCard";
 import { 
@@ -15,22 +14,11 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
-// --- Mock API Fetch Function ---
-const fetchDashboardData = async () => {
-  // Real API call yahan aayega: await axios.get('/api/dashboard')
-  return {
-    user: { name: "Aryan", rank: "#12", points: "1250" },
-    mcq: { completed: 3, total: 5 },
-    liveClass: { topic: "JEE Main: Organic Chemistry", time: "2:00 PM IST", timer: "00:45:12" }
-  };
-};
+import { useDashboard } from "@/hooks/use-student";
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
-  const { data, isLoading } = useQuery({
-    queryKey: ["dashboardData"],
-    queryFn: fetchDashboardData,
-  });
+  const { data, isLoading } = useDashboard();
 
   if (isLoading) return <DashboardLoading />;
 
@@ -136,10 +124,10 @@ export default function StudentDashboard() {
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>DR</AvatarFallback>
                 </Avatar>
-                <span className="text-xs font-bold">Dr. Sharma</span>
+                <span className="text-xs font-bold">{data?.liveClass.teacher}</span>
               </div>
               <Button
-                onClick={() => navigate(PATHS.LIVE_SESSION)}
+                onClick={() => navigate(PATHS.LIVE_SESSION, { state: { sessionId: data?.liveClass.sessionId } })}
                 className="w-full h-12 rounded-2xl bg-[#1e3a8e] border border-blue-400/30 text-white font-bold shadow-[0_0_20px_rgba(37,99,235,0.3)]"
               >
                 JOIN LIVE <span className="ml-2 font-mono text-[10px] opacity-70">{data?.liveClass.timer}</span>
@@ -149,8 +137,8 @@ export default function StudentDashboard() {
         </div>
 
         {/* ── HORIZONTAL SCROLL SECTIONS ── */}
-        <HorizontalSection title="SHORT LIVE SESSIONS" viewAllTo={PATHS.SHORT_LIVE_SESSION} />
-        <HorizontalSection title="SHORT VIDEO FEED" isVideo viewAllTo={PATHS.VIDEO_UPLOAD} />
+        <HorizontalSection title="SHORT LIVE SESSIONS" viewAllTo={PATHS.SHORT_LIVE_SESSION} items={data?.shortLiveSessions} />
+        <HorizontalSection title="SHORT VIDEO FEED" isVideo viewAllTo={PATHS.VIDEO_UPLOAD} items={data?.shortLiveSessions} />
       </main>
 
       {/* ── BOTTOM NAVIGATION ── */}
