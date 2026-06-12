@@ -10,6 +10,19 @@ import {
 import { cn } from "@/lib/utils";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
+type McqOption = {
+  id: string;
+  text: string;
+};
+
+type McqQuestion = {
+  id: string;
+  question: string;
+  options: McqOption[];
+  correctAnswer: string;
+  _dbAnswer: unknown;
+};
+
 // Official Shadcn Components
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -37,7 +50,7 @@ export default function Mcq() {
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
   const [isFinished, setIsFinished] = useState(false);
 
-  const { data: questions, isLoading } = useQuery({
+  const { data: questions, isLoading } = useQuery<McqQuestion[]>({
     queryKey: ["quizQuestions"],
     queryFn: fetchQuizData,
   });
@@ -66,7 +79,7 @@ export default function Mcq() {
     const selected = userAnswers[currentIndex];
     if (selected && currentQuestion.id) {
       try {
-        const dbAnswer = currentQuestion.options.find((o: any) => o.id === selected)?.text;
+        const dbAnswer = currentQuestion.options.find((o: McqOption) => o.id === selected)?.text;
         if (dbAnswer) await studentApi.submitMcqAttempt(String(currentQuestion.id), dbAnswer);
       } catch { /* non-blocking */ }
     }
@@ -79,7 +92,7 @@ export default function Mcq() {
 
   const calculateScore = () => {
     let score = 0;
-    questions?.forEach((q, index) => {
+    questions?.forEach((q: McqQuestion, index: number) => {
       if (userAnswers[index] === q.correctAnswer) score++;
     });
     return score;
@@ -201,7 +214,7 @@ export default function Mcq() {
             </div>
 
             <div className="space-y-4 flex-1">
-              {currentQuestion.options.map((option) => {
+              {currentQuestion.options.map((option: McqOption) => {
                 const isSelected = userAnswers[currentIndex] === option.id;
                 return (
                   <Card key={option.id} onClick={() => handleSelect(option.id)} className={cn("cursor-pointer border-2 bg-transparent rounded-[1.5rem] transition-all", isSelected ? "border-cyan-500 bg-cyan-500/5 shadow-[0_0_20px_rgba(0,242,255,0.15)]" : "border-white/5")}>

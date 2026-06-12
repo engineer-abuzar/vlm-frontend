@@ -7,6 +7,12 @@ import {
   Sprout, Globe, Map as MapIcon, Book, Monitor, 
   CheckCircle2, Languages 
 } from "lucide-react";
+
+type SubjectItem = {
+  id: string;
+  label: string;
+  icon: typeof PlusSquare;
+};
 import { cn } from "@/lib/utils";
 
 // Official Shadcn Components
@@ -40,7 +46,7 @@ export default function SubjectSelection() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   // TanStack Query to fetch subjects
-  const { data: subjects, isLoading } = useQuery({
+  const { data: subjects, isLoading } = useQuery<SubjectItem[]>({
     queryKey: ["availableSubjects"],
     queryFn: fetchSubjects,
   });
@@ -80,7 +86,7 @@ export default function SubjectSelection() {
 
       {/* ── SUBJECTS GRID ── */}
       <main className="relative z-10  max-w-xs grid grid-cols-3 gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-        {subjects?.map((subject) => {
+        {subjects?.map((subject: SubjectItem) => {
           const isSelected = selectedIds.includes(subject.id);
           return (
             <Card 

@@ -7,6 +7,18 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type ShortSession = {
+  id: string;
+  tutor: string;
+  rating: string;
+  viewers: string;
+  topic: string;
+  rate: string;
+  desc: string;
+  avatar: string;
+  theme: string;
+};
+
 // Official Shadcn Components
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -40,7 +52,7 @@ const fetchShortSessions = async () => {
 
 export default function ShortLiveSessions() {
   const navigate = useNavigate();
-  const { data: sessions, isLoading } = useQuery({
+  const { data: sessions, isLoading } = useQuery<ShortSession[]>({
     queryKey: ["shortSessions"],
     queryFn: fetchShortSessions,
   });
@@ -79,7 +91,7 @@ export default function ShortLiveSessions() {
         {!sessions?.length && (
           <p className="text-center text-white/40 text-sm py-8">No teachers available right now</p>
         )}
-        {sessions?.map((session) => (
+        {sessions?.map((session: ShortSession) => (
           <Card 
             key={session.id} 
             className={cn(

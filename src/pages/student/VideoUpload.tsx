@@ -104,7 +104,7 @@ export default function VideoUpload() {
 
         {/* Class Select */}
         <UploadFieldCard icon={<Calendar className="text-cyan-400" />} label="Class">
-          <Select value={selectedClass} onValueChange={setSelectedClass}>
+          <Select value={selectedClass} onValueChange={(value) => setSelectedClass(value ?? "") }>
             <SelectTrigger className="border-none bg-transparent h-auto p-0 text-base text-white focus:ring-0">
               <SelectValue placeholder="Select Class (e.g., 10th)" />
             </SelectTrigger>
@@ -116,7 +116,7 @@ export default function VideoUpload() {
 
         {/* Subject Select */}
         <UploadFieldCard icon={<Book className="text-cyan-400" />} label="Subject">
-          <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+          <Select value={selectedSubject} onValueChange={(value) => setSelectedSubject(value ?? "") }>
             <SelectTrigger className="border-none bg-transparent h-auto p-0 text-base text-white focus:ring-0">
               <SelectValue placeholder="Select Subject (e.g., Physics)" />
             </SelectTrigger>

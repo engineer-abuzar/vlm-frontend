@@ -10,9 +10,9 @@ export interface RoleOption {
 export interface LoginPayload {
   phone?: string;
   email?: string;
-<<<<<<< HEAD
+
   password?: string;
-=======
+
   role?: Role;
 }
 
@@ -29,7 +29,7 @@ export interface VerifyOtpResponse {
     parentProfile?: unknown;
     teacherProfile?: unknown;
   };
->>>>>>> sumit
+
 }
 
 export interface AuthUser {
@@ -39,8 +39,6 @@ export interface AuthUser {
   token: string;
   isNewUser?: boolean;
 }
-<<<<<<< HEAD
-=======
 
 export interface Plan {
   id: string;
@@ -110,4 +108,3 @@ export interface DashboardData {
     desc: string;
   }>;
 }
->>>>>>> sumit

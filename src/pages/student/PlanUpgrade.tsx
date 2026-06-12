@@ -25,6 +25,7 @@ const fetchPlanDetails = async () => {
       current: i === 0 ? "Free / Basic" : plans[0]?.name ?? "Basic",
       premium: `₹${p.price}/mo`,
       subPremium: p.duration,
+      promo: p.promo ?? "",
       isTeal: i % 2 === 0,
     }));
   } catch {
@@ -91,7 +92,7 @@ export default function PlanUpgrade() {
           <div className="absolute right-0 top-0 bottom-0 w-[46%] rounded-[2rem] border-2 border-purple-500 shadow-[0_0_30px_rgba(168,85,247,0.2)] bg-purple-500/5 pointer-events-none z-0" />
 
           {/* Feature Rows */}
-          {features?.map((item) => (
+          {features?.map((item: { id: number; label: string; current: string; premium: string; subPremium: string; promo?: string; isTeal: boolean; icon: any }) => (
             <div key={item.id} className="relative flex items-center py-5 px-2 group">
               {/* Row Divider */}
               <Separator className="absolute bottom-0 left-0 right-0 bg-white/20" />

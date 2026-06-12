@@ -48,8 +48,6 @@ export default function LearningPlan() {
     };
   });
 
-  const selectedPlan = plans.find((p) => p.id === selectedPlanId)?.name ?? plans[0]?.name ?? "";
-
   if (isLoading) return <LoadingSkeleton />;
 
   const handleStartTrial = () => {

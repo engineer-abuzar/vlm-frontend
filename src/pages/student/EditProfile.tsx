@@ -57,10 +57,10 @@ export default function EditProfile() {
   useEffect(() => {
     if (profile) {
       setFormData({
-        name: profile.fullName ?? "",
-        nickname: profile.nickname ?? "",
-        class: profile.className ? `Class ${profile.className}th` : "Class 10th",
-        city: profile.city ?? "",
+        name: (profile as any).fullName ?? "",
+        nickname: (profile as any).nickname ?? "",
+        class: (profile as any).className ? `Class ${(profile as any).className}th` : "Class 10th",
+        city: (profile as any).city ?? "",
       });
     }
   }, [profile]);
@@ -144,7 +144,7 @@ export default function EditProfile() {
               onValueChange={(value) =>
                 setFormData({
                   ...formData,
-                  class: value,
+                  class: value ?? "Class 10th",
                 })
               }
             >
@@ -168,7 +168,7 @@ export default function EditProfile() {
               onValueChange={(value) =>
                 setFormData({
                   ...formData,
-                  city: value,
+                  city: value ?? "",
                 })
               }
             >

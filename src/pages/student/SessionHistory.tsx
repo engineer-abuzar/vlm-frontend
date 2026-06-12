@@ -3,9 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { PATHS } from "@/routes/paths";
 import {
   ChevronLeft, Calendar,
-  Video, Star, User, BookOpen,
-  Layers, Microscope
+  Video, Star, User,
+  Layers
 } from "lucide-react";
+
+type SessionCard = {
+  id: string;
+  name: string;
+  subject: string;
+  date: string;
+  type: string;
+  rating: string;
+  avatar: string;
+  icon: typeof Layers;
+};
 // import { cn } from "@/lib/utils";
 
 // Official Shadcn Components
@@ -40,7 +51,7 @@ const fetchSessionHistory = async () => {
 
 export default function SessionHistory() {
   const navigate = useNavigate();
-  const { data: sessions, isLoading } = useQuery({
+  const { data: sessions, isLoading } = useQuery<SessionCard[]>({
     queryKey: ["sessionHistory"],
     queryFn: fetchSessionHistory,
   });
@@ -68,7 +79,7 @@ export default function SessionHistory() {
 
       {/* ── HISTORY LIST ── */}
       <main className="space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        {sessions?.map((session) => (
+        {sessions?.map((session: SessionCard) => (
           <Card 
             key={session.id} 
             className="group border-white/5 bg-white/[0.03] border-1 border-purple-500/50 backdrop-blur-2xl rounded-lg overflow-hidden transition-all hover:bg-white/[0.06] hover:border-purple-500/80"

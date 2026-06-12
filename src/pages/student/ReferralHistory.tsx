@@ -4,6 +4,30 @@ import { PATHS } from "@/routes/paths";
 import { ChevronLeft, Users,   } from "lucide-react";
 // import { cn } from "@/lib/utils";
 import HistoryCard from "@/components/basic/student/HistoryCard";
+
+type ReferralCard = {
+  id: string;
+  name: string;
+  subject: string;
+  date: string;
+  status: string;
+  avatar: string;
+};
+
+type ReferralHistoryData = {
+  stats: {
+    total: number;
+    points: string;
+  };
+  student: {
+    active: ReferralCard[];
+    completed: ReferralCard[];
+  };
+  teacher: {
+    active: ReferralCard[];
+    completed: ReferralCard[];
+  };
+};
 // Official Shadcn Components
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -58,7 +82,7 @@ const fetchReferralHistory = async () => {
 
 export default function ReferralHistory() {
   const navigate = useNavigate();
-  const { data } = useQuery({
+  const { data } = useQuery<ReferralHistoryData>({
     queryKey: ["referralHistory"],
     queryFn: fetchReferralHistory,
   });

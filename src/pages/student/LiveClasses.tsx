@@ -10,9 +10,30 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useLiveClasses } from "@/hooks/use-student";
 
+type LiveClassData = {
+  liveNow?: {
+    viewers?: number;
+    avatar?: string;
+    tag?: string;
+    teacher?: string;
+    startTime?: string;
+    topic?: string;
+    sessionId?: string;
+  };
+  upcoming?: Array<{
+    id: string;
+    avatar?: string;
+    teacher?: string;
+    topic?: string;
+    date?: string;
+    time?: string;
+    sessionId?: string;
+  }>;
+};
+
 export default function LiveClasses() {
   const navigate = useNavigate();
-  const { data, isLoading } = useLiveClasses();
+  const { data, isLoading } = useLiveClasses<LiveClassData>();
 
   if (isLoading) return <LoadingSkeleton />;
 
