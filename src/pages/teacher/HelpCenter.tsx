@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { 
-  Search, FileText, Calendar, Video, DollarSign, 
-  ArrowRightLeft, Bug, Tv, ClipboardCheck, 
-  Star, Users, MessageCircle, Home, BookOpen, 
+import {
+  Search, FileText, Calendar, Video, DollarSign,
+  ArrowRightLeft, Bug, Tv, ClipboardCheck,
+  Star, Users, MessageCircle, Home, BookOpen,
   Wallet, Library, User, StarIcon
 } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
@@ -29,7 +29,7 @@ const HelpCenter: React.FC = () => {
 
   return (
     <div className={cn("min-h-screen flex flex-col p-4 pb-28 relative overflow-x-hidden", bgCss)}>
-      
+
       {/* Decorative Assets */}
       <div className="absolute top-40 -left-6 text-blue-500/20 blur-[1px] rotate-12">
         <StarIcon size={16} fill="currentColor" />
@@ -59,9 +59,9 @@ const HelpCenter: React.FC = () => {
             Help Center &<br />Teacher Support
           </h2>
           <div className="relative group">
-            <input 
-              type="text" 
-              placeholder="Search categories, FAQs, tickets..." 
+            <input
+              type="text"
+              placeholder="Search categories, FAQs, tickets..."
               className="w-full h-14 pl-12 pr-6 rounded-2xl border border-white/10 bg-zinc-900/50 text-zinc-300 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500/50 transition-all"
             />
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-cyan-400 transition-colors" />
@@ -78,7 +78,7 @@ const HelpCenter: React.FC = () => {
         </section>
 
         {/* FAQ Section */}
-        <motion.section 
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -87,7 +87,7 @@ const HelpCenter: React.FC = () => {
           <h3 className="text-[13px] font-black text-white uppercase tracking-[0.2em] mb-8">
             Frequently Asked Questions
           </h3>
-          
+
           <div className="flex flex-col">
             <FAQItem question="How do I update my KYC documents?" description="View all conditions how do I update my KYC documents." />
             <FAQItem question="What is the content approval timeline?" description="What is the common content approval timeline?" />
@@ -116,7 +116,7 @@ const NavItem = ({ icon, label, active = false }: { icon: React.ReactNode, label
     active ? "text-cyan-400" : "text-zinc-600 hover:text-zinc-400"
   )}>
     <div className={cn("relative transition-transform", active && "drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] scale-110")}>
-      {React.cloneElement(icon as React.ReactElement, { size: 24, strokeWidth: active ? 2.5 : 1.5 })}
+      {React.cloneElement(icon as React.ReactElement<any>, ({ size: 24, strokeWidth: active ? 2.5 : 1.5 } as any))}
     </div>
     <span className="text-[10px] font-bold uppercase tracking-widest leading-none">{label}</span>
   </button>

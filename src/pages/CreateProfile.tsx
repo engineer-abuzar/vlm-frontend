@@ -102,7 +102,7 @@ export default function CreateProfileShadcn() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label className="text-[10px] uppercase tracking-widest text-muted-foreground">Class</Label>
-                <Select value={className} onValueChange={setClassName}>
+                <Select value={className} onValueChange={(val) => setClassName(val ?? "")}>
                   <SelectTrigger className="bg-black border-white/10 h-12 rounded-xl">
                     <SelectValue placeholder="Class 9th" />
                   </SelectTrigger>
@@ -114,7 +114,7 @@ export default function CreateProfileShadcn() {
               </div>
               <div className="space-y-1.5">
                 <Label className="text-[10px] uppercase tracking-widest text-muted-foreground">Board</Label>
-                <Select value={board} onValueChange={setBoard}>
+                <Select value={board} onValueChange={(val) => setBoard(val ?? "")}>
                   <SelectTrigger className="bg-black border-white/10 h-12 rounded-xl">
                     <SelectValue placeholder="CBSE" />
                   </SelectTrigger>
@@ -162,7 +162,7 @@ export default function CreateProfileShadcn() {
               </div>
               <div className="space-y-1.5">
                 <Label className="text-[10px] uppercase tracking-widest text-muted-foreground">State</Label>
-                <Select value={state} onValueChange={setState}>
+                <Select value={state} onValueChange={(val) => setState(val ?? "")}>
                   <SelectTrigger className="bg-black border-white/10 h-12 rounded-xl">
                     <SelectValue placeholder="MH" />
                   </SelectTrigger>

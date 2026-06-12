@@ -92,26 +92,26 @@ export const studentApi = {
 
     const liveNow = activeSession
       ? {
-          teacher: activeSession.teacher?.fullName ?? 'Teacher',
-          topic: activeSession.topic ?? 'Live Class Session',
-          startTime: activeSession.startedAt
-            ? `Started ${new Date(activeSession.startedAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}`
-            : 'Live Now',
-          viewers: '0',
-          tag: activeSession.type ?? 'LIVE',
-          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${activeSession.teacher?.fullName ?? 'teacher'}`,
-          sessionId: activeSession.id,
-        }
+        teacher: activeSession.teacher?.fullName ?? 'Teacher',
+        topic: activeSession.topic ?? 'Live Class Session',
+        startTime: activeSession.startedAt
+          ? `Started ${new Date(activeSession.startedAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}`
+          : 'Live Now',
+        viewers: '0',
+        tag: activeSession.type ?? 'LIVE',
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${activeSession.teacher?.fullName ?? 'teacher'}`,
+        sessionId: activeSession.id,
+      }
       : teachers?.length
         ? {
-            teacher: teachers[0].fullName,
-            topic: teachers[0].qualification ?? 'Expert Session Available',
-            startTime: 'Available Now',
-            viewers: '0',
-            tag: 'LIVE',
-            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${teachers[0].fullName}`,
-            sessionId: null,
-          }
+          teacher: teachers[0].fullName,
+          topic: teachers[0].qualification ?? 'Expert Session Available',
+          startTime: 'Available Now',
+          viewers: '0',
+          tag: 'LIVE',
+          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${teachers[0].fullName}`,
+          sessionId: null,
+        }
         : null;
 
     const upcoming = pendingSessions.map((s: any) => ({
@@ -226,11 +226,10 @@ export const studentApi = {
   },
 
   submitDoubtWithImages: async (formData: FormData) => {
-    const { data } = await apiClient.post('/doubts', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    const { data } = await apiClient.post('/doubts', formData);
     return data.doubt;
   },
+
 
   getMyDoubts: async (params?: { status?: string; page?: number; limit?: number }) => {
     const query = new URLSearchParams();

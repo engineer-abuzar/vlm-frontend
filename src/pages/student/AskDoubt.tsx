@@ -1,9 +1,9 @@
 import { bgCss } from "@/helper/CssHelper";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { 
-  ChevronLeft, Bell, Camera, Image as ImageIcon, 
-  Bot, MessageCircle, Phone, Video 
+import {
+  ChevronLeft, Bell, Camera, Image as ImageIcon,
+  Bot, MessageCircle, Phone, Video
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,7 +19,7 @@ import { PATHS } from "@/routes/paths";
 import { studentApi } from "@/lib/student-api";
 
 const fetchSubjects = () => studentApi.getSubjectsWithIds();
-const fetchChapters = (subjectId: string, subjectName: string) =>
+const fetchChapters = (subjectName: string) =>
   studentApi.getChaptersBySubjectName(subjectName);
 
 export default function AskDoubt() {
@@ -57,19 +57,19 @@ export default function AskDoubt() {
   };
   // TanStack Query for dynamic data
   const { data: subjects } = useQuery({ queryKey: ["subjects"], queryFn: fetchSubjects });
-  const { data: chapters } = useQuery({ 
-    queryKey: ["chapters", selectedSubject], 
-    queryFn: () => fetchChapters(selectedSubject, selectedSubjectName),
-    enabled: !!selectedSubject 
+  const { data: chapters } = useQuery({
+    queryKey: ["chapters", selectedSubject],
+    queryFn: () => fetchChapters(selectedSubjectName),
+    enabled: !!selectedSubject
   });
 
   return (
     <div className={`${bgCss} min-h-svh w-full bg-[#050505] text-white flex flex-col items-center pb-7 overflow-x-hidden`}>
-      
+
       {/* ── HEADER ── */}
       <header className="w-full max-w-xl flex items-center justify-between px-6 py-8">
         <Button variant="outline" size="icon" onClick={() => navigate(PATHS.STUDENT_DASHBOARD)} className="rounded-xl border-white/10 bg-white/5 text-white">
-          <ChevronLeft  className="h-5 w-5" />
+          <ChevronLeft className="h-5 w-5" />
         </Button>
         <h1 className="text-xl font-bold tracking-tight">Ask Your Doubt</h1>
         <Button variant="ghost" size="icon" className="relative text-white">
@@ -79,24 +79,25 @@ export default function AskDoubt() {
       </header>
 
       <main className="w-full max-w-xl px-6 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        
+
         {/* ── INPUT SECTION CARD ── */}
         <Card className="border-white/5 bg-[#1a1a1a]/40 backdrop-blur-xl rounded-[2rem] overflow-hidden shadow-2xl">
           <CardContent className="p-6 space-y-6">
-            
+
             {/* Subject Select */}
             <div className="space-y-2">
               <Label className="text-white/80 text-sm font-semibold">Select Subject</Label>
               <Select onValueChange={(val) => {
-                const sub = subjects?.find((s: any) => s.id === val);
-                setSelectedSubject(val);
+                const v = String((val ?? "") as any);
+                const sub = subjects?.find((s: any) => s.id === v);
+                setSelectedSubject(String(v));
                 setSelectedSubjectName(sub?.name ?? "");
-                setSelectedSubjectId(val);
+                setSelectedSubjectId(String(v));
               }}>
                 <SelectTrigger className=" rounded-2xl w-full  border-white/10 bg-black/40 text-white focus:ring-teal-500/50">
                   <SelectValue placeholder="Select Subject" />
                 </SelectTrigger>
-                <SelectContent  className="bg-[#1a1a1a]  border-white/10 text-white">
+                <SelectContent className="bg-[#1a1a1a]  border-white/10 text-white">
                   {subjects?.map((s: any) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
                 </SelectContent>
               </Select>
@@ -105,7 +106,7 @@ export default function AskDoubt() {
             {/* Chapter Select */}
             <div className="space-y-2">
               <Label className="text-white/80 text-sm font-semibold">Select Chapter</Label>
-              <Select onValueChange={setSelectedChapterId}>
+              <Select onValueChange={(val) => setSelectedChapterId(String(val ?? ""))}>
                 <SelectTrigger className="w-full rounded-2xl border-white/10 bg-black/40 text-white focus:ring-teal-500/50">
                   <SelectValue placeholder="Select Chapter" />
                 </SelectTrigger>
@@ -117,8 +118,8 @@ export default function AskDoubt() {
 
             {/* Detailed Question Area */}
             <div className="space-y-2 relative">
-              <Textarea 
-                placeholder="Type your detailed question here..." 
+              <Textarea
+                placeholder="Type your detailed question here..."
                 className="min-h-[180px] rounded-2xl border-white/10 bg-black/40 text-white placeholder:text-white/20 p-4 focus-visible:ring-teal-500/50"
                 maxLength={1000}
                 onChange={(e) => setQuestion(e.target.value)}
@@ -150,34 +151,34 @@ export default function AskDoubt() {
         <div >
           <Label className="text-white font-bold tracking-tight px-1">Choose Session Type</Label>
           <div className="flex overflow-x-auto   gap-3 py-4 px-1 snap-x no-scrollbar">
-    
-            <SessionCard 
-              icon={<Bot />} 
-              title="AI Tutor" 
-              desc="Instant Help from AI" 
+
+            <SessionCard
+              icon={<Bot />}
+              title="AI Tutor"
+              desc="Instant Help from AI"
               active={sessionType === "AI Tutor"}
               onClick={() => setSessionType("AI Tutor")}
             />
-            
-            <SessionCard 
-              icon={<MessageCircle />} 
-              title="Human Chat" 
-              desc="Expert Educator" 
+
+            <SessionCard
+              icon={<MessageCircle />}
+              title="Human Chat"
+              desc="Expert Educator"
               active={sessionType === "Human Chat"}
               onClick={() => setSessionType("Human Chat")}
             />
-            
-            <SessionCard 
-              icon={<Phone />} 
-              title="Audio Call" 
-              desc="Live Discussion" 
+
+            <SessionCard
+              icon={<Phone />}
+              title="Audio Call"
+              desc="Live Discussion"
               active={sessionType === "Audio Call"}
               onClick={() => setSessionType("Audio Call")}
             />
-            <SessionCard 
-              icon={<Video />} 
-              title="Video Call" 
-              desc="Personalized Session" 
+            <SessionCard
+              icon={<Video />}
+              title="Video Call"
+              desc="Personalized Session"
               active={sessionType === "Video Call"}
               onClick={() => setSessionType("Video Call")}
             />
@@ -187,10 +188,10 @@ export default function AskDoubt() {
 
         {/* ── SUBMIT BUTTON ── */}
         <div className="pt-6 relative">
-            <div className="absolute inset-x-0 bottom-0 top-6 bg-teal-600/20 blur-3xl rounded-full" />
-            <Button onClick={handleConnect} className="relative w-full h-16 rounded-full bg-gradient-to-r from-teal-600 to-blue-700 text-white font-black tracking-widest text-lg shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">
-              CONNECT NOW
-            </Button>
+          <div className="absolute inset-x-0 bottom-0 top-6 bg-teal-600/20 blur-3xl rounded-full" />
+          <Button onClick={handleConnect} className="relative w-full h-16 rounded-full bg-gradient-to-r from-teal-600 to-blue-700 text-white font-black tracking-widest text-lg shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">
+            CONNECT NOW
+          </Button>
         </div>
 
       </main>
@@ -201,7 +202,7 @@ export default function AskDoubt() {
 // ── Reusable Session Card (Using Shadcn Card) ──
 function SessionCard({ icon, title, desc, active, onClick }: any) {
   return (
-    <Card 
+    <Card
       onClick={onClick}
       className={cn(
         "cursor-pointer flex-none w-[calc(33.33%-8px)] border-white/5 bg-[#1a1a1a]/60 backdrop-blur-md rounded-2xl transition-all duration-300",

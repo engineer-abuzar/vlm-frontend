@@ -144,7 +144,7 @@ export default function EditProfile() {
               onValueChange={(value) =>
                 setFormData({
                   ...formData,
-                  class: value,
+                  class: (value ?? "") as string,
                 })
               }
             >
@@ -168,7 +168,7 @@ export default function EditProfile() {
               onValueChange={(value) =>
                 setFormData({
                   ...formData,
-                  city: value,
+                  city: (value ?? "") as string,
                 })
               }
             >

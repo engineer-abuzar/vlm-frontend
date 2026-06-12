@@ -13,7 +13,7 @@ const Requests: React.FC = () => {
 
   return (
     <div className={cn("min-h-screen flex flex-col p-4 pb-28 relative overflow-x-hidden", bgCss)}>
-      
+
       {/* Header */}
       <header className="w-full max-w-xl mx-auto flex items-center justify-between py-6 mb-2">
         <div className="flex-1" /> {/* Spacer */}
@@ -61,11 +61,11 @@ const NavItem = ({ icon, label, active = false }: { icon: React.ReactNode, label
     active ? "text-cyan-400" : "text-zinc-600 hover:text-zinc-400"
   )}>
     <div className={cn("relative transition-transform duration-300", active && "scale-110 drop-shadow-[0_0_12px_rgba(34,211,238,0.6)]")}>
-      {React.cloneElement(icon as React.ReactElement, { size: 24, strokeWidth: active ? 2.5 : 1.5 })}
+      {React.cloneElement(icon as React.ReactElement<any>, ({ size: 24, strokeWidth: active ? 2.5 : 1.5 } as any))}
       {active && (
-        <motion.div 
-           layoutId="activeTabGlow"
-           className="absolute inset-0 bg-cyan-400/20 blur-md rounded-full -z-10"
+        <motion.div
+          layoutId="activeTabGlow"
+          className="absolute inset-0 bg-cyan-400/20 blur-md rounded-full -z-10"
         />
       )}
     </div>

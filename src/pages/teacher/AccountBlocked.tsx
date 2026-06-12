@@ -18,7 +18,7 @@ const AccountBlocked: React.FC = () => {
 
   return (
     <div className={cn("min-h-screen flex flex-col p-4 pb-24 relative overflow-x-hidden bg-black", bgCss)}>
-      
+
       {/* App Header */}
       <header className="flex items-center gap-4 py-8 px-2">
         <div className="w-12 h-12 bg-white rounded-2xl shadow-lg flex items-center justify-center shrink-0">
@@ -93,20 +93,20 @@ const AccountBlocked: React.FC = () => {
 };
 
 // Internal Helper for Bottom Navigation
-const NavItem = ({ 
-  icon, 
-  label, 
-  variant = "default" 
-}: { 
-  icon: React.ReactNode, 
-  label: string, 
-  variant?: "default" | "danger" 
+const NavItem = ({
+  icon,
+  label,
+  variant = "default"
+}: {
+  icon: React.ReactNode,
+  label: string,
+  variant?: "default" | "danger"
 }) => (
   <button className={cn(
     "flex flex-col items-center gap-1.5 transition-all opacity-60 hover:opacity-100",
     variant === "danger" ? "text-white" : "text-zinc-500"
   )}>
-    {React.cloneElement(icon as React.ReactElement, { size: 24, strokeWidth: 1.5 })}
+    {React.cloneElement(icon as React.ReactElement<any>, ({ size: 24, strokeWidth: 1.5 } as any))}
     <span className="text-[10px] font-bold tracking-tight">{label}</span>
   </button>
 );

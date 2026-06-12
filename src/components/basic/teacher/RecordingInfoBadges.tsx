@@ -21,7 +21,7 @@ const InfoBadge: React.FC<InfoBadgeProps> = ({ icon, title, subtitle, variant = 
       styles[variant]
     )}>
       <div className="text-zinc-300">
-        {React.cloneElement(icon as React.ReactElement<any>, { size: 24, strokeWidth: 1.5 })}
+        {React.cloneElement(icon as React.ReactElement<any>, ({ size: 24, strokeWidth: 1.5 } as any))}
       </div>
       <div className="flex flex-col">
         <span className="text-[11px] font-bold text-zinc-200 tracking-tight">{title}</span>

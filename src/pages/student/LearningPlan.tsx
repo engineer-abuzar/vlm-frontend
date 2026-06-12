@@ -48,7 +48,7 @@ export default function LearningPlan() {
     };
   });
 
-  const selectedPlan = plans.find((p) => p.id === selectedPlanId)?.name ?? plans[0]?.name ?? "";
+
 
   if (isLoading) return <LoadingSkeleton />;
 
@@ -64,7 +64,7 @@ export default function LearningPlan() {
 
   return (
     <div className="vlm-bg relative min-h-svh w-full bg-[#050505] text-white flex flex-col items-center px-4 pb-40 overflow-x-hidden">
-      
+
       {/* ── Background Glow ── */}
       <div className="absolute top-[10%] left-[-10%] w-[300px] h-[300px] bg-blue-700/10 blur-[120px]" />
       <div className="absolute bottom-[20%] right-[-10%] w-[300px] h-[300px] bg-purple-900/10 blur-[120px]" />
@@ -81,7 +81,7 @@ export default function LearningPlan() {
 
       {/* ── Plans Grid ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10 w-full max-w-xs md:max-w-2xl">
-        {plans.map((plan) => (
+        {plans.map((plan: any) => (
           <Card
             key={plan.id}
             onClick={() => setSelectedPlanId(plan.id)}
@@ -89,9 +89,9 @@ export default function LearningPlan() {
               "relative cursor-pointer transition-all duration-500 border-none  backdrop-blur-xl rounded-[2rem] overflow-visible",
               plan.glow,
               (selectedPlanId || plans[0]?.id) === plan.id ? "ring-2 ring-offset-2 ring-offset-black" : "opacity-80 scale-[0.98]",
-              (selectedPlanId || plans[0]?.id) === plan.id && plan.name === "Premium Plan" ? "ring-yellow-500/50 bg-yellow-300/10" : 
-              (selectedPlanId || plans[0]?.id) === plan.id && plan.name === "Pro Plan" ? "ring-blue-500/50 bg-blue-400/10" : 
-              (selectedPlanId || plans[0]?.id) === plan.id && plan.name === "Basic Plan" ? "ring-cyan-500/50 bg-cyan-500/10" : ""
+              (selectedPlanId || plans[0]?.id) === plan.id && plan.name === "Premium Plan" ? "ring-yellow-500/50 bg-yellow-300/10" :
+                (selectedPlanId || plans[0]?.id) === plan.id && plan.name === "Pro Plan" ? "ring-blue-500/50 bg-blue-400/10" :
+                  (selectedPlanId || plans[0]?.id) === plan.id && plan.name === "Basic Plan" ? "ring-cyan-500/50 bg-cyan-500/10" : ""
             )}
           >
             {/* Recommended Badge */}
@@ -120,7 +120,7 @@ export default function LearningPlan() {
             <Separator className={cn("bg-white/10 w-[85%] mx-auto", plan.border)} />
 
             <CardContent className="space-y-6 pt-8 pb-10">
-              {plan.features.map((feat, idx) => (
+              {plan.features.map((feat: any, idx: number) => (
                 <div key={idx} className="flex items-start gap-3">
                   <div className={cn("mt-1", plan.color)}>
                     <feat.icon size={18} strokeWidth={2} />
@@ -143,11 +143,11 @@ export default function LearningPlan() {
         <p className="text-white font-bold text-xl tracking-tight">
           Activate trial for <span className="text-white">₹1</span>
         </p>
-        
+
         <div className="w-full max-w-xl relative">
           {/* Intense Blue Glow */}
           <div className="absolute inset-x-0 bottom-0 h-16 bg-blue-500/30 blur-[40px] rounded-full" />
-          
+
           <Button
             onClick={handleStartTrial}
             disabled={activateTrial.isPending || plans.length === 0}

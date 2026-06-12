@@ -25,8 +25,8 @@ const ReferralStatsCard: React.FC<ReferralStatsCardProps> = ({ icon, value, labe
       )}
     >
       <div className="opacity-80">
-        {React.isValidElement(icon) 
-          ? React.cloneElement(icon as React.ReactElement , { size: 24 }) 
+        {React.isValidElement(icon)
+          ? React.cloneElement(icon as React.ReactElement<any>, ({ size: 24 } as any))
           : icon}
       </div>
       <div className="space-y-1">

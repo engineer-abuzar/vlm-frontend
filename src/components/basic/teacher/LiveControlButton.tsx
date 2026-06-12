@@ -6,6 +6,7 @@ interface LiveControlButtonProps {
   icon: React.ReactNode;
   label: string;
   variant?: "default" | "active" | "danger";
+  active?: boolean;
   onClick?: () => void;
 }
 
@@ -13,8 +14,10 @@ const LiveControlButton: React.FC<LiveControlButtonProps> = ({
   icon,
   label,
   variant = "default",
+  active,
   onClick
 }) => {
+  if ((active as boolean) === true) variant = "active";
   const variants = {
     default: "bg-white/10 border-white/5 text-zinc-400",
     active: "bg-blue-600 border-blue-400/50 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]",
@@ -31,7 +34,7 @@ const LiveControlButton: React.FC<LiveControlButtonProps> = ({
           variants[variant]
         )}
       >
-        {React.cloneElement(icon as React.ReactElement<any>, { size: 24, strokeWidth: 2 })}
+        {React.cloneElement(icon as React.ReactElement<any>, ({ size: 24, strokeWidth: 2 } as any))}
       </motion.button>
       <span className={cn(
         "text-[10px] font-black uppercase tracking-widest",

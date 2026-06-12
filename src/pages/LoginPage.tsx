@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
+import type { Role } from "@/types";
 import { useNavigate } from "react-router-dom";
-import {  Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { VlmWordmark } from "@/components/basic/VlmWordMark";
 // --- SHADCN UI COMPONENTS ---
@@ -42,7 +43,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
-  const role = (sessionStorage.getItem("vlm_role") ?? "teacher") as string;
+  const role = (sessionStorage.getItem("vlm_role") ?? "teacher") as Role;
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
@@ -59,6 +60,8 @@ export default function LoginPage() {
       ? { email: emailVal, role }
       : { phone: phoneVal, role };
 
+    const identifier = emailVal ? emailVal : phoneVal;
+    sessionStorage.setItem("vlm_identifier", identifier);
     if (!emailVal) {
       sessionStorage.setItem("vlm_phone", phoneVal);
     }
@@ -67,6 +70,7 @@ export default function LoginPage() {
       onSuccess: () => navigate(PATHS.OTP),
     });
   };
+
   return (
     <Container className="vlm-bg-navy">
       {/* Background Decor Components */}

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { 
-  ChevronLeft, 
-  Home, 
-  BookOpen, 
-  Wallet, 
-  Library, 
+import {
+  ChevronLeft,
+  Home,
+  BookOpen,
+  Wallet,
+  Library,
   User,
-  Star 
+  Star
 } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,7 @@ const EarningsHistory: React.FC = () => {
 
   return (
     <div className={cn("min-h-screen flex flex-col p-4 pb-28 relative overflow-x-hidden", bgCss)}>
-      
+
       {/* Decorative Assets */}
       <div className="absolute top-20 -left-2 text-cyan-400/20 blur-[1px] rotate-45">
         <Star size={16} fill="currentColor" />
@@ -31,16 +31,16 @@ const EarningsHistory: React.FC = () => {
 
       {/* Header */}
       <header className="flex items-center justify-between py-4 mb-6">
-        <button 
+        <button
           onClick={() => navigate(-1)}
           className="p-2 -ml-2 text-white hover:opacity-70 transition-opacity"
         >
           <ChevronLeft size={28} />
         </button>
-        
+
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-500 shadow-inner">
-             <div className="w-4 h-4 bg-zinc-800 rounded-sm" />
+            <div className="w-4 h-4 bg-zinc-800 rounded-sm" />
           </div>
           <h1 className="text-base font-black text-white tracking-tight">Earnings History</h1>
         </div>
@@ -66,42 +66,42 @@ const EarningsHistory: React.FC = () => {
           </h3>
 
           <div className="flex flex-col">
-            <HistoryItem 
+            <HistoryItem
               type="chat"
               title="Chat Session"
               subtitle="Doubt ID: #VLM-C-458"
               timestamp="Sep 29, 2024 • 10:15 AM"
               points="750"
             />
-            <HistoryItem 
+            <HistoryItem
               type="video_lesson"
               title="Video Lesson"
               subtitle="Student: Aisha C."
               timestamp="Sep 29, 2024 • 10:15 AM"
               points="3,500"
             />
-            <HistoryItem 
+            <HistoryItem
               type="live_class"
               title="Live Class"
               subtitle="Sep 29, 2024 • 10:15 AM"
               timestamp="Sep 29, 2024 • 10:15 AM"
               points="55,000"
             />
-            <HistoryItem 
+            <HistoryItem
               type="course"
               title="Course: Calculus 101"
               subtitle="Sep 29, 2024 • 10:15 AM"
               timestamp="Sep 29, 2024 • 10:15 AM"
               points="55,000"
             />
-            <HistoryItem 
+            <HistoryItem
               type="short_video"
               title="Short Video"
               subtitle="motion basics video"
               timestamp="Sep 29, 2024 • 10:15 AM"
               points="2,000"
             />
-            <HistoryItem 
+            <HistoryItem
               type="penalty"
               title="Penalty"
               subtitle="Content copyright violation"
@@ -132,7 +132,7 @@ const NavItem = ({ icon, label, active = false }: { icon: React.ReactNode, label
     active ? "text-cyan-400" : "text-zinc-600 hover:text-zinc-400"
   )}>
     <div className={cn("relative", active && "drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]")}>
-      {React.cloneElement(icon as React.ReactElement , { size: 24, strokeWidth: active ? 2.5 : 1.5 })}
+      {React.cloneElement(icon as React.ReactElement<any>, ({ size: 24, strokeWidth: active ? 2.5 : 1.5 } as any))}
     </div>
     <span className="text-[10px] font-bold uppercase tracking-widest">{label}</span>
     {active && <motion.div layoutId="navDot" className="w-1 h-1 rounded-full bg-cyan-400" />}

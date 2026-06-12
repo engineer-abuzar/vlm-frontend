@@ -10,8 +10,8 @@ export function useSendOtp() {
 
 export function useVerifyOtp() {
   return useMutation({
-    mutationFn: ({ phone, otp }: { phone: string; otp: string }) =>
-      authApi.verifyOtp(phone, otp),
+    mutationFn: ({ identifier, otp }: { identifier: string; otp: string }) =>
+      authApi.verifyOtp(identifier, otp),
     onSuccess: (data) => {
       localStorage.setItem("vlm_token", data.token);
     },

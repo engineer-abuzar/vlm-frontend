@@ -15,12 +15,12 @@ const ReferStudentPortal: React.FC = () => {
 
   return (
     <div className={cn("min-h-screen flex flex-col p-4 pb-28 relative overflow-x-hidden", bgCss)}>
-      
+
       {/* Header */}
       <header className="flex items-center justify-between py-4 mb-6">
         <div className="flex items-center gap-4">
-          <button 
-            onClick={() => navigate(-1)} 
+          <button
+            onClick={() => navigate(-1)}
             className="p-2 -ml-2 text-white hover:opacity-70 transition-opacity"
           >
             <ArrowLeft size={28} />
@@ -37,7 +37,7 @@ const ReferStudentPortal: React.FC = () => {
 
       <div className="w-full max-w-xl mx-auto space-y-10">
         <ReferralPromoCard />
-        
+
         <div className="space-y-12">
           <LinkShareInput link="vlm.academy/sr/54321/teacher1" />
           <ReferralCodeBox code="TEACHER1-54321" />
@@ -64,7 +64,7 @@ const NavItem = ({ icon, label, active = false }: { icon: React.ReactNode, label
     active ? "text-cyan-400" : "text-zinc-600 hover:text-zinc-400"
   )}>
     <div className={cn("relative", active && "drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]")}>
-      {React.cloneElement(icon as React.ReactElement, { size: 24, strokeWidth: active ? 2.5 : 1.5 })}
+      {React.cloneElement(icon as React.ReactElement<any>, ({ size: 24, strokeWidth: active ? 2.5 : 1.5 } as any))}
     </div>
     <span className="text-[10px] font-bold uppercase tracking-widest">{label}</span>
     {active && <motion.div layoutId="navDot" className="w-1 h-1 rounded-full bg-cyan-400" />}

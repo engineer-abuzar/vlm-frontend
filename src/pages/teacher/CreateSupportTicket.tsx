@@ -1,14 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  DollarSign, 
-  Home, 
-  BookOpen, 
-  Wallet, 
-  Library, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  DollarSign,
+  Home,
+  BookOpen,
+  Wallet,
+  Library,
   User,
   Star
 } from "lucide-react";
@@ -25,7 +25,7 @@ const CreateSupportTicket: React.FC = () => {
 
   return (
     <div className={cn("min-h-screen flex flex-col p-4 pb-28 relative overflow-x-hidden", bgCss)}>
-      
+
       {/* Decorative BG Assets */}
       <div className="absolute top-40 -left-4 text-blue-500/20 blur-[1px] rotate-45">
         <Star size={16} fill="currentColor" />
@@ -56,7 +56,7 @@ const CreateSupportTicket: React.FC = () => {
         </h2>
 
         {/* Form Inputs */}
-        <TicketFormField 
+        <TicketFormField
           label="Select Issue Category"
           type="select"
           placeholder="Select Category (e.g., Wallet Issue)"
@@ -64,14 +64,14 @@ const CreateSupportTicket: React.FC = () => {
           helperText="Helps route to the right team"
         />
 
-        <TicketFormField 
+        <TicketFormField
           label="Subject"
           placeholder="Enter a brief summary of your problem"
           helperText="Briefly describe the issue"
           charCount="0 / 0"
         />
 
-        <TicketFormField 
+        <TicketFormField
           label="Detailed Description"
           type="textarea"
           placeholder="Type your detailed description here..."
@@ -83,7 +83,7 @@ const CreateSupportTicket: React.FC = () => {
         <FileUploadSection />
 
         {/* Submit Action */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="pt-4"
@@ -118,7 +118,7 @@ const NavItem = ({ icon, label, active = false }: { icon: React.ReactNode, label
     active ? "text-cyan-400" : "text-zinc-600 hover:text-zinc-400"
   )}>
     <div className={cn("relative transition-transform duration-300", active && "scale-110 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]")}>
-      {React.cloneElement(icon as React.ReactElement, { size: 24, strokeWidth: active ? 2.5 : 1.5 })}
+      {React.cloneElement(icon as React.ReactElement<any>, ({ size: 24, strokeWidth: active ? 2.5 : 1.5 } as any))}
     </div>
     <span className="text-[10px] font-bold uppercase tracking-widest leading-none">{label}</span>
   </button>

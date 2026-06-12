@@ -13,17 +13,19 @@ import {
 import { BackgroundElement } from "@/components/basic/BackgroundElements";
 import { useVerifyOtp } from "@/hooks/use-auth";
 import { PATHS } from "@/routes/paths";
-import type { Role, VerifyOtpResponse } from "@/types";
+import type { Role } from "@/types";
 import { authApi } from "@/lib/auth-api";
 
 function resolvePostOtpPath(role: Role, isNewUser: boolean): string {
-  if (role === "parent" || role === "teacher") {
+  if (role === "teacher") {
+    return isNewUser ? PATHS.TEACHER_REGISTRATION : PATHS.TEACHER_DASHBOARD;
+  }
+
+  if (role === "parent") {
     return PATHS.COMING_SOON;
   }
 
-  return isNewUser
-    ? PATHS.CREATE_PROFILE
-    : PATHS.STUDENT_DASHBOARD;
+  return isNewUser ? PATHS.CREATE_PROFILE : PATHS.STUDENT_DASHBOARD;
 }
 
 export default function OtpVerificationPage() {
@@ -36,14 +38,12 @@ export default function OtpVerificationPage() {
   const role = (sessionStorage.getItem("vlm_role") ??
     "student") as Role;
 
-  const phone =
-    sessionStorage.getItem("vlm_phone") || "";
+  const identifier = sessionStorage.getItem("vlm_identifier") || "";
 
-  const maskedPhone = phone
-    ? phone.replace(
-        /(\+91)(\d{2})\d{4}(\d{4})/,
-        "$1 $2****$3"
-      )
+  const maskedIdentifier = identifier
+    ? identifier.includes("@")
+      ? identifier.replace(/(.{3}).+(@.+)/, "$1...$2")
+      : identifier.replace(/(\+91)(\d{2})\d{4}(\d{4})/, "$1 $2****$3")
     : "";
 
   useEffect(() => {
@@ -57,21 +57,21 @@ export default function OtpVerificationPage() {
     }
   }, [timer]);
 
-  const handleVerify = () => {
-    if (otpValue.length !== 6) return;
+  const handleVerify = async () => {
+    if (otpValue.length !== 6 || !identifier) return;
 
-    const phone =
-      sessionStorage.getItem("vlm_phone") ??
-      "+919999999999";
+    try {
+      const data = await verifyMutation.mutateAsync({ identifier, otp: otpValue });
 
-    verifyMutation.mutate(
-      { phone, otp: otpValue },
-      {
-        onSuccess: (data: VerifyOtpResponse) => {
-          navigate(resolvePostOtpPath(role, data.isNewUser), { replace: true });
-        },
+      if (data.user?.role?.toLowerCase() !== role) {
+        const updated = await authApi.selectRole(role);
+        localStorage.setItem("vlm_token", updated.token);
       }
-    );
+
+      navigate(resolvePostOtpPath(role, data.isNewUser), { replace: true });
+    } catch {
+      // The mutation will handle error UI through React Query.
+    }
   };
 
   return (
@@ -100,7 +100,7 @@ export default function OtpVerificationPage() {
 
             <div className="flex items-center justify-center gap-2">
               <span className="text-white text-xl font-bold tracking-tight">
-                {maskedPhone}
+                {maskedIdentifier}
               </span>
 
               <div className="bg-green-500 rounded-full p-0.5">
@@ -161,7 +161,11 @@ export default function OtpVerificationPage() {
               variant="link"
               className="text-blue-400 font-medium p-0 h-auto underline underline-offset-4 hover:text-blue-300"
               onClick={() => {
-                if (phone) authApi.sendOtp({ phone, role });
+                if (!identifier) return;
+                const payload = identifier.includes("@")
+                  ? { email: identifier, role }
+                  : { phone: identifier, role };
+                authApi.sendOtp(payload);
                 setTimer(58);
               }}
             >

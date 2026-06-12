@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "@/routes/paths";
-import { ChevronLeft, Users,   } from "lucide-react";
+import { ChevronLeft, Users, } from "lucide-react";
 // import { cn } from "@/lib/utils";
 import HistoryCard from "@/components/basic/student/HistoryCard";
 // Official Shadcn Components
@@ -66,101 +66,101 @@ export default function ReferralHistory() {
     <div className={`${bgCss}relative min-h-svh w-full bg-[#050505] text-white flex flex-col items-center px-6 pt-5 overflow-x-hidden pb-10`}>
       <div className="max-w-xl">
 
-      
-      {/* ── HEADER ── */}
-      <header className="relative z-10 flex w-full items-center justify-between mb-5">
-        <Button variant="outline" size="icon" className="h-10 w-10 rounded-xl border-white/10 bg-white/5 text-white backdrop-blur-md" onClick={() => navigate(PATHS.REFER_EARN)}>
-          <ChevronLeft size={20} />
-        </Button>
-        <h1 className="text-xl   tracking-tight">Referral History</h1>
-        <div className="w-10" />
-      </header>
 
-      <main className="w-full max-w-xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        
-        {/* ── STATS SECTION ── */}
-        <div className="grid grid-cols-2 gap-4">
-          <Card className="py-0 bg-transparent border-cyan-500/40 shadow-[0_0_25px_rgba(34,211,238,0.1)] rounded-;g">
-            <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
-              <div className="flex items-center gap-2 text-[10px]   text-white/40 uppercase tracking-widest">
-                <Users size={12} /> Total Referrals
+        {/* ── HEADER ── */}
+        <header className="relative z-10 flex w-full items-center justify-between mb-5">
+          <Button variant="outline" size="icon" className="h-10 w-10 rounded-xl border-white/10 bg-white/5 text-white backdrop-blur-md" onClick={() => navigate(PATHS.REFER_EARN)}>
+            <ChevronLeft size={20} />
+          </Button>
+          <h1 className="text-xl   tracking-tight">Referral History</h1>
+          <div className="w-10" />
+        </header>
+
+        <main className="w-full max-w-xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+
+          {/* ── STATS SECTION ── */}
+          <div className="grid grid-cols-2 gap-4">
+            <Card className="py-0 bg-transparent border-cyan-500/40 shadow-[0_0_25px_rgba(34,211,238,0.1)] rounded-;g">
+              <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
+                <div className="flex items-center gap-2 text-[10px]   text-white/40 uppercase tracking-widest">
+                  <Users size={12} /> Total Referrals
+                </div>
+                <h2 className="text-3xl font-black text-white">{data?.stats.total}</h2>
+                <p className="text-[10px] text-white/30   uppercase tracking-widest">Referrals</p>
+              </CardContent>
+            </Card>
+
+            <Card className="py-0 bg-transparent border-white/10 rounded-lg">
+              <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
+                <div className="text-[10px]   text-white/40 uppercase tracking-widest">Total Points Earned</div>
+                <h2 className="text-3xl font-black text-white">{data?.stats.points}</h2>
+                <p className="text-[10px] text-white/30   uppercase tracking-widest">Points</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* ── TABS SECTION ── */}
+          <Tabs defaultValue="student" className="w-full">
+            <TabsList className="w-full bg-transparent p-0 flex gap-4 h-auto">
+              <TabsTrigger
+                value="student"
+                className="flex-1 h-12 rounded-full border border-white/5 bg-transparent data-[state=active]:bg-cyan-500 data-[state=active]:text-cyan-400  data-[state=active]:border-cyan-500 data-[state=active]:text-cyan-900   text-sm transition-all"
+              >
+                Student Referrals
+              </TabsTrigger>
+              <TabsTrigger
+                value="teacher"
+                className="flex-1 h-12 rounded-full border border-white/5 bg-transparent data-[state=active]:bg-cyan-500/10 data-[state=active]:border-cyan-500/50 data-[state=active]:text-cyan-400   text-sm transition-all"
+              >
+                Teacher Referrals
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="student" className="mt-8 space-y-8 animate-in fade-in duration-500">
+              {/* Active Section */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-black tracking-widest text-cyan-400 uppercase ml-1">Active Referrals</h3>
+                {data?.student?.active.map((item: any) => (
+                  <HistoryCard key={item.id} item={item} />
+                ))}
               </div>
-              <h2 className="text-3xl font-black text-white">{data?.stats.total}</h2>
-              <p className="text-[10px] text-white/30   uppercase tracking-widest">Referrals</p>
-            </CardContent>
-          </Card>
 
-          <Card className="py-0 bg-transparent border-white/10 rounded-lg">
-            <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
-              <div className="text-[10px]   text-white/40 uppercase tracking-widest">Total Points Earned</div>
-              <h2 className="text-3xl font-black text-white">{data?.stats.points}</h2>
-              <p className="text-[10px] text-white/30   uppercase tracking-widest">Points</p>
-            </CardContent>
-          </Card>
-        </div>
+              {/* Completed Section */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-black tracking-widest text-green-500 uppercase ml-1">Completed Referrals</h3>
+                {data?.student?.completed.map((item: any) => (
+                  <HistoryCard key={item.id} item={item} />
+                ))}
+              </div>
+            </TabsContent>
 
-        {/* ── TABS SECTION ── */}
-        <Tabs defaultValue="student" className="w-full">
-          <TabsList className="w-full bg-transparent p-0 flex gap-4 h-auto">
-            <TabsTrigger 
-              value="student" 
-              className="flex-1 h-12 rounded-full border border-white/5 bg-transparent data-[state=active]:bg-cyan-500 data-[state=active]:text-cyan-400  data-[state=active]:border-cyan-500 data-[state=active]:text-cyan-900   text-sm transition-all"
-            >
-              Student Referrals
-            </TabsTrigger>
-            <TabsTrigger 
-              value="teacher" 
-              className="flex-1 h-12 rounded-full border border-white/5 bg-transparent data-[state=active]:bg-cyan-500/10 data-[state=active]:border-cyan-500/50 data-[state=active]:text-cyan-400   text-sm transition-all"
-            >
-              Teacher Referrals
-            </TabsTrigger>
-          </TabsList>
+            <TabsContent value="teacher" className="mt-8 space-y-8 animate-in fade-in duration-500">
+              {/* <div className="py-20 text-center text-white/20 italic">No teacher referrals yet.</div> */}
+              {/* Active Section */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-black tracking-widest text-cyan-400 uppercase ml-1">Active Referrals</h3>
+                {data?.teacher?.active.map((item: any) => (
+                  <HistoryCard key={item.id} item={item} />
+                ))}
+              </div>
 
-          <TabsContent value="student" className="mt-8 space-y-8 animate-in fade-in duration-500">
-            {/* Active Section */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-black tracking-widest text-cyan-400 uppercase ml-1">Active Referrals</h3>
-              {data?.student?.active.map(item => (
-                <HistoryCard key={item.id} item={item} />
-              ))}
-            </div>
+              {/* Completed Section */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-black tracking-widest text-green-500 uppercase ml-1">Completed Referrals</h3>
+                {data?.teacher?.completed.map((item: any) => (
+                  <HistoryCard key={item.id} item={item} />
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
 
-            {/* Completed Section */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-black tracking-widest text-green-500 uppercase ml-1">Completed Referrals</h3>
-              {data?.student?.completed.map(item => (
-                <HistoryCard key={item.id} item={item} />
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="teacher" className="mt-8 space-y-8 animate-in fade-in duration-500">
-             {/* <div className="py-20 text-center text-white/20 italic">No teacher referrals yet.</div> */}
-               {/* Active Section */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-black tracking-widest text-cyan-400 uppercase ml-1">Active Referrals</h3>
-              {data?.teacher?.active.map(item => (
-                <HistoryCard key={item.id} item={item} />
-              ))}
-            </div>
+          {/* Footer Note */}
+          <p className="text-center text-[10px] text-white/20 leading-relaxed pt-4">
+            * Referral rewards are credited <br /> after successful account verification.
+          </p>
 
-            {/* Completed Section */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-black tracking-widest text-green-500 uppercase ml-1">Completed Referrals</h3>
-              {data?.teacher?.completed.map(item => (
-                <HistoryCard key={item.id} item={item} />
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        {/* Footer Note */}
-        <p className="text-center text-[10px] text-white/20 leading-relaxed pt-4">
-          * Referral rewards are credited <br /> after successful account verification.
-        </p>
-
-      </main>
-    </div>
+        </main>
+      </div>
     </div>
   );
 }

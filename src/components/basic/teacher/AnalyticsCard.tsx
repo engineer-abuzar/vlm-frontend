@@ -38,8 +38,8 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({
         "mb-1 transition-colors",
         variant === "cyan" ? "text-cyan-400" : variant === "blue" ? "text-blue-400" : "text-zinc-400"
       )}>
-        {React.isValidElement(icon) 
-          ? React.cloneElement(icon as React.ReactElement, { size: 28, strokeWidth: 1.5 })
+        {React.isValidElement(icon)
+          ? React.cloneElement(icon as React.ReactElement<any>, ({ size: 28, strokeWidth: 1.5 } as any))
           : icon
         }
       </div>
