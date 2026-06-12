@@ -1,4 +1,3 @@
-import { studentApi } from "@/lib/student-api";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -16,19 +15,42 @@ import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-
 const fetchQuizData = async () => {
-  const { questions } = await studentApi.getDailyMcq();
-  return (questions ?? []).map((q: any) => ({
-    id: q.id,
-    question: q.question,
-    options: (q.options as string[]).map((opt: string, i: number) => ({
-      id: String.fromCharCode(65 + i),
-      text: opt,
-    })),
-    correctAnswer: String.fromCharCode(65 + (q.options as string[]).indexOf(q.answer)),
-    _dbAnswer: q.answer,
-  }));
+  return [
+    {
+      id: 1,
+      question: "What is the capital city of India?",
+      options: [
+        { id: "A", text: "Mumbai" },
+        { id: "B", text: "Kolkata" },
+        { id: "C", text: "New Delhi" },
+        { id: "D", text: "Bengaluru" },
+      ],
+      correctAnswer: "C"
+    },
+    {
+      id: 2,
+      question: "Which planet is known as the Red Planet?",
+      options: [
+        { id: "A", text: "Venus" },
+        { id: "B", text: "Mars" },
+        { id: "C", text: "Jupiter" },
+        { id: "D", text: "Saturn" },
+      ],
+      correctAnswer: "B"
+    },
+    {
+      id: 3,
+      question: "Who wrote the national anthem of India?",
+      options: [
+        { id: "A", text: "Rabindranath Tagore" },
+        { id: "B", text: "Bankim Chandra" },
+        { id: "C", text: "Premchand" },
+        { id: "D", text: "Sarojini Naidu" },
+      ],
+      correctAnswer: "A"
+    }
+  ];
 };
 
 export default function Mcq() {
@@ -44,15 +66,6 @@ export default function Mcq() {
 
   if (isLoading) return <div className="min-h-svh bg-black flex items-center justify-center text-white">Loading Questions...</div>;
 
-  if (!questions?.length) {
-    return (
-      <div className="min-h-svh bg-black flex flex-col items-center justify-center text-white gap-4 px-6">
-        <p className="text-white/60">No MCQ questions available today.</p>
-        <Button onClick={() => navigate(PATHS.STUDENT_DASHBOARD)}>Back to Dashboard</Button>
-      </div>
-    );
-  }
-
   const currentQuestion = questions![currentIndex];
   const totalQuestions = questions!.length;
   const progressValue = ((currentIndex) / totalQuestions) * 100;
@@ -61,15 +74,7 @@ export default function Mcq() {
     setUserAnswers({ ...userAnswers, [currentIndex]: optionId });
   };
 
-  const handleNext = async () => {
-    // Submit answer to API (fire and forget)
-    const selected = userAnswers[currentIndex];
-    if (selected && currentQuestion.id) {
-      try {
-        const dbAnswer = currentQuestion.options.find((o: any) => o.id === selected)?.text;
-        if (dbAnswer) await studentApi.submitMcqAttempt(String(currentQuestion.id), dbAnswer);
-      } catch { /* non-blocking */ }
-    }
+  const handleNext = () => {
     if (currentIndex < totalQuestions - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {

@@ -8,21 +8,15 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-import { studentApi } from "@/lib/student-api";
-
+// --- Mock API Fetch ---
 const fetchRewardDetails = async () => {
-  try {
-    const stats = await studentApi.getStats();
-    return {
-      referredPerson: "Your Network",
-      pointsEarned: stats.rewardPoints ?? 0,
-      waitlistBonus: 50,
-      heroTierBonus: 10,
-      totalUpdated: (stats.rewardPoints ?? 0) + 60,
-    };
-  } catch {
-    return { referredPerson: "Your Network", pointsEarned: 0, waitlistBonus: 50, heroTierBonus: 10, totalUpdated: 60 };
-  }
+  return {
+    referredPerson: "Anya Sharma",
+    pointsEarned: 500,
+    waitlistBonus: 50,
+    heroTierBonus: 10,
+    totalUpdated: 560
+  };
 };
 
 export default function ReferralReward() {

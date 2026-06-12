@@ -14,30 +14,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { studentApi } from "@/lib/student-api";
-
-// Fetch real subjects from backend and map to display format
+// --- Mock API Fetch ---
 const fetchSubjects = async () => {
-  try {
-    const subjects = await studentApi.getSubjectsFull();
-    const iconMap: Record<string, any> = {
-      Mathematics: PlusSquare, Physics: Atom, Chemistry: FlaskConical,
-      Biology: Sprout, History: Globe, Geography: MapIcon,
-      English: Book, "Computer Science": Monitor, Hindi: Languages,
-    };
-    return subjects.map((s: any) => ({
-      id: s.id,
-      label: s.name,
-      icon: iconMap[s.name] || Book,
-    }));
-  } catch {
-    return [];
-  }
+  return [
+    { id: "maths", label: "Maths", icon: PlusSquare },
+    { id: "physics", label: "Physics", icon: Atom },
+    { id: "chemistry", label: "Chemistry", icon: FlaskConical },
+    { id: "biology", label: "Biology", icon: Sprout },
+    { id: "history", label: "History", icon: Globe },
+    { id: "geography", label: "Geography", icon: MapIcon },
+    { id: "english", label: "English Literature", icon: Book },
+    { id: "computer", label: "Computer Science", icon: Monitor },
+    { id: "hindi", label: "Hindi", icon: Languages },
+  ];
 };
 
 export default function SubjectSelection() {
   const navigate = useNavigate();
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>(["maths", "chemistry"]);
 
   // TanStack Query to fetch subjects
   const { data: subjects, isLoading } = useQuery({

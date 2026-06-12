@@ -12,14 +12,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { bgCss } from "@/helper/CssHelper";
 
-import { studentApi } from "@/lib/student-api";
+// --- Mock API Mutation ---
+const retryPaymentApi = async () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // 50% chance to fail again for demo
+      Math.random() > 0.5 ? resolve("Success") : reject("Failed");
+    }, 2000);
+  });
+};
 
 export default function PaymentFailed() {
   const navigate = useNavigate();
-  const planId = sessionStorage.getItem("vlm_selected_plan_id");
-
   const mutation = useMutation({
-    mutationFn: () => studentApi.createPaymentOrder(planId!),
+    mutationFn: retryPaymentApi,
     onSuccess: () => navigate(PATHS.PLAN_SCREEN),
     onError: () => alert("Payment failed again. Please check your bank."),
   });
@@ -68,7 +74,7 @@ export default function PaymentFailed() {
           title="Retry Payment" 
           desc="Instant retry using current method" 
           theme="cyan"
-          onClick={() => planId ? mutation.mutate() : navigate(PATHS.LEARNING_PLAN)}
+          onClick={() => mutation.mutate()}
           disabled={mutation.isPending}
         />
 

@@ -13,23 +13,17 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { bgCss } from "@/helper/CssHelper";
 
-import { studentApi } from "@/lib/student-api";
-
+// --- Mock API Fetch ---
 const fetchPlanDetails = async () => {
-  try {
-    const plans = await studentApi.getPlans();
-    return plans.map((p: any, i: number) => ({
-      id: i + 1,
-      icon: [Bot, MessageCircle, Tv, Clock, Video, BookOpen, Percent][i % 7],
-      label: p.name,
-      current: i === 0 ? "Free / Basic" : plans[0]?.name ?? "Basic",
-      premium: `₹${p.price}/mo`,
-      subPremium: p.duration,
-      isTeal: i % 2 === 0,
-    }));
-  } catch {
-    return [];
-  }
+  return [
+    { id: 1, icon: Bot, label: "AI Assistant Credits", current: "10/month", premium: "50/month", promo: "(x5 increase!)", isTeal: true },
+    { id: 2, icon: MessageCircle, label: "Chat Credits (Tutor)", current: "10/month", premium: "Chat Credits (Tutor)", subPremium: "100/month" },
+    { id: 3, icon: Tv, label: "Live Class Access", current: "Limited sessions", premium: "Unlimited access", subPremium: "to all live classes", isTeal: true },
+    { id: 4, icon: Clock, label: "Interactive Practice", current: "minutes 30 mins/day", premium: "Interactive Practice", subPremium: "minutes 120 mins/day" },
+    { id: 5, icon: Video, label: "Bonus: Audio/Video", current: "minutes None", premium: "Bonus: Audio/Video", subPremium: "minutes 30 mins/month" },
+    { id: 6, icon: BookOpen, label: "Exclusive Study", current: "Materials No", premium: "Exclusive Study", subPremium: "Yes (all content unlocked)", isTeal: true },
+    { id: 7, icon: Percent, label: "Better Value", current: "Free", premium: "Better Value", subPremium: "₹299/month saving 25% on annual plan", isTeal: true },
+  ];
 };
 
 export default function PlanUpgrade() {

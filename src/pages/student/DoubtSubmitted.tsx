@@ -14,32 +14,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { bgCss } from "@/helper/CssHelper";
 
-import { studentApi } from "@/lib/student-api";
-import { useLocation } from "react-router-dom";
-
-const fetchSubmittedDoubt = async (doubtId?: string) => {
-  if (doubtId) {
-    try {
-      const doubt = await studentApi.getDoubtById(doubtId);
-      return {
-        subject: doubt.subject?.name ?? "General",
-        chapter: doubt.chapter?.name ?? "—",
-        mode: doubt.status === 'ASSIGNED' ? 'Human Tutor' : 'Pending Assignment',
-        estimatedTime: "2 hours",
-      };
-    } catch { /* fall through */ }
-  }
-  return { subject: "Submitted", chapter: "See session history", mode: "Human Tutor", estimatedTime: "2 hours" };
+// --- Mock API Fetch ---
+const fetchSubmittedDoubt = async () => {
+  return {
+    subject: "Physics",
+    chapter: "Quantum Mechanics",
+    mode: "Human Tutor",
+    estimatedTime: "2 hours"
+  };
 };
 
 export default function DoubtSubmitted() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const doubtId = location.state?.doubtId as string | undefined;
-
   const { data } = useQuery({
-    queryKey: ["submittedDoubt", doubtId],
-    queryFn: () => fetchSubmittedDoubt(doubtId),
+    queryKey: ["submittedDoubt"],
+    queryFn: fetchSubmittedDoubt,
   });
 
   return (

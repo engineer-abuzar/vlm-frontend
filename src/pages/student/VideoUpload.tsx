@@ -15,35 +15,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "@/routes/paths";
 
-import { studentApi } from "@/lib/student-api";
-import { useMutation } from "@tanstack/react-query";
+// --- Mock API Fetch ---
+const fetchCategories = async () => {
+  return {
+    classes: ["9th", "10th", "11th", "12th"],
+    subjects: ["Mathematics", "Physics", "Chemistry", "Biology"]
+  };
+};
 
 export default function VideoUpload() {
   const [title, setTitle] = useState("");
   const [topic, setTopic] = useState("");
-  const [selectedClass, setSelectedClass] = useState("");
-  const [selectedSubject, setSelectedSubject] = useState("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const navigate = useNavigate();
-
-  const { data: subjects } = useQuery({
-    queryKey: ["uploadSubjects", selectedClass],
-    queryFn: () => studentApi.getSubjectsFull(selectedClass || undefined),
-    enabled: !!selectedClass,
-  });
-
-  const classes = ["9th", "10th", "11th", "12th"];
-
-  const submitMutation = useMutation({
-    mutationFn: async () => {
-      const formData = new FormData();
-      formData.append("text", `${title}: ${topic}`);
-      if (selectedFile) formData.append("images", selectedFile);
-      return studentApi.submitDoubtWithImages(formData);
-    },
-    onSuccess: (doubt) => {
-      navigate(PATHS.DOUBT_SUBMITTED, { state: { doubtId: doubt?.id } });
-    },
+const navigate=useNavigate()
+  // TanStack Query to fetch dropdown data
+  const { data: categories } = useQuery({
+    queryKey: ["uploadCategories"],
+    queryFn: fetchCategories,
   });
 
   return (
@@ -71,8 +58,7 @@ export default function VideoUpload() {
         
         {/* ── DRAG & DROP UPLOAD ZONE ── */}
         <Card className="border-2 border-dashed border-cyan-500/70 bg-cyan-500/5 rounded-[2rem] overflow-hidden cursor-pointer group transition-all hover:bg-cyan-500/10">
-          <CardContent className=" flex flex-col items-center justify-center space-y-4" onClick={() => document.getElementById('video-file-input')?.click()}>
-            <input id="video-file-input" type="file" accept="image/*,video/*" className="hidden" onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)} />
+          <CardContent className=" flex flex-col items-center justify-center space-y-4">
             <div className="flex items-center gap-6 text-white/30 group-hover:text-cyan-400 transition-colors">
               <div className="p-3 bg-white/5 rounded-full"><Play size={24} /></div>
               <div className="flex gap-4">
@@ -104,24 +90,24 @@ export default function VideoUpload() {
 
         {/* Class Select */}
         <UploadFieldCard icon={<Calendar className="text-cyan-400" />} label="Class">
-          <Select value={selectedClass} onValueChange={setSelectedClass}>
+          <Select>
             <SelectTrigger className="border-none bg-transparent h-auto p-0 text-base text-white focus:ring-0">
               <SelectValue placeholder="Select Class (e.g., 10th)" />
             </SelectTrigger>
             <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
-              {classes.map(c => <SelectItem key={c} value={c.replace('th','')}>{c}</SelectItem>)}
+              {categories?.classes.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
             </SelectContent>
           </Select>
         </UploadFieldCard>
 
         {/* Subject Select */}
         <UploadFieldCard icon={<Book className="text-cyan-400" />} label="Subject">
-          <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+          <Select>
             <SelectTrigger className="border-none bg-transparent h-auto p-0 text-base text-white focus:ring-0">
               <SelectValue placeholder="Select Subject (e.g., Physics)" />
             </SelectTrigger>
             <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
-              {subjects?.map((s: any) => <SelectItem key={s.id} value={s.name}>{s.name}</SelectItem>)}
+              {categories?.subjects.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
             </SelectContent>
           </Select>
         </UploadFieldCard>
@@ -148,8 +134,8 @@ export default function VideoUpload() {
         {/* SUBMIT BUTTON */}
         <div className="pt-6 relative">
             <div className="absolute inset-x-0 bottom-0 top-6 bg-blue-600/20 blur-3xl rounded-full" />
-            <Button onClick={() => submitMutation.mutate()} disabled={submitMutation.isPending || !title.trim()} className="relative w-full h-16 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white font-black tracking-widest text-lg shadow-2xl hover:brightness-110 active:scale-[0.98]">
-              {submitMutation.isPending ? "SUBMITTING..." : "SUBMIT VIDEO"} <ArrowRight size={20} className="ml-2" />
+            <Button onClick={() => navigate(PATHS.DOUBT_SUBMITTED)} className="relative w-full h-16 rounded-full bg-gradient-to-r from-[#1e3a8e] to-[#0f172a] border border-blue-400/40 text-white font-black tracking-widest text-lg shadow-2xl hover:brightness-110 active:scale-[0.98]">
+              SUBMIT VIDEO <ArrowRight size={20} className="ml-2" />
             </Button>
         </div>
 

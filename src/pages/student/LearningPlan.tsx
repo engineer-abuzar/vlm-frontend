@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { PATHS } from "@/routes/paths";
 import { ChevronLeft, Lightbulb, MessageCircle, Headphones, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { usePlans, useActivateTrial } from "@/hooks/use-student";
-import LoadingSkeleton from "@/components/basic/student/LoadingSkeleton";
 
 // Shadcn Components
 import { Button } from "@/components/ui/button";
@@ -12,55 +10,56 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
-const PLAN_STYLES: Record<string, { color: string; glow: string; border: string }> = {
-  "Premium Plan": { color: "text-yellow-200", glow: "shadow-[0_0_20px_rgba(245,166,35,0.3)]", border: "border-yellow-300/50" },
-  "Pro Plan": { color: "text-blue-400", glow: "shadow-[0_0_20px_rgba(59,130,246,0.2)]", border: "border-blue-400/30" },
-  "Basic Plan": { color: "text-cyan-400", glow: "shadow-[0_0_20px_rgba(34,211,238,0.2)]", border: "border-cyan-500/30" },
-};
-
-const DEFAULT_STYLE = { color: "text-cyan-400", glow: "shadow-[0_0_20px_rgba(34,211,238,0.2)]", border: "border-cyan-500/30" };
-
-function mapPlanFeatures(plan: any) {
-  return [
-    { icon: Lightbulb, text: `${plan.credits ?? "100"} AI credits` },
-    { icon: MessageCircle, text: `${plan.humanChatCredits ?? "5"} human chat credits` },
-    { icon: Headphones, text: `${plan.audioVideoMinutes ?? "60"} audio/video minutes` },
-    { icon: Video, text: `${plan.liveClassAcess ?? "1"} Live class access` },
-  ];
-}
+const PLANS = [{
+    name: "Premium Plan",
+    recommended: true,
+    oldPrice: "₹9999",
+    price: "₹4999",
+    color: "text-yellow-200",
+    glow: "shadow-[0_0_20px_rgba(245,166,35,0.3)]",
+    border: "border-yellow-300/50",
+    features: [
+      { icon: Lightbulb, text: "Unlimited AI credits" },
+      { icon: MessageCircle, text: "500 human chat credits" },
+      { icon: Headphones, text: "Unlimited audio/video minutes" },
+      { icon: Video, text: "Unlimited Live class access" },
+    ],
+  },
+   {
+    name: "Pro Plan",
+    oldPrice: "₹4999",
+    price: "₹2499",
+    color: "text-blue-400",
+    glow: "shadow-[0_0_20px_rgba(59,130,246,0.2)]",
+    border: "border-blue-400/30",
+    features: [
+      { icon: Lightbulb, text: "1000 AI credits" },
+      { icon: MessageCircle, text: "50 human chat credits" },
+      { icon: Headphones, text: "600 audio/video minutes" },
+      { icon: Video, text: "10 Live class access" },
+    ],
+  },
+  {
+    name: "Basic Plan",
+    oldPrice: "₹1999",
+    price: "₹999",
+    color: "text-cyan-400",
+    glow: "shadow-[0_0_20px_rgba(34,211,238,0.2)]",
+    border: "border-cyan-500/30",
+    features: [
+      { icon: Lightbulb, text: "100 AI credits" },
+      { icon: MessageCircle, text: "5 human chat credits" },
+      { icon: Headphones, text: "60 audio/video minutes" },
+      { icon: Video, text: "1 Live class access" },
+    ],
+  },
+ 
+  
+];
 
 export default function LearningPlan() {
   const navigate = useNavigate();
-  const { data: apiPlans, isLoading } = usePlans();
-  const activateTrial = useActivateTrial();
-  const [selectedPlanId, setSelectedPlanId] = useState<string>("");
-
-  const plans = (apiPlans ?? []).map((p: any, i: number) => {
-    const style = PLAN_STYLES[p.name] ?? DEFAULT_STYLE;
-    return {
-      id: p.id,
-      name: p.name,
-      recommended: i === 0,
-      oldPrice: `₹${Math.round(p.price * 2)}`,
-      price: `₹${Math.round(p.price)}`,
-      ...style,
-      features: mapPlanFeatures(p),
-    };
-  });
-
-  const selectedPlan = plans.find((p) => p.id === selectedPlanId)?.name ?? plans[0]?.name ?? "";
-
-  if (isLoading) return <LoadingSkeleton />;
-
-  const handleStartTrial = () => {
-    const planId = selectedPlanId || plans[0]?.id;
-    if (!planId) return;
-    sessionStorage.setItem("vlm_selected_plan_id", planId);
-    activateTrial.mutate(planId, {
-      onSuccess: () => navigate(PATHS.COUPON),
-      onError: () => navigate(PATHS.COUPON),
-    });
-  };
+  const [selectedPlan, setSelectedPlan] = useState("Premium Plan");
 
   return (
     <div className="vlm-bg relative min-h-svh w-full bg-[#050505] text-white flex flex-col items-center px-4 pb-40 overflow-x-hidden">
@@ -81,17 +80,17 @@ export default function LearningPlan() {
 
       {/* ── Plans Grid ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10 w-full max-w-xs md:max-w-2xl">
-        {plans.map((plan) => (
+        {PLANS.map((plan) => (
           <Card
-            key={plan.id}
-            onClick={() => setSelectedPlanId(plan.id)}
+            key={plan.name}
+            onClick={() => setSelectedPlan(plan.name)}
             className={cn(
               "relative cursor-pointer transition-all duration-500 border-none  backdrop-blur-xl rounded-[2rem] overflow-visible",
               plan.glow,
-              (selectedPlanId || plans[0]?.id) === plan.id ? "ring-2 ring-offset-2 ring-offset-black" : "opacity-80 scale-[0.98]",
-              (selectedPlanId || plans[0]?.id) === plan.id && plan.name === "Premium Plan" ? "ring-yellow-500/50 bg-yellow-300/10" : 
-              (selectedPlanId || plans[0]?.id) === plan.id && plan.name === "Pro Plan" ? "ring-blue-500/50 bg-blue-400/10" : 
-              (selectedPlanId || plans[0]?.id) === plan.id && plan.name === "Basic Plan" ? "ring-cyan-500/50 bg-cyan-500/10" : ""
+              selectedPlan === plan.name ? "ring-2 ring-offset-2 ring-offset-black" : "opacity-80 scale-[0.98]",
+              selectedPlan === plan.name && plan.name === "Premium Plan" ? "ring-yellow-500/50 bg-yellow-300/10" : 
+              selectedPlan === plan.name && plan.name === "Pro Plan" ? "ring-blue-500/50 bg-blue-400/10" : 
+              selectedPlan === plan.name && plan.name === "Basic Plan" ? "ring-cyan-500/50 bg-cyan-500/10" : ""
             )}
           >
             {/* Recommended Badge */}
@@ -149,15 +148,14 @@ export default function LearningPlan() {
           <div className="absolute inset-x-0 bottom-0 h-16 bg-blue-500/30 blur-[40px] rounded-full" />
           
           <Button
-            onClick={handleStartTrial}
-            disabled={activateTrial.isPending || plans.length === 0}
+            onClick={() => navigate(PATHS.COUPON)}
             className={cn(
               "relative w-full h-16 rounded-full text-lg font-bold tracking-widest transition-all active:scale-[0.98]",
               "bg-gradient-to-b from-[#1e3a8e] to-[#0f172a]",
               "border border-blue-400/40 text-white shadow-2xl"
             )}
           >
-            {activateTrial.isPending ? "ACTIVATING..." : "START 3-DAY TRIAL"}
+            START 3-DAY TRIAL
           </Button>
         </div>
       </footer>

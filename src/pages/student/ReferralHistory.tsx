@@ -12,48 +12,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { bgCss } from "@/helper/CssHelper";
 
-import { studentApi } from "@/lib/student-api";
-
+// --- Mock API ---
 const fetchReferralHistory = async () => {
-  try {
-    const referrals = await studentApi.getReferralHistory();
-    const wallet = await studentApi.getStats();
-
-    const studentActive = referrals.filter((r: any) => r.type === 'STUDENT' && r.status === 'COMPLETED');
-    const studentCompleted = referrals.filter((r: any) => r.type === 'STUDENT' && r.status === 'REWARDED');
-    const teacherActive = referrals.filter((r: any) => r.type === 'TEACHER' && r.status === 'COMPLETED');
-    const teacherCompleted = referrals.filter((r: any) => r.type === 'TEACHER' && r.status === 'REWARDED');
-
-    const toCard = (r: any, idx: number) => ({
-      id: r.id,
-      name: r.referee?.email ?? r.referee?.mobile ?? `Referred User ${idx + 1}`,
-      subject: r.type === 'TEACHER' ? 'Teacher Referral' : 'Student Referral',
-      date: new Date(r.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-      status: r.status === 'REWARDED' ? 'Reward Credited' : 'Approved',
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${r.id}`,
-    });
-
-    return {
-      stats: {
-        total: referrals.length,
-        points: String(wallet.rewardPoints ?? 0),
-      },
-      student: {
-        active: studentActive.map(toCard),
-        completed: studentCompleted.map(toCard),
-      },
-      teacher: {
-        active: teacherActive.map(toCard),
-        completed: teacherCompleted.map(toCard),
-      },
-    };
-  } catch {
-    return {
-      stats: { total: 0, points: '0' },
-      student: { active: [], completed: [] },
-      teacher: { active: [], completed: [] },
-    };
-  }
+  return {
+    stats: { total: 124, points: "12,400" },
+    student:{
+    active: [
+      { id: 1, name: "Anya Sharma", subject: "Physics Teacher", date: "12 Feb 2026", status: "Reward Credited", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Anya" }
+    ],
+    completed: [
+      { id: 2, name: "Driran Sharma", subject: "Physics Teacher", date: "12 Feb 2026", status: "Approved", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Driran" },
+      { id: 3, name: "Anyya Sharma", subject: "Physics Teacher", date: "12 Feb 2026", status: "Pending", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Anyya" }
+    ]
+},
+    teacher:{
+    active: [
+      { id: 1, name: "Suman ", subject: "Physics Teacher", date: "12 Feb 2026", status: "Reward Credited", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Anya" }
+    ],
+    completed: [
+      { id: 2, name: "Rohit jaiswal", subject: "Physics Teacher", date: "12 Feb 2026", status: "Approved", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Driran" },
+      { id: 3, name: "Kavya Maran", subject: "Physics Teacher", date: "12 Feb 2026", status: "Pending", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Anyya" }
+    ]
+}
+  };
 };
 
 export default function ReferralHistory() {

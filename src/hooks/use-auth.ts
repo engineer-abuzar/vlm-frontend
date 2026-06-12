@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { authApi } from "@/lib/auth-api";
-<<<<<<< HEAD
 import type { Role } from "@/types";
 
 // ── Login with email + password ────────────────────────────
@@ -21,16 +20,6 @@ export function useRequestOtp() {
 }
 
 // ── Verify OTP ─────────────────────────────────────────────
-=======
-import type { LoginPayload, Role } from "@/types";
-
-export function useSendOtp() {
-  return useMutation({
-    mutationFn: (payload: LoginPayload) => authApi.sendOtp(payload),
-  });
-}
-
->>>>>>> sumit
 export function useVerifyOtp() {
   return useMutation({
     mutationFn: ({ phone, otp }: { phone: string; otp: string }) =>

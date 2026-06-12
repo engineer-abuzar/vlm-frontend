@@ -16,15 +16,15 @@ import { Label } from "@/components/ui/label";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PATHS } from "@/routes/paths";
 
-import { studentApi } from "@/lib/student-api";
-
-const fetchSubjects = () => studentApi.getSubjectsWithIds();
-const fetchChapters = (subjectId: string, subjectName: string) =>
-  studentApi.getChaptersBySubjectName(subjectName);
+// --- Mock API Functions ---
+const fetchSubjects = async () => ["Mathematics", "Physics", "Chemistry", "Biology"];
+const fetchChapters = async (subject: string) => {
+  if (subject === "Mathematics") return ["Algebra", "Calculus", "Geometry", "Trigonometry"];
+  return ["Chapter 1", "Chapter 2"];
+};
 
 export default function AskDoubt() {
-  const [selectedSubject, setSelectedSubject] = useState<string>("");
-  const [selectedSubjectName, setSelectedSubjectName] = useState<string>("");
+  const [selectedSubject, setSelectedSubject] = useState<string>("Mathematics");
   const [question, setQuestion] = useState("");
   const [searchParams] = useSearchParams();
   const [sessionType, setSessionType] = useState(
@@ -32,34 +32,20 @@ export default function AskDoubt() {
   );
   const navigate = useNavigate();
 
-  const [selectedSubjectId, setSelectedSubjectId] = useState<string>("");
-  const [selectedChapterId, setSelectedChapterId] = useState<string>("");
-
-  const handleConnect = async () => {
-    // Submit doubt to backend
-    try {
-      const doubt = await studentApi.submitDoubt({
-        subjectId: selectedSubjectId || undefined,
-        chapterId: selectedChapterId || undefined,
-        text: question,
-        sessionType,
-      });
-      if (sessionType === "Audio Call") {
-        navigate(PATHS.AUDIO_CALL, { state: { doubtId: doubt?.id } });
-      } else if (sessionType === "Video Call") {
-        navigate(PATHS.LIVE_SESSION, { state: { doubtId: doubt?.id } });
-      } else {
-        navigate(PATHS.DOUBT_SUBMITTED, { state: { doubtId: doubt?.id } });
-      }
-    } catch {
-      // API error — stay on page
+  const handleConnect = () => {
+    if (sessionType === "Audio Call") {
+      navigate(PATHS.AUDIO_CALL);
+    } else if (sessionType === "Video Call") {
+      navigate(PATHS.LIVE_SESSION);
+    } else {
+      navigate(PATHS.DOUBT_SUBMITTED);
     }
   };
   // TanStack Query for dynamic data
   const { data: subjects } = useQuery({ queryKey: ["subjects"], queryFn: fetchSubjects });
   const { data: chapters } = useQuery({ 
     queryKey: ["chapters", selectedSubject], 
-    queryFn: () => fetchChapters(selectedSubject, selectedSubjectName),
+    queryFn: () => fetchChapters(selectedSubject),
     enabled: !!selectedSubject 
   });
 
@@ -87,17 +73,12 @@ export default function AskDoubt() {
             {/* Subject Select */}
             <div className="space-y-2">
               <Label className="text-white/80 text-sm font-semibold">Select Subject</Label>
-              <Select onValueChange={(val) => {
-                const sub = subjects?.find((s: any) => s.id === val);
-                setSelectedSubject(val);
-                setSelectedSubjectName(sub?.name ?? "");
-                setSelectedSubjectId(val);
-              }}>
+              <Select  onValueChange={()=>setSelectedSubject} defaultValue="Mathematics">
                 <SelectTrigger className=" rounded-2xl w-full  border-white/10 bg-black/40 text-white focus:ring-teal-500/50">
                   <SelectValue placeholder="Select Subject" />
                 </SelectTrigger>
                 <SelectContent  className="bg-[#1a1a1a]  border-white/10 text-white">
-                  {subjects?.map((s: any) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
+                  {subjects?.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
@@ -105,12 +86,12 @@ export default function AskDoubt() {
             {/* Chapter Select */}
             <div className="space-y-2">
               <Label className="text-white/80 text-sm font-semibold">Select Chapter</Label>
-              <Select onValueChange={setSelectedChapterId}>
+              <Select defaultValue="Algebra">
                 <SelectTrigger className="w-full rounded-2xl border-white/10 bg-black/40 text-white focus:ring-teal-500/50">
                   <SelectValue placeholder="Select Chapter" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
-                  {chapters?.map((c: any) => <SelectItem key={c.id ?? c.name} value={c.id ?? c.name}>{c.name ?? c}</SelectItem>)}
+                  {chapters?.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>

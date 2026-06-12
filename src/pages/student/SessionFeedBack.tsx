@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PATHS } from "@/routes/paths";
 import { 
   ChevronLeft, Star, Check, X, Pencil
@@ -13,14 +13,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { bgCss } from "@/helper/CssHelper";
 
-import { studentApi } from "@/lib/student-api";
-
-const submitFeedback = (feedbackData: any) => studentApi.submitFeedback(feedbackData);
+// --- Mock API Submit Function ---
+const submitFeedback = async (feedbackData: any) => {
+  // Real API call: await axios.post('/api/feedback', feedbackData)
+  console.log(feedbackData)
+  return new Promise((resolve) => setTimeout(resolve, 1500));
+};
 
 export default function SessionFeedback() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { sessionId, doubtId } = (location.state as { sessionId?: string; doubtId?: string }) ?? {};
   const [rating, setRating] = useState(3);
   const [solved, setSolved] = useState<boolean | null>(true);
   const [comment, setComment] = useState("");
@@ -34,7 +35,7 @@ export default function SessionFeedback() {
   });
 
   const handleSubmit = () => {
-    mutation.mutate({ rating, solved, comment, sessionId, doubtId });
+    mutation.mutate({ rating, solved, comment });
   };
 
   return (
