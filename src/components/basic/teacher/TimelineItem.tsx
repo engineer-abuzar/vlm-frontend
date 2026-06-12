@@ -35,7 +35,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
             status === "pending" && "bg-zinc-900 border-white/10 text-white/20"
           )}
         >
-          {React.cloneElement(icon as React.ReactElement, { size: 24 })}
+          {React.cloneElement(icon as React.ReactElement<any>, { size: 24 })}
           
           {/* Active Glow Ring */}
           {isActive && (

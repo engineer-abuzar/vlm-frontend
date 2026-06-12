@@ -32,7 +32,7 @@ const SubjectSelector: React.FC = () => {
               </div>
             )}
             <div className={cn(sub.selected ? "text-cyan-400" : "text-zinc-500")}>
-              {React.cloneElement(sub.icon as React.ReactElement, { size: 24 })}
+              {React.cloneElement(sub.icon as React.ReactElement<any>, { size: 24 })}
             </div>
             <span className={cn("text-[9px] font-black tracking-tighter", sub.selected ? "text-white" : "text-zinc-500")}>
               {sub.label}
