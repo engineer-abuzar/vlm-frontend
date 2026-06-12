@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "@/routes/paths";
 import { 
@@ -15,23 +14,19 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { bgCss } from "@/helper/CssHelper";
 
-// --- Mock API Fetch ---
-const fetchTrialDetails = async () => {
-  return {
-    planName: "Premium Learner - Trial Edition",
-    duration: "3 Days",
-    startDate: "April 3, 2026",
-    endDate: "April 6, 2026",
-    autoPayAmount: "₹399/mo",
-  };
-};
+import { useMySubscription } from "@/hooks/use-student";
 
 export default function PlanScreen() {
   const navigate = useNavigate();
-  const { data } = useQuery({
-    queryKey: ["trialPlan"],
-    queryFn: fetchTrialDetails,
-  });
+  const { data: sub } = useMySubscription();
+
+  const data = sub ? {
+    planName: sub.plan?.name ?? "Active Plan",
+    duration: sub.plan?.duration ?? "3 Days",
+    startDate: new Date(sub.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
+    endDate: new Date(sub.endDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
+    autoPayAmount: `₹${sub.plan?.price ?? 0}/mo`,
+  } : null;
 
   return (
     <div className={`${bgCss}relative min-h-svh w-full bg-[#050505] text-white flex flex-col items-center px-6  overflow-x-hidden pb-10`}>
@@ -79,7 +74,7 @@ export default function PlanScreen() {
                <div>
                   <p className="text-[10px]   text-white/40 uppercase tracking-[0.15em]">Active Plan:</p>
                   <h2 className="text-lg   text-white tracking-tight leading-tight">
-                    {data?.planName}
+                    {data?.planName ?? "No active plan"}
                   </h2>
                </div>
             </div>

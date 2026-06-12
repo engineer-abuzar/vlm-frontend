@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PATHS } from "@/routes/paths";
 import { ChevronLeft, User, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCreateProfile } from "@/hooks/use-student";
 
 // Official Shadcn Components
 import { Button } from "@/components/ui/button";
@@ -15,13 +16,28 @@ import { BackgroundElement } from "@/components/basic/BackgroundElements";
 
 export default function CreateProfileShadcn() {
   const navigate = useNavigate();
+  const createProfile = useCreateProfile();
   const [medium, setMedium] = useState("English");
+  const [fullName, setFullName] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [className, setClassName] = useState("10");
+  const [board, setBoard] = useState("CBSE");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("Maharashtra");
 
   // ── State for Selections ────────────────────────────────
   const [preferredSubjects, setPreferredSubjects] = useState<string[]>(["Physics"]);
   const [weakSubjects, setWeakSubjects] = useState<string[]>(["Social Studies"]);
 
   const allSubjects = ["Mathematics", "Physics", "Chemistry", "Biology", "History", "English", "Geography", "Social Studies"];
+
+  const handleContinue = () => {
+    if (!fullName.trim()) return;
+    createProfile.mutate(
+      { fullName, nickname, className, board, city, state },
+      { onSuccess: () => navigate(PATHS.SUBJECT_SELECTION) }
+    );
+  };
 
   // ── Toggle Logic ────────────────────────────────────────
   const toggleSubject = (subject: string, type: "preferred" | "weak") => {
@@ -64,14 +80,14 @@ export default function CreateProfileShadcn() {
               <Label className="text-[10px] uppercase tracking-widest text-muted-foreground">Full Name</Label>
               <div className="rounded-xl relative bg-black/50 overflow-hidden">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Enter your full name" className="border-none h-12 pl-10 focus-visible:ring-0" />
+                <Input placeholder="Enter your full name" value={fullName} onChange={(e) => setFullName(e.target.value)} className="border-none h-12 pl-10 focus-visible:ring-0" />
               </div>
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label className="text-[10px] uppercase tracking-widest text-muted-foreground">Nickname</Label>
               <div className="rounded-xl relative bg-black/50 overflow-hidden">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="What should we call you?" className="border-none h-12 pl-10 focus-visible:ring-0" />
+                <Input placeholder="What should we call you?" value={nickname} onChange={(e) => setNickname(e.target.value)} className="border-none h-12 pl-10 focus-visible:ring-0" />
               </div>
             </div>
           </CardContent>
@@ -86,7 +102,7 @@ export default function CreateProfileShadcn() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label className="text-[10px] uppercase tracking-widest text-muted-foreground">Class</Label>
-                <Select>
+                <Select value={className} onValueChange={setClassName}>
                   <SelectTrigger className="bg-black border-white/10 h-12 rounded-xl">
                     <SelectValue placeholder="Class 9th" />
                   </SelectTrigger>
@@ -98,13 +114,13 @@ export default function CreateProfileShadcn() {
               </div>
               <div className="space-y-1.5">
                 <Label className="text-[10px] uppercase tracking-widest text-muted-foreground">Board</Label>
-                <Select>
+                <Select value={board} onValueChange={setBoard}>
                   <SelectTrigger className="bg-black border-white/10 h-12 rounded-xl">
                     <SelectValue placeholder="CBSE" />
                   </SelectTrigger>
                   <SelectContent className="border-white/10">
-                    <SelectItem value="cbse">CBSE</SelectItem>
-                    <SelectItem value="icse">ICSE</SelectItem>
+                    <SelectItem value="CBSE">CBSE</SelectItem>
+                    <SelectItem value="ICSE">ICSE</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -141,18 +157,18 @@ export default function CreateProfileShadcn() {
                 <Label className="text-[10px] uppercase tracking-widest text-muted-foreground">City</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="City" className="bg-black border-white/10 h-12 pl-10 rounded-xl" />
+                  <Input placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} className="bg-black border-white/10 h-12 pl-10 rounded-xl" />
                 </div>
               </div>
               <div className="space-y-1.5">
                 <Label className="text-[10px] uppercase tracking-widest text-muted-foreground">State</Label>
-                <Select>
+                <Select value={state} onValueChange={setState}>
                   <SelectTrigger className="bg-black border-white/10 h-12 rounded-xl">
                     <SelectValue placeholder="MH" />
                   </SelectTrigger>
                   <SelectContent className="bg-[#111] border-white/10">
-                    <SelectItem value="mh">Maharashtra</SelectItem>
-                    <SelectItem value="dl">Delhi</SelectItem>
+                    <SelectItem value="Maharashtra">Maharashtra</SelectItem>
+                    <SelectItem value="Delhi">Delhi</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -222,7 +238,8 @@ export default function CreateProfileShadcn() {
       <footer className=" bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent flex justify-center z-50">
         <div className="w-full max-w-xl">
           <Button
-            onClick={() => navigate(PATHS.SUBJECT_SELECTION)}
+            onClick={handleContinue}
+            disabled={createProfile.isPending || !fullName.trim()}
             className={cn(
               "w-full h-14 rounded-full text-white text-lg font-bold tracking-wide transition-all duration-300",
               "bg-gradient-to-b from-[#1e3a8a] to-[#091050]",
@@ -232,7 +249,7 @@ export default function CreateProfileShadcn() {
               "active:scale-[0.98] active:brightness-90"
             )}
           >
-            Continue
+            {createProfile.isPending ? "Saving..." : "Continue"}
           </Button>
         </div>
       </footer>

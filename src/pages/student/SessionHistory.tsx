@@ -15,40 +15,27 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { bgCss } from "@/helper/CssHelper";
 
-// --- Mock API Fetch Function ---
+import { studentApi } from "@/lib/student-api";
+
 const fetchSessionHistory = async () => {
-  return [
-    {
-      id: 1,
-      name: "Prof. Priya Sharma",
-      subject: "Science",
-      date: "14 Mar 2026, 4:00 PM",
-      type: "Live Online Class",
-      rating: "4.8",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya",
-      icon: Layers
-    },
-    {
-      id: 2,
-      name: "Rahul Khanna",
-      subject: "IIT JEE Math",
-      date: "12 Mar 2026, 5:30 PM",
-      type: "Live Class",
-      rating: "4.5",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul",
-      icon: BookOpen
-    },
-    {
-      id: 3,
-      name: "Aditi Patel",
-      subject: "Biology",
-      date: "10 Mar 2026, 3:00 PM",
-      type: "AI Mentor Session",
-      rating: "5.0",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Aditi",
-      icon: Microscope
-    }
-  ];
+  try {
+    const { sessions } = await studentApi.getMySessions();
+    return sessions.map((s: any) => ({
+      id: s.id,
+      name: s.teacher?.fullName ?? "AI Tutor",
+      subject: s.type,
+      date: new Date(s.createdAt).toLocaleString('en-IN', {
+        day: 'numeric', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit',
+      }),
+      type: s.type === 'VIDEO' ? 'Video Call' : s.type === 'AUDIO' ? 'Audio Call' : 'Chat Session',
+      rating: s.feedback?.rating ? String(s.feedback.rating) + '.0' : 'N/A',
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${s.teacher?.fullName ?? 'ai'}`,
+      icon: Layers,
+    }));
+  } catch {
+    return [];
+  }
 };
 
 export default function SessionHistory() {
