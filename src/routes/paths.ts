@@ -61,6 +61,9 @@ export const PATHS = {
   TEACHERSESSION_HISTORY:"/teachersession-history",
   SESSION_DEATILS:"/session-details",
   PERFORMANCE_ANALYTICS:"/performance-analytics",
+  REQUEST:"/request",
+  ACCOUNT_STATUS:"/account-status",
+  ACCOUNT_BLOCKED:"/account-blocked",
 
 
 

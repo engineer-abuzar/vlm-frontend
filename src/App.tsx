@@ -68,6 +68,9 @@ import TicketDetail from "./pages/TicketDetail";
 import TeachSessionHistory from "./pages/teacher/TeachSessionHistory";
 import SessionDetail from "./pages/teacher/SessionDetail";
 import PerformanceAnalytics from "./pages/teacher/PerformanceAnalytics";
+import Requests from "./pages/teacher/Requests";
+import AccountStatus from "./pages/teacher/AccountStatus";
+import AccountBlocked from "./pages/teacher/AccountBlocked";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -158,6 +161,9 @@ export default function App() {
           <Route path={PATHS.TEACHERSESSION_HISTORY} element={<TeachSessionHistory/>} />
           <Route path={PATHS.SESSION_DEATILS} element={<SessionDetail/>} />
           <Route path={PATHS.PERFORMANCE_ANALYTICS} element={<PerformanceAnalytics/>} />
+          <Route path={PATHS.REQUEST} element={<Requests/>} />
+          <Route path={PATHS.ACCOUNT_STATUS} element={<AccountStatus/>} />
+          <Route path={PATHS.ACCOUNT_BLOCKED} element={<AccountBlocked/>} />
 
 
 
