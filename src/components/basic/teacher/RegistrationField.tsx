@@ -10,6 +10,8 @@ interface RegistrationFieldProps {
   isSelect?: boolean;
   className?: string;
   iconColor?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  readOnly?: boolean;
 }
 
 const RegistrationField: React.FC<RegistrationFieldProps> = ({
@@ -19,7 +21,9 @@ const RegistrationField: React.FC<RegistrationFieldProps> = ({
   value,
   isSelect = false,
   className,
-  iconColor = "text-blue-400/80"
+  iconColor = "text-blue-400/80",
+  onChange,
+  readOnly = false,
 }) => {
   return (
     <div className={cn(
@@ -32,12 +36,18 @@ const RegistrationField: React.FC<RegistrationFieldProps> = ({
       <div className="flex flex-1 flex-col overflow-hidden leading-tight">
         <span className="text-[11px] font-bold text-zinc-100 uppercase tracking-tight">{label}</span>
         <div className="flex items-center justify-between mt-0.5">
-          <span className={cn(
-            "text-[14px] truncate",
-            value ? "text-zinc-300" : "text-zinc-500 font-light"
-          )}>
-            {value || placeholder}
-          </span>
+          <input
+            type="text"
+            value={value ?? ""}
+            placeholder={placeholder}
+            onChange={onChange}
+            readOnly={readOnly || isSelect}
+            className={cn(
+              "bg-transparent border-none outline-none p-0 m-0 text-[14px] truncate w-full",
+              value ? "text-zinc-300" : "text-zinc-500 font-light",
+              isSelect ? "cursor-pointer" : ""
+            )}
+          />
           {isSelect && <ChevronDown size={14} className="text-zinc-500" />}
         </div>
       </div>

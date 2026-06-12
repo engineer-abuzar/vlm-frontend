@@ -16,7 +16,7 @@ import ReapplicationCountdown from "@/components/basic/teacher/ReapplicationCoun
 const ApplicationRejected: React.FC = () => {
   const navigate = useNavigate();
 
-  const { data: status } = useQuery({
+  useQuery({
     queryKey: ["teacherVerificationStatus"],
     queryFn: teacherApi.getVerificationStatus,
   });
@@ -51,9 +51,9 @@ const ApplicationRejected: React.FC = () => {
 
       <div className="max-w-xl mx-auto w-full">
         <RejectionStatusHeader />
-        
+
         <RejectionDetailsCard />
-        
+
         <ReapplicationCountdown />
 
         {/* Actions */}

@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
-  ChevronLeft, ChevronRight, Calculator, Atom, Orbit, Users, Play, Star
+  ChevronLeft, ChevronRight, Atom, Users, Play, Star
 } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
@@ -58,7 +58,7 @@ const ProfileReview: React.FC = () => {
       </header>
 
       <div className="max-w-xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-4">
-        
+
         {/* Profile Details */}
         <ReviewSectionCard title="Profile Details" onEdit={() => navigate(PATHS.BASICPROFILE_DETAILS)} className="row-span-1">
           <div className="flex flex-col items-center text-center space-y-3 mb-2">
@@ -90,7 +90,7 @@ const ProfileReview: React.FC = () => {
         </ReviewSectionCard>
 
         {/* Subjects */}
-        <ReviewSectionCard title="Subjects" onEdit={() => {}}>
+        <ReviewSectionCard title="Subjects" onEdit={() => { }}>
           <div className="space-y-2.5 pt-1">
             {(p?.subjects ?? []).length > 0 ? (
               (p.subjects as string[]).map((sub: string, i: number) => (
@@ -167,7 +167,7 @@ const ProfileReview: React.FC = () => {
 
       {/* Action Footer */}
       <div className="fixed bottom-0 left-0 w-full p-8 flex flex-col items-center bg-gradient-to-t from-black to-transparent pointer-events-none">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-xl pointer-events-auto"
@@ -180,7 +180,7 @@ const ProfileReview: React.FC = () => {
             {submitMutation.isPending ? "Submitting..." : "Submit for Verification"}
             <ChevronRight className="group-hover:translate-x-1 transition-transform" />
           </Button>
-          
+
           <p className="text-[10px] text-zinc-600 text-center mt-6 px-4 leading-tight font-medium">
             Disclaimer: may not use info, used by peditional typographic in this elements. Sketches may be remixed and in color previewed.
           </p>

@@ -9,11 +9,11 @@ interface LiveControlButtonProps {
   onClick?: () => void;
 }
 
-const LiveControlButton: React.FC<LiveControlButtonProps> = ({ 
-  icon, 
-  label, 
-  variant = "default", 
-  onClick 
+const LiveControlButton: React.FC<LiveControlButtonProps> = ({
+  icon,
+  label,
+  variant = "default",
+  onClick
 }) => {
   const variants = {
     default: "bg-white/10 border-white/5 text-zinc-400",
@@ -31,7 +31,7 @@ const LiveControlButton: React.FC<LiveControlButtonProps> = ({
           variants[variant]
         )}
       >
-        {React.cloneElement(icon as React.ReactElement , { size: 24, strokeWidth: 2 })}
+        {React.cloneElement(icon as React.ReactElement<any>, { size: 24, strokeWidth: 2 })}
       </motion.button>
       <span className={cn(
         "text-[10px] font-black uppercase tracking-widest",

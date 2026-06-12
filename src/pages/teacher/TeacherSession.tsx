@@ -3,7 +3,7 @@ import { Star } from "lucide-react";
 import { bgCss } from "@/helper/CssHelper";
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { teacherApi } from "@/lib/teacher-api";
 
 import SessionHeader from "@/components/basic/teacher/SessionHeader";
@@ -13,7 +13,6 @@ import ChatInput from "@/components/basic/teacher/ChatInput";
 const TeacherSession: React.FC = () => {
   const location = useLocation();
   const chatId = location.state?.chatId as string | undefined;
-  const sessionId = location.state?.sessionId as string | undefined;
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // Fetch real chat messages if chatId provided

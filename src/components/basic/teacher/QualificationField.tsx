@@ -8,6 +8,7 @@ interface QualificationFieldProps {
   value: string;
   placeholder?: string;
   isSelect?: boolean;
+  onChange?: (val: string) => void;
 }
 
 const QualificationField: React.FC<QualificationFieldProps> = ({
@@ -16,6 +17,7 @@ const QualificationField: React.FC<QualificationFieldProps> = ({
   value,
   placeholder,
   isSelect = false,
+  onChange,
 }) => {
   return (
     <div className="space-y-2 w-full">
@@ -29,9 +31,19 @@ const QualificationField: React.FC<QualificationFieldProps> = ({
         <div className="text-blue-400/80 mr-3">
           {React.cloneElement(icon as React.ReactElement<any>, { size: 20 })}
         </div>
-        
+
         <div className="flex-1 text-zinc-100 text-[15px]">
-          {value || <span className="text-zinc-500">{placeholder}</span>}
+          {onChange ? (
+            <input
+              type="text"
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={placeholder}
+              className="w-full bg-transparent border-none outline-none text-[15px] text-zinc-100"
+            />
+          ) : (
+            value || <span className="text-zinc-500">{placeholder}</span>
+          )}
         </div>
 
         {isSelect && (

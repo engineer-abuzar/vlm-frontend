@@ -13,8 +13,6 @@ import { toast } from "sonner";
 import { DaySelector, SubjectChip } from "@/components/basic/teacher//AvailabilitySelectors";
 import TimeSlotCard from "@/components/basic/teacher/TimeSlotCard";
 
-const DAY_MAP: Record<string, string> = { M: "MON", T: "TUE", WED: "WED", F: "FRI", S: "SAT", SU: "SUN" };
-
 const TimeSlotAvailability: React.FC = () => {
   const navigate = useNavigate();
   const [selectedDay, setSelectedDay] = useState("WED");
@@ -106,8 +104,8 @@ const TimeSlotAvailability: React.FC = () => {
         {/* Options */}
         <div className="p-6 rounded-[24px] bg-white/[0.03] border border-white/5 flex items-center justify-between">
           <span className="text-white font-medium">Repeat Schedule Weekly</span>
-          <Switch 
-            checked={repeatWeekly} 
+          <Switch
+            checked={repeatWeekly}
             onCheckedChange={setRepeatWeekly}
             className="data-[state=checked]:bg-emerald-500"
           />
@@ -115,7 +113,7 @@ const TimeSlotAvailability: React.FC = () => {
 
         {/* Info Text */}
         <p className="text-zinc-500 text-xs text-center leading-relaxed px-4">
-          Set your preferred teaching hours. These will be visible to students for bookings. 
+          Set your preferred teaching hours. These will be visible to students for bookings.
           Overlapping or conflicting slots will be flagged.
         </p>
 

@@ -3,7 +3,11 @@ import { Video, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
-const VideoPreviewCard: React.FC = () => {
+interface VideoPreviewCardProps {
+  onFileSelect?: (file: File) => void;
+}
+
+const VideoPreviewCard: React.FC<VideoPreviewCardProps> = ({ onFileSelect }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -15,7 +19,7 @@ const VideoPreviewCard: React.FC = () => {
         <div className="w-20 h-20 rounded-3xl bg-zinc-800/50 flex items-center justify-center text-zinc-500 border border-white/5">
           <Video size={40} strokeWidth={1.5} />
         </div>
-        
+
         <div className="space-y-1">
           <div className="flex items-center justify-center gap-2 text-zinc-300 font-bold mb-1">
             <Play size={14} fill="currentColor" />
@@ -35,13 +39,22 @@ const VideoPreviewCard: React.FC = () => {
       </p>
 
       {/* Buttons */}
-      <div className="flex gap-4 w-full">
+      <div className="flex gap-4 w-full items-center justify-center">
         <Button className="flex-1 h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:brightness-110 text-xs font-black uppercase tracking-widest text-white border border-blue-400/20 shadow-lg shadow-blue-900/20">
           Record Now
         </Button>
-        <Button variant="outline" className="flex-1 h-12 rounded-2xl border-purple-500/50 bg-purple-500/5 hover:bg-purple-500/10 text-xs font-black uppercase tracking-widest text-zinc-200">
+        <label className="flex-1 h-12 rounded-2xl border-purple-500/50 bg-purple-500/5 hover:bg-purple-500/10 text-xs font-black uppercase tracking-widest text-zinc-200 flex items-center justify-center cursor-pointer">
           Upload File
-        </Button>
+          <input
+            type="file"
+            accept="video/*"
+            className="hidden"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              if (file && onFileSelect) onFileSelect(file);
+            }}
+          />
+        </label>
       </div>
     </motion.div>
   );
