@@ -46,6 +46,14 @@ export const PATHS = {
   TEACHER_SESSION:"/teacher-session",
   SESSION_WARNING:"/session-warning",
   RESOLVE_DOUBT:"/resolve-doubt",
+  AUDIO_CALLINITIIATED:"/audio-call",
+  TEACHERLIVE_SESSION:"/live-session",
+  WHITEBOARD_SESSION:"/white-board",
+  RECORDING_LIBRARY:"/recording-library",
+  LIVE_CLASS:"/live-class",
+  LIVECLASS_REQUEST:"/class-request",
+
+
 
 
 

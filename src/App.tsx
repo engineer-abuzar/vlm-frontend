@@ -55,6 +55,11 @@ import DirectRequestNotification from "./pages/teacher/DirectRequestNotification
 import TeacherSession from "./pages/teacher/TeacherSession";
 import SessionWarningPage from "./pages/teacher/SessionWarningPage";
 import ResolveDoubtPage from "./pages/teacher/ResolveDoubtPage";
+import AudioCallInitiated from "./pages/teacher/AudioCallInitiated";
+import WhiteboardSession from "./pages/teacher/WhiteboardSession";
+import RecordingLibrary from "./pages/teacher/RecordingLibrary";
+import CreateLiveClassRequest from "./pages/teacher/CreateLiveClassRequest";
+import LiveClassRequestStatus from "./pages/teacher/LiveClassRequestStatus";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -131,6 +136,16 @@ export default function App() {
           <Route path={PATHS.TEACHER_SESSION} element={<TeacherSession />} />
           <Route path={PATHS.SESSION_WARNING} element={<SessionWarningPage />} />
           <Route path={PATHS.RESOLVE_DOUBT} element={<ResolveDoubtPage />} />
+          <Route path={PATHS.AUDIO_CALLINITIIATED} element={<AudioCallInitiated />} />
+          <Route path={PATHS.TEACHERLIVE_SESSION} element={<LiveSession />} />
+          <Route path={PATHS.WHITEBOARD_SESSION} element={<WhiteboardSession />} />
+          <Route path={PATHS.RECORDING_LIBRARY} element={<RecordingLibrary />} />
+          <Route path={PATHS.LIVE_CLASS} element={<CreateLiveClassRequest />} />
+          <Route path={PATHS.LIVECLASS_REQUEST} element={<LiveClassRequestStatus />} />
+
+
+
+
 
           
           {/* Protected legacy */}
