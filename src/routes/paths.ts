@@ -52,8 +52,15 @@ export const PATHS = {
   RECORDING_LIBRARY:"/recording-library",
   LIVE_CLASS:"/live-class",
   LIVECLASS_REQUEST:"/class-request",
-
-
+  //TEACHERREFERRAL_HISTORY:"/teachreferral-history",
+  SESSION_COMPLETION:"/session-completion",
+  TEACHER_NOTIFICATION:"/teacher-notification",
+  HELP_CENTRE:"/help-centre",
+  SUPPORT_TICKET:"/support-ticket",
+  TICKET_DETAILS:"/ticket-details",
+  TEACHERSESSION_HISTORY:"/teachersession-history",
+  SESSION_DEATILS:"/session-details",
+  PERFORMANCE_ANALYTICS:"/performance-analytics",
 
 
 

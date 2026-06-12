@@ -60,6 +60,14 @@ import WhiteboardSession from "./pages/teacher/WhiteboardSession";
 import RecordingLibrary from "./pages/teacher/RecordingLibrary";
 import CreateLiveClassRequest from "./pages/teacher/CreateLiveClassRequest";
 import LiveClassRequestStatus from "./pages/teacher/LiveClassRequestStatus";
+import TeacherSessionCompletion from "./pages/teacher/TeacherSessionCompletion";
+import Notifications from "./pages/teacher/Notifications";
+import HelpCenter from "./pages/teacher/HelpCenter";
+import CreateSupportTicket from "./pages/teacher/CreateSupportTicket";
+import TicketDetail from "./pages/TicketDetail";
+import TeachSessionHistory from "./pages/teacher/TeachSessionHistory";
+import SessionDetail from "./pages/teacher/SessionDetail";
+import PerformanceAnalytics from "./pages/teacher/PerformanceAnalytics";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -142,6 +150,14 @@ export default function App() {
           <Route path={PATHS.RECORDING_LIBRARY} element={<RecordingLibrary />} />
           <Route path={PATHS.LIVE_CLASS} element={<CreateLiveClassRequest />} />
           <Route path={PATHS.LIVECLASS_REQUEST} element={<LiveClassRequestStatus />} />
+          <Route path={PATHS.SESSION_COMPLETION} element={<TeacherSessionCompletion />} />
+          <Route path={PATHS.TEACHER_NOTIFICATION} element={<Notifications />} />
+          <Route path={PATHS.HELP_CENTRE} element={<HelpCenter />} />
+          <Route path={PATHS.SUPPORT_TICKET} element={<CreateSupportTicket />} />
+          <Route path={PATHS.TICKET_DETAILS} element={<TicketDetail />} />
+          <Route path={PATHS.TEACHERSESSION_HISTORY} element={<TeachSessionHistory/>} />
+          <Route path={PATHS.SESSION_DEATILS} element={<SessionDetail/>} />
+          <Route path={PATHS.PERFORMANCE_ANALYTICS} element={<PerformanceAnalytics/>} />
 
 
 
