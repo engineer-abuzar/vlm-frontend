@@ -1,4 +1,4 @@
-import { studentApi } from "@/lib/student-api";
+import {studentApi} from "@/lib/student-api";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";

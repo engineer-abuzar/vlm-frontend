@@ -133,3 +133,5 @@ export const studentApi = {
     return data;
   },
 };
+
+export default studentApi;
