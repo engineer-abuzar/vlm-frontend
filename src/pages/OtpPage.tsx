@@ -18,7 +18,7 @@ import { authApi } from "@/lib/auth-api";
 
 function resolvePostOtpPath(role: Role, isNewUser: boolean): string {
   if (role === "parent" || role === "teacher") {
-    return PATHS.COMING_SOON;
+    return PATHS.TEACHER_REGISTRATION;
   }
 
   return isNewUser
