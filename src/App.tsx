@@ -116,7 +116,8 @@ export default function App() {
             <Route path={PATHS.PARENT_SETTINGS_CARD} element={<SettingsCard/>} />
             <Route path={PATHS.PARENT_DOUBT_HISTORY} element={<DoubtHistory/>} /> 
             <Route path={PATHS.PARENT_STUDENT_PROFILE} element={<StudentProfile/>} />
-            <Route path={PATHS.PARENT_REWARD_CENTER} element={<RewardCenter/>} /> 
+            <Route path={PATHS.PARENT_REWARD_CENTER} element={<RewardCenter/>} />
+            <Route path={PATHS.PARENT_REFER_EARN} element={<ReferEarn/>} /> 
 
           {/* Protected legacy */}
           <Route element={<ProtectedRoute />}>
