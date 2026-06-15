@@ -75,7 +75,12 @@ export const PATHS = {
   APPLICATION_STATUS:"/application-status",
   RECORDING_PROCESSING:"/recording-processing",
   TEACHERDASH_BOARD:"teacher-dashboard",
-
+  TEACHER_LOGIN:"/teacher-login",
+  CHAT_SESSION:"chat-session",
+  TEACHERTICKET_DETAILS:"/ticket-details",
+  SESSSION_HISTORY:"/session-history",
+  REQUEST_PAGE:"request-page",
+  //WITHDRAWAL_PROCESS:"/withdrawal-process",
 
 
 

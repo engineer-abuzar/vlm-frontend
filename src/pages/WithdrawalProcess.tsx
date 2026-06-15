@@ -9,7 +9,7 @@ import ProcessingVisual from "@/components/basic/teacher/ProcessingVisual";
 import { AmountCard, PayoutCard } from "@/components/basic/teacher/WithdrawalDetails";
 import WithdrawalTimeline from "@/components/basic/teacher/WithdrawalTimeline";
 
-const WithdrawalProcessing: React.FC = () => {
+const WithdrawalProcess: React.FC = () => {
   return (
     <div className={cn("min-h-screen flex flex-col items-center bg-black p-4 pb-32", bgCss)}>
       {/* Constraints for Laptop/Tablet viewports */}
@@ -72,4 +72,4 @@ const NavItem = ({ icon, label, active = false }: { icon: any, label: string, ac
   </button>
 );
 
-export default WithdrawalProcessing;
+export default WithdrawalProcess;

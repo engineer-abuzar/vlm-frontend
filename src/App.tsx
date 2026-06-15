@@ -75,13 +75,17 @@ import ConnectionLost from "./pages/teacher/ConnectionLost";
 import ProfileReviewStatus from "./pages/teacher/ProfileReviewStatus";
 import UploadError from "./pages/teacher/UploadError";
 import SessionInterruption from "./pages/SessionInterruption";
-import WithdrawalProcessing from "./pages/WithdrawalProcessing";
+import WithdrawalProcessing from "./pages/WithdrawalProcess";
 import WithdrawalFailed from "./pages/teacher/WithdrawalFailed";
 import ReferralRewardCredited from "./pages/teacher/ReferralRewardCredited";
 import InvalidReferralStatus from "./pages/teacher/InvalidReferralStatus";
 import ApplicationStatus from "./pages/teacher/ApplicationStatus";
 import RecordingProcessing from "./pages/teacher/RecordingProcessing";
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
+import TeacherLogin from "./pages/teacher/TeacherLogin";
+import ChatSession from "./pages/teacher/ChatSession";
+import RequestsPage from "./pages/teacher/RequestsPage";
+import WithdrawalProcess from "./pages/WithdrawalProcess";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -186,6 +190,11 @@ export default function App() {
           <Route path={PATHS.APPLICATION_STATUS} element={<ApplicationStatus/>} />
           <Route path={PATHS.RECORDING_PROCESSING} element={<RecordingProcessing/>} />
           <Route path={PATHS.TEACHERDASH_BOARD} element={<TeacherDashboard/>} />
+          <Route path={PATHS.TEACHER_LOGIN} element={<TeacherLogin/>} />
+          <Route path={PATHS.CHAT_SESSION} element={<ChatSession/>} />
+          <Route path={PATHS.TEACHERTICKET_DETAILS} element={<TicketDetail/>} />
+          <Route path={PATHS.SESSSION_HISTORY} element={<SessionHistory/>} />
+          <Route path={PATHS.REQUEST_PAGE} element={<RequestsPage/>} />
           
           
 
