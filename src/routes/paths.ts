@@ -30,7 +30,7 @@ export const PATHS = {
   //TEACHERSUBJECT_SELECTION:"/subject-selection",
   TEACHERCLASS_SELECTION:"/teacherclass-selection",
   CLASS_SELECTION:"/class-selection",
-  BOARDSELECTION_CARD:"/board-selectioncard",
+  BOARDSELECTION_CARD:"/board-selection",
   LANGUAGAE_SELECTION:"/language-selection",
   DOCUMENT_UPLOAD:"/document-upload",
   INTERVIEW_SCHEDULING:"/interview-scheduling",

@@ -30,7 +30,7 @@ const TeacherExperienceDetails: React.FC = () => {
       experienceType: type,
       experienceSummary: summary,
     }),
-    onSuccess: () => { toast.success("Experience details saved"); navigate(PATHS.TEACHERCLASS_SELECTION); },
+    onSuccess: () => { toast.success("Experience details saved"); navigate(PATHS.SUBJECT_SELECTION); },
     onError: () => toast.error("Failed to save experience"),
   });
 

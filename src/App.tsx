@@ -24,7 +24,7 @@ import LiveSession from "./pages/student/LiveSession";
 import SessionFeedback from "./pages/student/SessionFeedBack";
 import SessionHistory from "./pages/student/SessionHistory";
 import ShortLiveSessions from "./pages/student/ShortLiveSession";
-import SubjectSelection from "./pages/student/SubjectSelection";
+import SubjectSelection from "./pages/SubjectSelection";
 import PlanScreen from "./pages/student/PlanScreen";
 import PaymentFailed from "./pages/student/PaymentFailed";
 import DoubtSubmitted from "./pages/student/DoubtSubmitted";

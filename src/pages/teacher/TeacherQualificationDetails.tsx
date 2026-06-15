@@ -26,7 +26,8 @@ const TeacherQualificationDetails: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: () => teacherApi.updateProfile({ ...form, hasBEd, passingYear: parseInt(form.passingYear) }),
-    onSuccess: () => { toast.success("Qualifications saved"); navigate(PATHS.EXPERIENCE_DETAILS); },
+    onSuccess: () => { toast.success("Qualifications saved"); navigate(PATHS.BASICPROFILE_DETAILS
+    ); },
     onError: () => toast.error("Failed to save qualifications"),
   });
 
