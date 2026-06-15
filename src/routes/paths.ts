@@ -64,6 +64,19 @@ export const PATHS = {
   REQUEST:"/request",
   ACCOUNT_STATUS:"/account-status",
   ACCOUNT_BLOCKED:"/account-blocked",
+  CONNECTION_LOST:"/connection-lost",
+  REVIEW_STATUS:"/review-status",
+  UPLOAD_ERROR:"/upload-error",
+  SESSION_INTERRUPTION:"/session-interrupt",
+  WITHDRAWAL_PROCESSING:"/withdrawl-processing",
+  WITHDRAWAL_FAILED:"/withdrawal-failed",
+  REFERRAL_CREDITED:"/referral-credit",
+  INVALID_REFERRAL:"/invalid-referral",
+  APPLICATION_STATUS:"/application-status",
+  RECORDING_PROCESSING:"/recording-processing",
+  TEACHERDASH_BOARD:"teacher-dashboard",
+
+
 
 
 

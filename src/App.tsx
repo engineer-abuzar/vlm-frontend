@@ -35,13 +35,13 @@ import EditProfile from "./pages/student/EditProfile";
 import { PATHS } from "@/routes/paths";
 import TeacherRegistration from "./pages/teacher/TeacherRegistration";
 import TeacherQualificationDetails from "./pages/teacher/TeacherQualificationDetails";
-import BasicProfileDetails from "./pages/teacher/BasicProfileDetails";
-import TeacherExperienceDetails from "./pages/teacher/TeacherExperienceDetails";
-import TeacherClassSelection from "./pages/teacher/TeacherClassSelection";
+import BasicProfileDetails from "./pages/teacher/stepper/BasicProfileDetails";
+import TeacherExperienceDetails from "./pages/teacher/stepper/TeacherExperienceDetails";
+import TeacherClassSelection from "./pages/teacher/stepper/TeacherClassSelection";
 import IndividualClassSelection from "./pages/teacher/IndividualClassSelection";
-import BoardSelection from "./pages/teacher/BoardSelection";
-import LanguageSelection from "./pages/teacher/LanguageSelection";
-import DocumentUpload from "./pages/teacher/DocumentUpload";
+import BoardSelection from "./pages/teacher/stepper/BoardSelection";
+import LanguageSelection from "./pages/teacher/stepper/LanguageSelection";
+import DocumentUpload from "./pages/teacher/stepper/DocumentUpload";
 import InterviewScheduling from "./pages/teacher/InterviewScheduling";
 import TeacherDemoVideo from "./pages/teacher/TeacherDemoVideo";
 import ProfileReview from "./pages/teacher/ProfileReview";
@@ -71,6 +71,17 @@ import PerformanceAnalytics from "./pages/teacher/PerformanceAnalytics";
 import Requests from "./pages/teacher/Requests";
 import AccountStatus from "./pages/teacher/AccountStatus";
 import AccountBlocked from "./pages/teacher/AccountBlocked";
+import ConnectionLost from "./pages/teacher/ConnectionLost";
+import ProfileReviewStatus from "./pages/teacher/ProfileReviewStatus";
+import UploadError from "./pages/teacher/UploadError";
+import SessionInterruption from "./pages/SessionInterruption";
+import WithdrawalProcessing from "./pages/WithdrawalProcessing";
+import WithdrawalFailed from "./pages/teacher/WithdrawalFailed";
+import ReferralRewardCredited from "./pages/teacher/ReferralRewardCredited";
+import InvalidReferralStatus from "./pages/teacher/InvalidReferralStatus";
+import ApplicationStatus from "./pages/teacher/ApplicationStatus";
+import RecordingProcessing from "./pages/teacher/RecordingProcessing";
+import TeacherDashboard from "./pages/teacher/TeacherDashboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -164,6 +175,20 @@ export default function App() {
           <Route path={PATHS.REQUEST} element={<Requests/>} />
           <Route path={PATHS.ACCOUNT_STATUS} element={<AccountStatus/>} />
           <Route path={PATHS.ACCOUNT_BLOCKED} element={<AccountBlocked/>} />
+          <Route path={PATHS.CONNECTION_LOST} element={<ConnectionLost/>} />
+          <Route path={PATHS.REVIEW_STATUS} element={<ProfileReviewStatus/>} />
+          <Route path={PATHS.UPLOAD_ERROR} element={<UploadError/>} />
+          <Route path={PATHS.SESSION_INTERRUPTION} element={<SessionInterruption/>} />
+          <Route path={PATHS.WITHDRAWAL_PROCESSING} element={<WithdrawalProcessing/>} />
+          <Route path={PATHS.WITHDRAWAL_FAILED} element={<WithdrawalFailed/>} />
+          <Route path={PATHS.REFERRAL_CREDITED} element={<ReferralRewardCredited/>} />
+          <Route path={PATHS.INVALID_REFERRAL} element={<InvalidReferralStatus/>} />
+          <Route path={PATHS.APPLICATION_STATUS} element={<ApplicationStatus/>} />
+          <Route path={PATHS.RECORDING_PROCESSING} element={<RecordingProcessing/>} />
+          <Route path={PATHS.TEACHERDASH_BOARD} element={<TeacherDashboard/>} />
+          
+          
+
 
 
 
